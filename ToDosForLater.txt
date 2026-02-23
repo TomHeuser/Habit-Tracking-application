@@ -1,0 +1,1 @@
+remove user input from class tree, once cli is working, to preserve clean architextural separation
