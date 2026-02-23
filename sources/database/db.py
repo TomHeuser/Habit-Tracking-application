@@ -7,7 +7,10 @@ cursor = connection.cursor()
 # create habit table
 # BOOL values are integers in SQlite 0 (false) 1 (true)
 
-command1 = """CREATE TABLE IF NOT EXISTS habit(habit_id INTEGER PRIMARY KEY, name TEXT, desc TEXT, active INTEGER,
+# used to flush the habit table, only for testing
+cursor.execute("DROP TABLE IF EXISTS habit")
+
+command1 = """CREATE TABLE IF NOT EXISTS habit(habit_id INTEGER PRIMARY KEY, name TEXT, desc TEXT, created_on TEXT, active INTEGER,
  complete_status INTEGER, completed_on TEXT, interval INTEGER, streak_status INTEGER, streak_count INTEGER)"""
 
 cursor.execute(command1)
@@ -15,14 +18,25 @@ cursor.execute(command1)
 
 #list of predefined habits
 predefined_habits = [
-    (1, "Drink Water", "Drink two litres of water each day", 1, 0, "2026-01-01", 1, 0, 0)
-    (2, "Walking", "Spend at least 15 minutes walking outside each day", 1, 0, "2026-01-01", 1, 0, 0)
-    (3, "Cleaning", "Clean the apartment", 1, 0, "2026-01-01", 1, 0, 0)
-    (4, "Go swimming", "Swim at least 100 laps (50m) each week", 1, 0, "2026-01-01", 1, 0, 0)
-    (5, "Check finances", "check your banking accounts", 1, 0, "2026-01-01", 1, 0, 0)
+    (1, "Drink Water", "Drink two litres of water each day", "2026-01-01", 1, 0, "2026-01-01", 1, 0, 0),
+    (2, "Walking", "Spend at least 15 minutes walking outside each day", "2026-01-01", 1, 0, "2026-01-01", 1, 0, 0),
+    (3, "Cleaning", "Clean the apartment", "2026-01-01", 1, 0, "2026-01-01", 7, 0, 0),
+    (4, "Go swimming", "Swim at least 100 laps (50m) each week", "2026-01-01", 1, 0, "2026-01-01", 7, 0, 0),
+    (5, "Check finances", "check your banking accounts", "2026-01-01", 1, 0, "2026-01-01", 7, 0, 0)
 ]
 # add predefined habits to habit table
-cursor.executemany("INSERT INTO habit (?,?,?,?,?,?,?,?,?,?)", predefined_habits)
+cursor.executemany("INSERT INTO habit values (?,?,?,?,?,?,?,?,?,?)", predefined_habits)
 
+#print database rows
+for row in cursor.execute("select * from habit"):
+    print(row)
 
+#print specific row
+for row in cursor.execute("select * from habit WHERE active = 1"):
+    print(row)
+
+for row in cursor.execute("select * from habit WHERE habit_id = 1"):
+    print(row)
+
+connection.commit()
 connection.close()
