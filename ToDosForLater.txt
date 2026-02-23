@@ -1,5 +1,10 @@
 short term:
+create database connection
+check not callable message for predefined habits
+
+medium term:
 create test for classes.py
 
 long term:
 remove user input from class tree, once cli is working, to preserve clean architextural separation
+move initial predefined habits from db.py to da_setup.py and initial_data.json and add 4 week example data

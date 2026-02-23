@@ -1,3 +1,5 @@
+from datetime import date
+
 #Habit class tree
 
 #lvl1: Habit superclass
@@ -7,7 +9,11 @@ class Habit:
         self.habit_id = habit_id
         self.desc = input("Please enter a description for your new habit:")     #user input to add description (str)
         self.complete_status = False
+        self.completed_on = "none"
         self.active = True
+        today = date.today()
+        iso_today = today.isoformat()
+        self.created_on = iso_today
 
     #functions that all habits of any subclass should inherit:
     # rough ideas/setup !!!!!!! needs further attention
@@ -56,7 +62,7 @@ class PredefinedIntervalHabit(IntervalHabit):
     def choose_interval(self):
         while True:
             #userinput to choose between daily and weekly (eg:1 and 7)
-            interval_input = input("Please choose the habits' interval:\n[1]daily\n[2]weekly")
+            interval_input = input("Please choose the habits' interval:\n[1]daily\n[2]weekly\n")
             if interval_input == "1":
                 return 1
             elif interval_input == "2":
@@ -93,16 +99,20 @@ class ManualIntervalHabit(IntervalHabit):
 
 # room for general testing - NOT THE ACTUAL TESTING - just for myself
 test_class1 = Habit("Simple Habit",1)
-print(f"name: {test_class1.name}, Id: {test_class1.habit_id}, description: {test_class1.desc},complete?: {test_class1.complete_status}, active?: {test_class1.active}")
+print(f"name: {test_class1.name}, Id: {test_class1.habit_id}, description: {test_class1.desc}, created on: {test_class1.created_on},"
+      f"completed on: {test_class1.completed_on}, complete?: {test_class1.complete_status}, active?: {test_class1.active}")
 
 test_class2 = IntervalHabit("Interval Habit",2)
-print(f"name: {test_class2.name}, Id: {test_class2.habit_id}, description: {test_class2.desc},complete?: {test_class2.complete_status}, active?: {test_class2.active}, "
+print(f"name: {test_class2.name}, Id: {test_class2.habit_id}, description: {test_class2.desc}, created on: {test_class2.created_on},"
+      f"completed on: {test_class2.completed_on},complete?: {test_class2.complete_status}, active?: {test_class2.active}, "
       f"streak?: {test_class2.streak_status}, streak_count: {test_class2.streak_count}, interval: {test_class2.interval}")
 
 test_class3 = PredefinedIntervalHabit("Predefined Interval Habit",3)
-print(f"name: {test_class3.name}, Id: {test_class3.habit_id}, description: {test_class3.desc},complete?: {test_class3.complete_status}, active?: {test_class3.active}, "
+print(f"name: {test_class3.name}, Id: {test_class3.habit_id}, description: {test_class3.desc},created on: {test_class3.created_on},"
+      f"completed on: {test_class3.completed_on}, complete?: {test_class3.complete_status}, active?: {test_class3.active}, "
       f"streak?: {test_class3.streak_status}, streak_count: {test_class3.streak_count}, interval: {test_class3.interval}")
 
 test_class4 = ManualIntervalHabit("Manual Interval Habit",4)
-print(f"name: {test_class4.name}, Id: {test_class4.habit_id}, description: {test_class4.desc},complete?: {test_class4.complete_status}, active?: {test_class4.active}, "
+print(f"name: {test_class4.name}, Id: {test_class4.habit_id}, description: {test_class4.desc},created on: {test_class4.created_on},"
+      f"completed on: {test_class4.completed_on}, complete?: {test_class4.complete_status}, active?: {test_class4.active}, "
       f"streak?: {test_class4.streak_status}, streak_count: {test_class4.streak_count}, interval: {test_class4.interval}")
