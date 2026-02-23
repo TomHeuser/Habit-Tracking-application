@@ -1,1 +1,5 @@
+short term:
+create test for classes.py
+
+long term:
 remove user input from class tree, once cli is working, to preserve clean architextural separation
