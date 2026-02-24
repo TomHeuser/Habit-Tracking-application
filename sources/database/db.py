@@ -3,20 +3,24 @@ import db_setup
 
 db_setup.flush_history_table()
 db_setup.flush_habit_table()
-db_setup.setup_history_table()
-db_setup.add_history_data()
-db_setup.setup_habit_table()
-db_setup.add_predefined_habits()
+#db_setup.setup_habit_table()
+#db_setup.add_predefined_habits()
+#db_setup.setup_history_table()
+#db_setup.add_history_data()
 
-#db_setup.database_startup()
+db_setup.database_startup()
 
 # define connection and cursor
 connection = sqlite3.connect("database.db")
 cursor = connection.cursor()
 
 
-#print database rows
+#print rows from habit table
 for row in cursor.execute("select * from habit"):
+    print(row)
+
+#print rows from history table
+for row in cursor.execute("select * from history"):
     print(row)
 
 #print specific row
