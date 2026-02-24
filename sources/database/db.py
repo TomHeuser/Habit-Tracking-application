@@ -1,31 +1,19 @@
 import sqlite3
+import db_setup
+
+db_setup.flush_history_table()
+db_setup.flush_habit_table()
+db_setup.setup_history_table()
+db_setup.add_history_data()
+db_setup.setup_habit_table()
+db_setup.add_predefined_habits()
+
+#db_setup.database_startup()
 
 # define connection and cursor
 connection = sqlite3.connect("database.db")
 cursor = connection.cursor()
 
-# create habit table
-# BOOL values are integers in SQlite 0 (false) 1 (true)
-
-# used to flush the habit table, only for testing
-cursor.execute("DROP TABLE IF EXISTS habit")
-
-command1 = """CREATE TABLE IF NOT EXISTS habit(habit_id INTEGER PRIMARY KEY, name TEXT, desc TEXT, created_on TEXT, active INTEGER,
- complete_status INTEGER, completed_on TEXT, interval INTEGER, streak_status INTEGER, streak_count INTEGER)"""
-
-cursor.execute(command1)
-
-
-#list of predefined habits
-predefined_habits = [
-    (1, "Drink Water", "Drink two litres of water each day", "2026-01-01", 1, 0, "2026-01-01", 1, 0, 0),
-    (2, "Walking", "Spend at least 15 minutes walking outside each day", "2026-01-01", 1, 0, "2026-01-01", 1, 0, 0),
-    (3, "Cleaning", "Clean the apartment", "2026-01-01", 1, 0, "2026-01-01", 7, 0, 0),
-    (4, "Go swimming", "Swim at least 100 laps (50m) each week", "2026-01-01", 1, 0, "2026-01-01", 7, 0, 0),
-    (5, "Check finances", "check your banking accounts", "2026-01-01", 1, 0, "2026-01-01", 7, 0, 0)
-]
-# add predefined habits to habit table
-cursor.executemany("INSERT INTO habit values (?,?,?,?,?,?,?,?,?,?)", predefined_habits)
 
 #print database rows
 for row in cursor.execute("select * from habit"):

@@ -1,6 +1,7 @@
 short term:
-create database connection
-check not callable message for predefined habits
+look in sql
+refine history table
+move setup-data to json file
 
 medium term:
 create test for classes.py
