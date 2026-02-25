@@ -1,18 +1,19 @@
 short term:
 look into sql:
-    refine history table
     move setup-data to json file and consider how to split data from json into tables
-    change seeding procedure
-    rename functions that implement predefined habits and data to sth. like seed_habits() and seed_history_data()
-    get rid of hard deleting and replace with soft deleting to prevent orphan data - maybe drop the idea of a delete()
-        function as set_active() will do the trick of soft "deleting"
+        transfer code from new seeding procedure into db_setup.py and db.py
+    refine history table
 
 medium term:
+once database basics are finished ----- change dates to something sensible (ask in ILSE)
 create test for classes.py
 create test for db_setup.py
 create test for db.py
+get rid of hard deleting and replace with soft deleting to prevent orphan data - maybe drop the idea of a delete()
+        function as set_active() will do the trick of soft "deleting"
 
 long term:
+add 2nd class tree containing history class to hold information necessary for analytics
 remove user input from class tree, once cli is working, to preserve clean architextural separation
 move initial predefined habits from db.py to da_setup.py and initial_data.json and add 4 week example data
 

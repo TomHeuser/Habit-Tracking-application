@@ -1,4 +1,102 @@
-{
-  "name" : "Drink Water"
-
-}
+[
+    {
+      "name": "Drink Water",
+      "desc": "Drink two liters of water each day",
+      "active": "1",
+      "interval": "1",
+      "complete_status": "0",
+      "created_on": "2026-01-01",
+      "history": [
+        {
+          "date": "2026-01-01",
+          "streak_status": "0",
+          "streak_count": "0"
+        },
+        {
+          "date": "2026-01-02",
+          "streak_status": "0",
+          "streak_count": "1"
+        },
+        {
+          "date": "2026-01-04",
+          "streak_status": "0",
+          "streak_count": "1"
+        }
+      ]
+    },
+    {
+      "name": "Walking",
+      "desc": "Spend at least 15 minutes walking outside each day",
+      "active": "1",
+      "interval": "1",
+      "complete_status": "0",
+      "created_on": "2026-01-01",
+      "history": [
+        {
+          "date": "2026-01-01",
+          "streak_status": "0",
+          "streak_count": "0"
+        },
+        {
+          "date": "2026-01-02",
+          "streak_status": "0",
+          "streak_count": "1"
+        },
+        {
+          "date": "2026-01-03",
+          "streak_status": "0",
+          "streak_count": "2"
+        },
+        {
+          "date": "2026-01-04",
+          "streak_status": "0",
+          "streak_count": "4"
+        }
+      ]
+    },
+    {
+      "name": "Cleaning",
+      "desc": "Clean the apartment at least once a week",
+      "active": "1",
+      "interval": "7",
+      "complete_status": "0",
+      "created_on": "2026-01-01",
+      "history": [
+        {
+          "date": "2026-01-03",
+          "streak_status": "0",
+          "streak_count": "1"
+        }
+      ]
+    },
+    {
+      "name": "Go swimming",
+      "desc": "Swim at least 100 laps (50m) each week",
+      "active": "1",
+      "interval": "7",
+      "complete_status": "0",
+      "created_on": "2026-01-01",
+      "history": [
+        {
+          "date": "2026-01-02",
+          "streak_status": "0",
+          "streak_count": "1"
+        }
+      ]
+    },
+    {
+      "name": "Check finances",
+      "desc": "Check your banking accounts at least once a week",
+      "active": "1",
+      "interval": "7",
+      "complete_status": "0",
+      "created_on": "2026-01-01",
+      "history": [
+        {
+          "date": "2026-01-04",
+          "streak_status": "0",
+          "streak_count": "1"
+        }
+      ]
+    }
+  ]

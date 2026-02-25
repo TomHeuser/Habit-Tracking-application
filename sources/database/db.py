@@ -3,12 +3,12 @@ import db_setup
 
 db_setup.flush_history_table()
 db_setup.flush_habit_table()
-#db_setup.setup_habit_table()
-#db_setup.add_predefined_habits()
-#db_setup.setup_history_table()
-#db_setup.add_history_data()
+db_setup.setup_habit_table()
+db_setup.seed_predefined_habits()
+db_setup.setup_history_table()
+db_setup.seed_history_data()
 
-db_setup.database_startup()
+#db_setup.database_startup()
 
 # define connection and cursor
 connection = sqlite3.connect("database.db")

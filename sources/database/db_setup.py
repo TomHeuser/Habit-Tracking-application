@@ -9,7 +9,7 @@ def setup_habit_table():
     cursor = connection.cursor()
     connection.execute("PRAGMA foreign_keys = ON;")
     habit_table_create = """CREATE TABLE IF NOT EXISTS habit(habit_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, desc TEXT, active INTEGER,
-    interval INTEGER, complete_status INTEGER)"""
+    interval INTEGER, complete_status INTEGER, created_on TEXT)"""
     cursor.execute(habit_table_create)
     connection.commit()
     connection.close()
@@ -18,44 +18,44 @@ def setup_history_table():
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     connection.execute("PRAGMA foreign_keys = ON;")
-    history_table_create = """CREATE TABLE IF NOT EXISTS history(history_id INTEGER PRIMARY KEY AUTOINCREMENT, habit_id INTEGER NOT NULL,
-    created_on TEXT, date TEXT, streak_status INTEGER, streak_count INTEGER, FOREIGN KEY (habit_id) REFERENCES habit(habit_id))"""
+    history_table_create = """CREATE TABLE IF NOT EXISTS history(history_id INTEGER PRIMARY KEY AUTOINCREMENT, habit_id INTEGER NOT NULL, 
+    date TEXT, streak_status INTEGER, streak_count INTEGER, FOREIGN KEY (habit_id) REFERENCES habit(habit_id))"""
     cursor.execute(history_table_create)
     connection.commit()
     connection.close()
 
 
-def add_predefined_habits():
+def seed_predefined_habits():
     """used to fill empty habits table with predefined habits"""
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     connection.execute("PRAGMA foreign_keys = ON;")
     #list of predefined habits
     predefined_habits = [
-        (1, "Drink Water", "Drink two liters of water each day", 1, 1, 0),
-        (2, "Walking", "Spend at least 15 minutes walking outside each day", 1, 1, 0),
-        (3, "Cleaning", "Clean the apartment", 1, 7, 0),
-        (4, "Go swimming", "Swim at least 100 laps (50m) each week", 1, 7, 0),
-        (5, "Check finances", "check your banking accounts", 1, 7,0)
+        ("Drink Water", "Drink two liters of water each day", 1, 1, 0, "2026-01-01"),
+        ("Walking", "Spend at least 15 minutes walking outside each day", 1, 1, 0, "2026-01-01"),
+        ("Cleaning", "Clean the apartment", 1, 7, 0, "2026-01-01"),
+        ("Go swimming", "Swim at least 100 laps (50m) each week", 1, 7, 0, "2026-01-01"),
+        ("Check finances", "check your banking accounts", 1, 7,0, "2026-01-01")
     ]
     # add predefined habits to habit table
-    cursor.executemany("INSERT INTO habit values (?,?,?,?,?,?)", predefined_habits)
+    cursor.executemany("INSERT INTO habit (name, desc, active, interval, complete_status, created_on) VALUES (?,?,?,?,?,?)", predefined_habits)
     connection.commit()
     connection.close()
 
-def add_history_data():
+def seed_history_data():
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     connection.execute("PRAGMA foreign_keys = ON;")
     history_data = [
-        (1, 1, "2026-01-01", "2026-01-01", 0, 0),
-        (2, 2, "2026-01-01", "2026-01-01", 0, 0),
-        (3, 3, "2026-01-01", "2026-01-01", 0, 0),
-        (4, 4, "2026-01-01", "2026-01-01", 0, 0),
-        (5, 5, "2026-01-01", "2026-01-01", 0, 0)
+        (1, "2026-01-01", 0, 0),
+        (2, "2026-01-01", 0, 0),
+        (3, "2026-01-01", 0, 0),
+        (4, "2026-01-01", 0, 0),
+        (5, "2026-01-01", 0, 0)
     ]
 
-    cursor.executemany("INSERT INTO history values (?,?,?,?,?,?)", history_data)
+    cursor.executemany("INSERT INTO history (habit_id, date, streak_status, streak_count) VALUES (?,?,?,?)", history_data)
     connection.commit()
     connection.close()
 
@@ -63,9 +63,9 @@ def database_startup():
     """runs on application startup and checks if database with predefined habits exists. If not it creates the necessary tables"""
     try:
         setup_habit_table()
-        add_predefined_habits()
+        seed_predefined_habits()
         setup_history_table()
-        add_history_data()
+        seed_history_data()
         print("Database loading....")
         print("Database setup completed.")
     except:
