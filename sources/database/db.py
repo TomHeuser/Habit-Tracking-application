@@ -1,8 +1,8 @@
 import sqlite3
 import db_setup
 
-db_setup.flush_history_table()
-db_setup.flush_habit_table()
+#db_setup.flush_history_table()
+#db_setup.flush_habit_table()
 #db_setup.setup_habit_table()
 #db_setup.setup_history_table()
 #db_setup.seed_predefined_habits()

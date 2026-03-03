@@ -1,8 +1,10 @@
 short term:
-implement a way to actually make db_setup.database_startup() check whether there is an existing db
-new habit attribute called smth. like check_dates = [] -> infinitely growing list?
-    + self.check_dates.append()
-add longest streak attribute?
+overhaul class
+    new habit attribute called smth. like check_dates = [] -> infinitely growing list?
+        + self.check_dates.append()
+    add longest streak attribute?
+
+rename sources to src
 
 medium term:
 once database basics are finished ----- change dates to something sensible (ask in ILSE)
@@ -19,4 +21,7 @@ move initial predefined habits from db.py to da_setup.py and initial_data.json a
 
 
 "longest" term on finishing up phase 3:
+don't forget read me, requirements
 delete scribble.py
+dockerfile? what's that?
+add screenshots of unit-tests (otherwise prof will need to run screenshots)

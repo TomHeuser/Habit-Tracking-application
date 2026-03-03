@@ -9,7 +9,7 @@ def setup_habit_table():
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     connection.execute("PRAGMA foreign_keys = ON;")
-    habit_table_create = """CREATE TABLE IF NOT EXISTS habit(habit_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, desc TEXT, active INTEGER,
+    habit_table_create = """CREATE TABLE habit(habit_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, desc TEXT, active INTEGER,
     interval INTEGER, complete_status INTEGER, created_on TEXT)"""
     cursor.execute(habit_table_create)
     connection.commit()
@@ -19,7 +19,7 @@ def setup_history_table():
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     connection.execute("PRAGMA foreign_keys = ON;")
-    history_table_create = """CREATE TABLE IF NOT EXISTS history(history_id INTEGER PRIMARY KEY AUTOINCREMENT, habit_id INTEGER NOT NULL, 
+    history_table_create = """CREATE TABLE history(history_id INTEGER PRIMARY KEY AUTOINCREMENT, habit_id INTEGER NOT NULL, 
     date TEXT, streak_status INTEGER, streak_count INTEGER, FOREIGN KEY (habit_id) REFERENCES habit(habit_id))"""
     cursor.execute(history_table_create)
     connection.commit()
