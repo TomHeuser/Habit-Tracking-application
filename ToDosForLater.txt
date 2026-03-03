@@ -1,13 +1,7 @@
 short term:
-overhaul class
-    new habit attribute called smth. like check_dates = [] -> infinitely growing list?
-        + self.check_dates.append()
-    add longest streak attribute?
-
 rename sources to src
 
 medium term:
-once database basics are finished ----- change dates to something sensible (ask in ILSE)
 create test for classes.py
 create test for db_setup.py
 create test for db.py

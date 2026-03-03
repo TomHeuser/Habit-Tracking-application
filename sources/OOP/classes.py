@@ -7,9 +7,9 @@ class Habit:
     def __init__(self, name, habit_id):
         self.name = name
         self.habit_id = habit_id
-        self.desc = input("Please enter a description for your new habit:")     #user input to add description (str)
+        # user input to add description (str)
+        self.desc = input("Please enter a description for your new habit:")
         self.complete_status = False
-        self.completed_on = "none"
         self.active = True
         today = date.today()
         iso_today = today.isoformat()
@@ -40,6 +40,7 @@ class IntervalHabit(Habit):
          self.streak_count = 0
          self.streak_status = False
          self.interval = 0
+         self.longest_streak = 0
 
     def set_interval(self, interval):
         self.interval = interval
@@ -72,8 +73,6 @@ class PredefinedIntervalHabit(IntervalHabit):
 
     def __init__(self, name, habit_id):
         IntervalHabit.__init__(self, name, habit_id)
-        self.streak_count = 0
-        self.streak_status = False
         self.interval = self.choose_interval()
 
 
@@ -88,6 +87,8 @@ class ManualIntervalHabit(IntervalHabit):
                 if 1 <= interval_input <= 365:
                     self.interval = interval_input
                     break
+                else:
+                    print("Incorrect input. Please enter a number between 1 and 365.")
             except ValueError:
                 print("Incorrect input. Please enter a number between 1 and 365.")
 
@@ -100,19 +101,19 @@ class ManualIntervalHabit(IntervalHabit):
 # room for general testing - NOT THE ACTUAL TESTING - just for myself
 test_class1 = Habit("Simple Habit",1)
 print(f"name: {test_class1.name}, Id: {test_class1.habit_id}, description: {test_class1.desc}, created on: {test_class1.created_on},"
-      f"completed on: {test_class1.completed_on}, complete?: {test_class1.complete_status}, active?: {test_class1.active}")
+      f"complete?: {test_class1.complete_status}, active?: {test_class1.active}")
 
 test_class2 = IntervalHabit("Interval Habit",2)
 print(f"name: {test_class2.name}, Id: {test_class2.habit_id}, description: {test_class2.desc}, created on: {test_class2.created_on},"
-      f"completed on: {test_class2.completed_on},complete?: {test_class2.complete_status}, active?: {test_class2.active}, "
-      f"streak?: {test_class2.streak_status}, streak_count: {test_class2.streak_count}, interval: {test_class2.interval}")
+      f"complete?: {test_class2.complete_status}, active?: {test_class2.active}, streak?: {test_class2.streak_status}, streak_count: {test_class2.streak_count},"
+      f"interval: {test_class2.interval}, longest streak: {test_class2.longest_streak}")
 
 test_class3 = PredefinedIntervalHabit("Predefined Interval Habit",3)
 print(f"name: {test_class3.name}, Id: {test_class3.habit_id}, description: {test_class3.desc},created on: {test_class3.created_on},"
-      f"completed on: {test_class3.completed_on}, complete?: {test_class3.complete_status}, active?: {test_class3.active}, "
-      f"streak?: {test_class3.streak_status}, streak_count: {test_class3.streak_count}, interval: {test_class3.interval}")
+      f"complete?: {test_class3.complete_status}, active?: {test_class3.active}, streak?: {test_class3.streak_status}, streak_count: {test_class3.streak_count},"
+      f"interval: {test_class3.interval}, longest streak: {test_class3.longest_streak}")
 
 test_class4 = ManualIntervalHabit("Manual Interval Habit",4)
 print(f"name: {test_class4.name}, Id: {test_class4.habit_id}, description: {test_class4.desc},created on: {test_class4.created_on},"
-      f"completed on: {test_class4.completed_on}, complete?: {test_class4.complete_status}, active?: {test_class4.active}, "
-      f"streak?: {test_class4.streak_status}, streak_count: {test_class4.streak_count}, interval: {test_class4.interval}")
+      f"complete?: {test_class4.complete_status}, active?: {test_class4.active}, streak?: {test_class4.streak_status}, streak_count: {test_class4.streak_count},"
+      f"interval: {test_class4.interval}, longest streak: {test_class4.longest_streak}")
