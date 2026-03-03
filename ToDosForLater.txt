@@ -1,8 +1,8 @@
 short term:
-look into sql:
-    move setup-data to json file and consider how to split data from json into tables
-        transfer code from new seeding procedure into db_setup.py and db.py
-    refine history table
+implement a way to actually make db_setup.database_startup() check whether there is an existing db
+new habit attribute called smth. like check_dates = [] -> infinitely growing list?
+    + self.check_dates.append()
+add longest streak attribute?
 
 medium term:
 once database basics are finished ----- change dates to something sensible (ask in ILSE)

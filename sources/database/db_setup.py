@@ -1,4 +1,5 @@
 import sqlite3
+import json
 
 # create habit table
 # BOOL values are integers in SQlite 0 (false) 1 (true)
@@ -27,45 +28,69 @@ def setup_history_table():
 
 def seed_predefined_habits():
     """used to fill empty habits table with predefined habits"""
+    ## read data from JSON file
+    with open("initial_data.json", "r") as f:
+        data = json.load(f)
+    # print(data)
+    # print(type(data))
+
+    ##connect to database
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     connection.execute("PRAGMA foreign_keys = ON;")
-    #list of predefined habits
-    predefined_habits = [
-        ("Drink Water", "Drink two liters of water each day", 1, 1, 0, "2026-01-01"),
-        ("Walking", "Spend at least 15 minutes walking outside each day", 1, 1, 0, "2026-01-01"),
-        ("Cleaning", "Clean the apartment", 1, 7, 0, "2026-01-01"),
-        ("Go swimming", "Swim at least 100 laps (50m) each week", 1, 7, 0, "2026-01-01"),
-        ("Check finances", "check your banking accounts", 1, 7,0, "2026-01-01")
-    ]
-    # add predefined habits to habit table
-    cursor.executemany("INSERT INTO habit (name, desc, active, interval, complete_status, created_on) VALUES (?,?,?,?,?,?)", predefined_habits)
+
+    ## sorty data by interval: dailies first, then weekly
+    data.sort(key=lambda habit: habit["interval"])
+    # for habit in data:
+    # print(habit)
+
+    ## for loop to iterate through each habit in JSON file one at a time
+    for habit in data:
+        ##dictionary comprehension - habit.items() gives key-value pairs --> for each pair in key != "history" add it to new dictionary
+        habit_data = {a: b for a, b in habit.items() if a != "history"}
+        print(habit_data)
+        ## only need to get history keys and puts it into a new list containing dictionaries for each entry
+        history_data = habit.get("history", [])
+        print(history_data)
+
+        ## insert habit_data into habit table
+        cursor.execute(
+            "INSERT INTO habit (name, desc, active, complete_status, created_on) VALUES (?,?,?,?,?)",
+            (
+                habit_data["name"],
+                habit_data["desc"],
+                habit_data["active"],
+                habit_data["complete_status"],
+                habit_data["created_on"]
+            )
+        )
+
+        ## tell python to get newly generated habit_id from habit table
+        habit_id = cursor.lastrowid
+
+        ## insert history_data into history table
+        for entry in history_data:
+            # print("History Row:", entry)
+            cursor.execute(
+                "INSERT INTO history (habit_id, date, streak_status, streak_count) VALUES (?,?,?,?)",
+                (
+                    habit_id,
+                    entry["date"],
+                    entry["streak_status"],
+                    entry["streak_count"]
+                )
+            )
+
     connection.commit()
     connection.close()
 
-def seed_history_data():
-    connection = sqlite3.connect("database.db")
-    cursor = connection.cursor()
-    connection.execute("PRAGMA foreign_keys = ON;")
-    history_data = [
-        (1, "2026-01-01", 0, 0),
-        (2, "2026-01-01", 0, 0),
-        (3, "2026-01-01", 0, 0),
-        (4, "2026-01-01", 0, 0),
-        (5, "2026-01-01", 0, 0)
-    ]
-
-    cursor.executemany("INSERT INTO history (habit_id, date, streak_status, streak_count) VALUES (?,?,?,?)", history_data)
-    connection.commit()
-    connection.close()
 
 def database_startup():
     """runs on application startup and checks if database with predefined habits exists. If not it creates the necessary tables"""
     try:
         setup_habit_table()
-        seed_predefined_habits()
         setup_history_table()
-        seed_history_data()
+        seed_predefined_habits()
         print("Database loading....")
         print("Database setup completed.")
     except:
