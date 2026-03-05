@@ -1,7 +1,6 @@
 import sqlite3
 import json
 
-# create habit table
 # BOOL values are integers in SQlite 0 (false) 1 (true)
 
 def setup_habit_table():
@@ -16,6 +15,7 @@ def setup_habit_table():
     connection.close()
 
 def setup_history_table():
+    """Used to create an empty history table"""
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     connection.execute("PRAGMA foreign_keys = ON;")
@@ -27,7 +27,7 @@ def setup_history_table():
 
 
 def seed_predefined_habits():
-    """used to fill empty habits table with predefined habits"""
+    """used to seed empty tables with predefined habits"""
     ## read data from JSON file
     with open("initial_data.json", "r") as f:
         data = json.load(f)
@@ -38,6 +38,7 @@ def seed_predefined_habits():
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     connection.execute("PRAGMA foreign_keys = ON;")
+
 
     ## sorty data by interval: dailies first, then weekly
     data.sort(key=lambda habit: habit["interval"])

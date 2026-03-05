@@ -1,7 +1,7 @@
 short term:
-overhaul habit_class
+overhaul habit class
+    check habit methods for errors in scribble
     implement way to "save" instance data to database
-    deletehabit_class_save once migration complete
 
 medium term:
 create test for classes.py
