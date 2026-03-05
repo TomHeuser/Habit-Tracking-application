@@ -34,7 +34,7 @@ class Habit:
         ## a way to save habit attributes to databank
 
 #lvl 2: implementing the idea of time, while keeping it simple and flexible, rather a foundation that an actual implementation
-class IntervalHabit(Habit):
+class TimeHabit(Habit):
     def __init__(self, name, habit_id):
          Habit.__init__(self, name, habit_id)
          self.streak_count = 0
@@ -58,9 +58,9 @@ class IntervalHabit(Habit):
         self.streak_count = streak_count
 
 #lvl 3: distinguish between PredefinedIntervalHabit and ManualIntervalHabit
-class PredefinedIntervalHabit(IntervalHabit):
-
-    def choose_interval(self):
+class PredefinedTimeHabit(TimeHabit):
+    @staticmethod
+    def choose_interval():
         while True:
             #userinput to choose between daily and weekly (eg:1 and 7)
             interval_input = input("Please choose the habits' interval:\n[1]daily\n[2]weekly\n")
@@ -72,13 +72,13 @@ class PredefinedIntervalHabit(IntervalHabit):
                 print("Incorrect input. Please enter 1 or 2.")
 
     def __init__(self, name, habit_id):
-        IntervalHabit.__init__(self, name, habit_id)
+        TimeHabit.__init__(self, name, habit_id)
         self.interval = self.choose_interval()
 
 
-class ManualIntervalHabit(IntervalHabit):
+class ManualTimeHabit(TimeHabit):
     def __init__(self, name, habit_id):
-        IntervalHabit.__init__(self, name, habit_id)
+        TimeHabit.__init__(self, name, habit_id)
         self.streak_count = 0
         self.streak_status = False
         while True:
@@ -99,21 +99,21 @@ class ManualIntervalHabit(IntervalHabit):
 
 
 # room for general testing - NOT THE ACTUAL TESTING - just for myself
-test_class1 = Habit("Simple Habit",1)
-print(f"name: {test_class1.name}, Id: {test_class1.habit_id}, description: {test_class1.desc}, created on: {test_class1.created_on},"
-      f"complete?: {test_class1.complete_status}, active?: {test_class1.active}")
+#test_class1 = Habit("Simple Habit",1)
+#print(f"name: {test_class1.name}, Id: {test_class1.habit_id}, description: {test_class1.desc}, created on: {test_class1.created_on},"
+      #f"complete?: {test_class1.complete_status}, active?: {test_class1.active}")
 
-test_class2 = IntervalHabit("Interval Habit",2)
-print(f"name: {test_class2.name}, Id: {test_class2.habit_id}, description: {test_class2.desc}, created on: {test_class2.created_on},"
-      f"complete?: {test_class2.complete_status}, active?: {test_class2.active}, streak?: {test_class2.streak_status}, streak_count: {test_class2.streak_count},"
-      f"interval: {test_class2.interval}, longest streak: {test_class2.longest_streak}")
+#test_class2 = TimeHabit("Time Habit",2)
+#print(f"name: {test_class2.name}, Id: {test_class2.habit_id}, description: {test_class2.desc}, created on: {test_class2.created_on},"
+      #f"complete?: {test_class2.complete_status}, active?: {test_class2.active}, streak?: {test_class2.streak_status}, streak_count: {test_class2.streak_count},"
+     # f"interval: {test_class2.interval}, longest streak: {test_class2.longest_streak}")
 
-test_class3 = PredefinedIntervalHabit("Predefined Interval Habit",3)
-print(f"name: {test_class3.name}, Id: {test_class3.habit_id}, description: {test_class3.desc},created on: {test_class3.created_on},"
-      f"complete?: {test_class3.complete_status}, active?: {test_class3.active}, streak?: {test_class3.streak_status}, streak_count: {test_class3.streak_count},"
-      f"interval: {test_class3.interval}, longest streak: {test_class3.longest_streak}")
+#test_class3 = PredefinedTimeHabit("Predefined Time Habit",3)
+#print(f"name: {test_class3.name}, Id: {test_class3.habit_id}, description: {test_class3.desc},created on: {test_class3.created_on},"
+      #f"complete?: {test_class3.complete_status}, active?: {test_class3.active}, streak?: {test_class3.streak_status}, streak_count: {test_class3.streak_count},"
+      #f"interval: {test_class3.interval}, longest streak: {test_class3.longest_streak}")
 
-test_class4 = ManualIntervalHabit("Manual Interval Habit",4)
-print(f"name: {test_class4.name}, Id: {test_class4.habit_id}, description: {test_class4.desc},created on: {test_class4.created_on},"
-      f"complete?: {test_class4.complete_status}, active?: {test_class4.active}, streak?: {test_class4.streak_status}, streak_count: {test_class4.streak_count},"
-      f"interval: {test_class4.interval}, longest streak: {test_class4.longest_streak}")
+#test_class4 = ManualTimeHabit("Manual Time Habit",4)
+#print(f"name: {test_class4.name}, Id: {test_class4.habit_id}, description: {test_class4.desc},created on: {test_class4.created_on},"
+      #f"complete?: {test_class4.complete_status}, active?: {test_class4.active}, streak?: {test_class4.streak_status}, streak_count: {test_class4.streak_count},"
+      #f"interval: {test_class4.interval}, longest streak: {test_class4.longest_streak}")

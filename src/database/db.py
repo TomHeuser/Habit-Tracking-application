@@ -1,8 +1,8 @@
 import sqlite3
 import db_setup
 
-#db_setup.flush_history_table()
-#db_setup.flush_habit_table()
+db_setup.flush_history_table()
+db_setup.flush_habit_table()
 #db_setup.setup_habit_table()
 #db_setup.setup_history_table()
 #db_setup.seed_predefined_habits()
@@ -29,6 +29,17 @@ cursor = connection.cursor()
 
 #for row in cursor.execute("select * from habit WHERE habit_id = 1"):
     #print(row)
+
+
+def fetch_instance_data():
+    def fetch_habit_db_data():
+        cursor.execute("SELECT * FROM habit")
+        return cursor.fetchall()
+    all_habits = fetch_habit_db_data()
+    print (all_habits)
+
+fetch_instance_data()
+
 
 connection.commit()
 connection.close()

@@ -31,7 +31,7 @@ def seed_predefined_habits():
     ## read data from JSON file
     with open("initial_data.json", "r") as f:
         data = json.load(f)
-    # print(data)
+    print(data)
     # print(type(data))
 
     ##connect to database
@@ -55,11 +55,12 @@ def seed_predefined_habits():
 
         ## insert habit_data into habit table
         cursor.execute(
-            "INSERT INTO habit (name, desc, active, complete_status, created_on) VALUES (?,?,?,?,?)",
+            "INSERT INTO habit (name, desc, active, interval, complete_status, created_on) VALUES (?,?,?,?,?,?)",
             (
                 habit_data["name"],
                 habit_data["desc"],
                 habit_data["active"],
+                habit_data["interval"],
                 habit_data["complete_status"],
                 habit_data["created_on"]
             )
