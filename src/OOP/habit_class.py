@@ -12,6 +12,15 @@ class Habit:
         self.active = active
         self.created_on = created_on
 
+    ##experimental
+    def save_data(self, habit_id):
+        """saves the current habit data to the database"""
+        update_data = {"habit_id": {self.habit_id}, "name": {self.name},"desc": {self.desc}, "active": {self.active},
+                        "complete_status": {self.complete_status},
+                        "created_on": {self.created_on}}
+        return update_data
+        #print(update_data)
+
     @classmethod
     def from_db(cls, row):
         """takes the contents from a dictionary and then returns the values necessary for __init__ to create a new Habit object"""
@@ -30,29 +39,29 @@ class Habit:
         new_name = input("Please enter a new name for this habit:")
         old_name = self.name
         while True:
-            confirm = input(f"Would you like to rename this habit to {new_name}? (y/n)")
+            confirm = input(f"Would you like to rename this habit to '{new_name}'? (y/n)")
             if confirm == "y":
                 self.name = new_name
                 # save to db
-                print(f"{old_name} has been renamed to {self.name}")
+                print(f"'{old_name}' has been renamed to '{self.name}'")
                 break
             else:
-                print(f"Name change aborted. Name reset to {self.name}.")
+                print(f"Name change aborted. Name reset to '{self.name}'.")
                 break
 
     #needs changing
     def change_desc(self):
         """used to change the desc attribute of an existing habit object, then applies these changes to database entry"""
-        new_desc = input("Please enter a new description for this habit:")
+        new_desc = input(f"Please enter a new description for '{self.name}':")
         while True:
-            confirm = input(f"Would you like to rename this habit to {new_desc}? (y/n)")
+            confirm = input(f"Would you like to change the description of '{self.name}' to '{new_desc}'? (y/n)")
             if confirm == "y":
                 self.desc = new_desc
                 #safe to db
-                print(f"The description has been renamed to {self.desc}")
+                print(f"The description of '{self.name}' has been changed to '{self.desc}'")
                 break
             else:
-                print(f"Description change aborted. Description reset to {self.desc}.")
+                print(f"Description change aborted. Description of '{self.name}' has been reset to '{self.desc}'.")
                 break
 
     ## needs changes
@@ -61,36 +70,36 @@ class Habit:
         between 0 (False, inactive) and 1 (True, active), then applies these changes to database entry"""
         while True:
             if self.active == 1:
-                confirm = input(f"Are you sure that you'd like to delete {self.name}? (y/n) [Not lost permanently. Can be restored]")
+                confirm = input(f"Are you sure that you'd like to delete '{self.name}'? (y/n) [Not lost permanently. Can be restored]")
                 if confirm == "y":
                     self.active = 0
-                    print(f"{self.name} has been deleted.")
+                    print(f"'{self.name}' has been deleted.")
                     # implement change to habit data
                     # implement saving to habit
                     break
                 elif confirm == "n":
-                    print(f"{self.name} has NOT been deleted.")
+                    print(f"'{self.name}' has NOT been deleted.")
                     break
                 else:
                     print("Unexpected input. Please only enter 'y' or 'n'.")
 
             elif self.active == 0:
-                confirm = input(f"Would you like restore {self.name}? (y/n)")
+                confirm = input(f"Would you like restore '{self.name}'? (y/n)")
                 if confirm == "y":
                     self.active= 1
-                    print(f"{self.name} has been restored.")
+                    print(f"'{self.name}' has been restored.")
                     # implement change to habit data
                     # implement saving to habit
                     break
                 elif confirm == "n":
-                    print(f"The habit {self.name} was not restored.")
+                    print(f"The habit '{self.name}' was not restored.")
                     break
                 else:
                     print("Unexpected input. Please only enter 'y' or 'n'.")
 
             else:
-                print("Complete status abnormality detected. Complete status automatically restored to False.")
-                self.complete_status = False
+                print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
+                self.complete_status = 1
                 break
 
 
@@ -100,36 +109,36 @@ class Habit:
         between 1 (True/complete) and 0 (False/incomplete), then applies these changes to database entry"""
         while True:
             if self.complete_status == 1:
-                confirm = input(f"Would you like to reset {self.name} to incomplete? (y/n)")
+                confirm = input(f"Would you like to reset '{self.name}' to incomplete? (y/n)")
                 if confirm == "y":
-                    print(f"{self.name} has been reset to incomplete.")
+                    print(f"'{self.name}' has been reset to incomplete.")
                     self.complete_status = 0
                     # implement change to history data
                     # implement saving to history
                     break
                 elif confirm == "n":
-                    print(f"Incompletion aborted. {self.name} remains complete.")
+                    print(f"Incompletion aborted. '{self.name}' remains complete.")
                     break
                 else:
                     print("Unexpected input. Please only enter 'y' or 'n'.")
 
             elif self.complete_status == 0:
-                confirm = input(f"Would you like to complete {self.name} for the current interval? (y/n)")
+                confirm = input(f"Would you like to complete '{self.name}' for the current interval? (y/n)")
                 if confirm == "y":
                     self.complete_status = 1
-                    print(f"{self.name} has been completed successfully!")
+                    print(f"'{self.name}' has been completed successfully!")
                     # implement change to history data
                     # implement a way to delete existing entry for this date
                     # implement saving to history
                     break
                 elif confirm == "n":
-                    print(f"Completion aborted. {self.name} remains incomplete.")
+                    print(f"Completion aborted. '{self.name}' remains incomplete.")
                     break
                 else:
                     print("Unexpected input. Please only enter 'y' or 'n'.")
 
             else:
-                print(f"Abnormality detected. {self.name} has automatically been set to incomplete.")
+                print(f"Abnormality detected. '{self.name}' has automatically been set to incomplete.")
                 self.complete_status = 0
                 break
 
@@ -183,24 +192,46 @@ class TimeHabit(Habit):
                     print("Incorrect input. Please enter a number between 1 and 365.")
 
         while True:
+            old_interval = self.interval
             change_type = input(f"Would you like to choose a predefined interval or create a individual interval?\n"
                                 f"[1] predefined or [2] individual")
             if change_type == "1":
-                self.interval = choose_interval()
-                #apply changes to db
+                new_interval = choose_interval()
                 break
 
             elif change_type == "2":
-                self.interval = set_interval()
-                #apply changes to db
+                new_interval = set_interval()
                 break
             else:
                 print("Incorrect input. Please enter 1 or 2.")
 
+        if old_interval != new_interval:
+            while True:
+                confirm = input(f"Would you like to change the current interval of '{self.name}' from"
+                                f"'{old_interval}' days to '{new_interval}' days?  (y/n)")
 
+                if confirm == "y":
+                    self.interval = new_interval
+                    print(f"Changed interval of '{self.name}' to '{self.interval}' days.")
+                    #save to db
+                    break
+                elif confirm == "n":
+                    print(f"Interval of '{self.name}' remains at '{self.interval}' days.")
+                    break
+                else:
+                    print("Unexpected input. Please only enter 'y' or 'n'.")
 
+        else:
+            print("New interval identical to old interval. Change aborted")
 
-
+    ##experimental
+    def save_data(self, habit_id):
+        """saves the current habit data to the database"""
+        update_data = {"habit_id": {self.habit_id}, "name": {self.name},"desc": {self.desc}, "active": {self.active},
+                        "complete_status": {self.complete_status}, "interval": {self.interval},
+                        "created_on": {self.created_on}}
+        return update_data
+        #print(update_data)
 
 
 

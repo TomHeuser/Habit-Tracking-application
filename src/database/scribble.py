@@ -36,5 +36,21 @@ print(one_habit)
 one_habit.change_name()
 print(one_habit)
 
+one_habit.change_desc()
+print(one_habit)
+
+one_habit.change_active()
+print(one_habit)
+
+one_habit.change_complete_status()
+print(one_habit)
+
+one_habit.change_interval()
+print(one_habit)
+
+
+one_habit.save_data()
+
+
 connection.commit()
 connection.close()

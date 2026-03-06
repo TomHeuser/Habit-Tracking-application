@@ -1,6 +1,7 @@
 short term:
+implement main.py and main_util.py
+redirect responsibilities (imports) from class and db to main
 overhaul habit class
-    check habit methods for errors in scribble
     implement way to "save" instance data to database
 
 medium term:

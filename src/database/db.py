@@ -3,6 +3,10 @@ import db_setup
 from OOP.habit_class import TimeHabit, Habit
 
 
+connection = sqlite3.connect("database.db")
+connection.row_factory = sqlite3.Row
+cursor = connection.cursor()
+
 def fetch_all_habit_rows():
     """used to fetch all rows from the habits table"""
     cursor.execute("SELECT * FROM habit")
@@ -34,31 +38,42 @@ def load_single_basic_habit(habit_id):
     """generates a simple Habit instance for a single Habit in habit table (ignores interval values).
     habit_id parameter must be passed. Not relevant yet"""
     ## , behind id to help python recognize it as a tuple
+
     cursor.execute("SELECT * FROM habit WHERE habit_id = ?", (habit_id,))
     row = cursor.fetchone()
     if row is None:
         return None
     return Habit.from_db(row)
 
-db_setup.flush_history_table()
-db_setup.flush_habit_table()
+##experimental
+def update_single_row():
+    """updates a single row from the habit table"""
+
+    update_data = TimeHabit.save_data(1)
+    print(update_data)
+    #cursor.execute("UPDATE habit SET name = ?, desc = ?, active = ?, complete_status = ?, interval = ? "
+                  # "WHERE habit_id = ?", ("name", "desc", "active", "complete_status", "interval", "habit_id"))
+
+
+#db_setup.flush_history_table()
+#db_setup.flush_habit_table()
 #db_setup.setup_habit_table()
 #db_setup.setup_history_table()
 #db_setup.seed_predefined_habits()
 
 
-db_setup.database_startup()
+#db_setup.database_startup()
 
 # define connection and cursor
-connection = sqlite3.connect("database.db")
-connection.row_factory = sqlite3.Row
-cursor = connection.cursor()
+#connection = sqlite3.connect("database.db")
+#connection.row_factory = sqlite3.Row
+#cursor = connection.cursor()
 
-all_habits = load_all_time_habits()
-print(all_habits)
+#all_habits = load_all_time_habits()
+#print(all_habits)
 
-one_habit = load_single_time_habit(1)
-print(one_habit)
+#one_habit = load_single_time_habit(1)
+#rint(one_habit)
 
 connection.commit()
 connection.close()
