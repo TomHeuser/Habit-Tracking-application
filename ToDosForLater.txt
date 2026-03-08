@@ -1,7 +1,7 @@
 short term:
-find reason why db keeps being created in sources folder -> change db_setup and import db.py to use db.py's connection to db (implement db.cursor....)
-overhaul habit class
-    implement way to "save" instance data to database
+sort and correctly allocate the ways to "save" new habit to database etc
+implement idea of soft deleting (load all instances into dict or else WHERE active == 1)
+expand load / safe ALL habits
 redirect class imports from db to main?
 
 medium term:

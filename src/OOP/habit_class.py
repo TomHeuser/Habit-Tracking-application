@@ -222,7 +222,7 @@ class TimeHabit(Habit):
                     print("Unexpected input. Please only enter 'y' or 'n'.")
 
         else:
-            print("New interval identical to old interval. Change aborted")
+            print("New interval identical to old interval. Interval change aborted.")
 
     ##experimental
     def get_update_data(self):

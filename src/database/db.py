@@ -1,4 +1,6 @@
 import sqlite3
+from os import name
+
 from OOP.habit_class import TimeHabit, Habit
 
 import os
@@ -67,6 +69,12 @@ def update_single_row(update_data):
     connection.commit()
     #print(cursor.rowcount)
 
+def append_single_row(new_habit_data):
+    """insert a new row at the end of habit table which auto increments new habit_id (represents "creating new habit")"""
+    cursor.execute("INSERT INTO habit (name, desc, active, complete_status, interval, created_on) VALUES (?,?,?,?,?,?)",
+                   (new_habit_data["name"], new_habit_data["desc"], new_habit_data["active"],
+                    new_habit_data["complete_status"],new_habit_data["interval"], new_habit_data["created_on"]))
+    connection.commit()
 
 
 ## when do we close database ? let it close automatically on application close?

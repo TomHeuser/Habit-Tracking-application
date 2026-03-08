@@ -1,14 +1,14 @@
 import sqlite3
 
-import main_util
+from main_util import main_util
 from OOP import habit_class
 from database import db
 from database import db_setup
 
 
 ##during startup
-db_setup.flush_history_table()
-db_setup.flush_habit_table()
+#db_setup.flush_history_table()
+#db_setup.flush_habit_table()
 db_setup.database_startup()
 #db_setup.seed_predefined_habits()
 
@@ -42,3 +42,7 @@ one_habit = db.load_single_time_habit(1)
 print(f"habit with habit_id = 1: {one_habit}")
 
 
+new_habit_data = main_util.create_new_habit()
+print(type(new_habit_data))
+print(new_habit_data)
+db.append_single_row(new_habit_data)
