@@ -1,14 +1,11 @@
 import sqlite3
 from OOP.habit_class import TimeHabit, Habit
-if __name__ == "__main__":
-    import db_setup
-else:
-    from . import db_setup
+
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_path = os.path.join(BASE_DIR, 'database.db')
-print(BASE_DIR)
-print(DB_path)
+#print(BASE_DIR)
+#print(DB_path)
 connection = sqlite3.connect(DB_path)
 connection.row_factory = sqlite3.Row
 cursor = connection.cursor()
@@ -64,8 +61,8 @@ def update_single_row(update_data):
                                           update_data["complete_status"], update_data["interval"], update_data["habit_id"]))
 
 
-    print(cursor.execute("SELECT * FROM habit WHERE habit_id = ?", (update_data["habit_id"],)).fetchone())
-    print(update_data["habit_id"])
+    #print(cursor.execute("SELECT * FROM habit WHERE habit_id = ?", (update_data["habit_id"],)).fetchone())
+    #print(update_data["habit_id"])
     #print(cursor.rowcount)
     connection.commit()
     #print(cursor.rowcount)

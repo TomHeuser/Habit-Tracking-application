@@ -1,5 +1,5 @@
 short term:
-find reason why db keeps being created in sorces folder
+find reason why db keeps being created in sources folder -> change db_setup and import db.py to use db.py's connection to db (implement db.cursor....)
 overhaul habit class
     implement way to "save" instance data to database
 redirect class imports from db to main?
