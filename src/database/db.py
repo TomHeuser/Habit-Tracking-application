@@ -1,15 +1,24 @@
 import sqlite3
-import db_setup
 from OOP.habit_class import TimeHabit, Habit
-
-
-connection = sqlite3.connect("database.db")
+if __name__ == "__main__":
+    import db_setup
+else:
+    from . import db_setup
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_path = os.path.join(BASE_DIR, 'database.db')
+print(BASE_DIR)
+print(DB_path)
+connection = sqlite3.connect(DB_path)
 connection.row_factory = sqlite3.Row
 cursor = connection.cursor()
+
+
 
 def fetch_all_habit_rows():
     """used to fetch all rows from the habits table"""
     cursor.execute("SELECT * FROM habit")
+    connection.commit()
     return cursor.fetchall()
 
 ## generate all instances
@@ -30,6 +39,7 @@ def load_single_time_habit(habit_id):
     ## , behind id to help python recognize it as a tuple
     cursor.execute("SELECT * FROM habit WHERE habit_id = ?", (habit_id,))
     row = cursor.fetchone()
+    connection.commit()
     if row is None:
         return None
     return TimeHabit.from_db(row)
@@ -38,42 +48,28 @@ def load_single_basic_habit(habit_id):
     """generates a simple Habit instance for a single Habit in habit table (ignores interval values).
     habit_id parameter must be passed. Not relevant yet"""
     ## , behind id to help python recognize it as a tuple
-
     cursor.execute("SELECT * FROM habit WHERE habit_id = ?", (habit_id,))
     row = cursor.fetchone()
+    connection.commit()
     if row is None:
         return None
     return Habit.from_db(row)
 
 ##experimental
-def update_single_row():
-    """updates a single row from the habit table"""
-
-    update_data = TimeHabit.save_data(1)
-    print(update_data)
-    #cursor.execute("UPDATE habit SET name = ?, desc = ?, active = ?, complete_status = ?, interval = ? "
-                  # "WHERE habit_id = ?", ("name", "desc", "active", "complete_status", "interval", "habit_id"))
-
-
-#db_setup.flush_history_table()
-#db_setup.flush_habit_table()
-#db_setup.setup_habit_table()
-#db_setup.setup_history_table()
-#db_setup.seed_predefined_habits()
+def update_single_row(update_data):
+    """updates a single row from the habit table with given reference habit_id"""
+    #print(cursor.rowcount)
+    cursor.execute("UPDATE habit SET name = ?, desc = ?, active = ?, complete_status = ?, interval = ? "
+                   "WHERE habit_id = ?", (update_data["name"], update_data["desc"], update_data["active"],
+                                          update_data["complete_status"], update_data["interval"], update_data["habit_id"]))
 
 
-#db_setup.database_startup()
+    print(cursor.execute("SELECT * FROM habit WHERE habit_id = ?", (update_data["habit_id"],)).fetchone())
+    print(update_data["habit_id"])
+    #print(cursor.rowcount)
+    connection.commit()
+    #print(cursor.rowcount)
 
-# define connection and cursor
-#connection = sqlite3.connect("database.db")
-#connection.row_factory = sqlite3.Row
-#cursor = connection.cursor()
 
-#all_habits = load_all_time_habits()
-#print(all_habits)
 
-#one_habit = load_single_time_habit(1)
-#rint(one_habit)
-
-connection.commit()
-connection.close()
+## when do we close database ? let it close automatically on application close?

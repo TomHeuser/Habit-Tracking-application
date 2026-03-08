@@ -1,20 +1,18 @@
 short term:
-implement main.py and main_util.py
-redirect responsibilities (imports) from class and db to main
 overhaul habit class
     implement way to "save" instance data to database
+redirect class imports from db to main?
 
 medium term:
+implement main_util.py
 create test for classes.py
 create test for db_setup.py
 create test for db.py
-get rid of hard deleting and replace with soft deleting to prevent orphan data - maybe drop the idea of a delete()
-        function as set_active() will do the trick of soft "deleting"
 
 long term:
-add 2nd class tree containing history class to hold information necessary for analytics
-remove user input from class tree, once cli is working, to preserve clean architextural separation
-move initial predefined habits from db.py to da_setup.py and initial_data.json and add 4 week example data
+add 2nd class tree containing history class to hold information necessary for analytics?
+when to close database? automatically on app close?
+remove user input from class tree, once cli is working, to preserve clean architextural separation?
 
 
 "longest" term on finishing up phase 3:

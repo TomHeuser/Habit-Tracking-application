@@ -13,7 +13,7 @@ class Habit:
         self.created_on = created_on
 
     ##experimental
-    def save_data(self, habit_id):
+    def get_update_data(self):
         """saves the current habit data to the database"""
         update_data = {"habit_id": {self.habit_id}, "name": {self.name},"desc": {self.desc}, "active": {self.active},
                         "complete_status": {self.complete_status},
@@ -36,10 +36,10 @@ class Habit:
     ## needs changing
     def change_name(self):
         """used to change the name attribute of an existing habit object, then applies these changes to database entry"""
-        new_name = input("Please enter a new name for this habit:")
+        new_name = input(f"Please enter a new name for '{self.name}':")
         old_name = self.name
         while True:
-            confirm = input(f"Would you like to rename this habit to '{new_name}'? (y/n)")
+            confirm = input(f"Would you like to rename '{self.name}' to '{new_name}'? (y/n)")
             if confirm == "y":
                 self.name = new_name
                 # save to db
@@ -225,11 +225,11 @@ class TimeHabit(Habit):
             print("New interval identical to old interval. Change aborted")
 
     ##experimental
-    def save_data(self, habit_id):
+    def get_update_data(self):
         """saves the current habit data to the database"""
-        update_data = {"habit_id": {self.habit_id}, "name": {self.name},"desc": {self.desc}, "active": {self.active},
-                        "complete_status": {self.complete_status}, "interval": {self.interval},
-                        "created_on": {self.created_on}}
+        update_data = {"habit_id": self.habit_id, "name": self.name,"desc": self.desc, "active": self.active,
+                        "complete_status": self.complete_status, "interval": self.interval,
+                        "created_on": self.created_on}
         return update_data
         #print(update_data)
 
