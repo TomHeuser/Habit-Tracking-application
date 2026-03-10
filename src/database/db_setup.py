@@ -14,7 +14,7 @@ def setup_habit_table():
     """used to create an empty habits table"""
 
     habit_table_create = """CREATE TABLE habit(habit_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, desc TEXT, active INTEGER,
-    interval INTEGER, complete_status INTEGER, created_on TEXT)"""
+    interval INTEGER, complete_status INTEGER, created_on TEXT, streak_status INTEGER, streak_count INTEGER)"""
     cursor.execute(habit_table_create)
     connection.commit()
 
@@ -54,14 +54,16 @@ def seed_predefined_habits():
 
         ## insert habit_data into habit table
         cursor.execute(
-            "INSERT INTO habit (name, desc, active, interval, complete_status, created_on) VALUES (?,?,?,?,?,?)",
+            "INSERT INTO habit (name, desc, active, interval, complete_status, created_on, streak_status, streak_count) VALUES (?,?,?,?,?,?,?,?)",
             (
                 habit_data["name"],
                 habit_data["desc"],
                 habit_data["active"],
                 habit_data["interval"],
                 habit_data["complete_status"],
-                habit_data["created_on"]
+                habit_data["created_on"],
+                habit_data["streak_status"],
+                habit_data["streak_count"]
             )
         )
 

@@ -1,17 +1,19 @@
 short term:
-sort and correctly allocate the ways to "save" new habit to database etc
-implement idea of soft deleting (load all instances into dict or else WHERE active == 1)
+complete 4 week test data in json
+check if new completion/streaking logic in habit_class.py works
+further implement idea of soft deleting (load all instances into dict or else WHERE active == 1)
 expand load / safe ALL habits
 redirect class imports from db to main?
 
 medium term:
-implement main_util.py
-create test for classes.py
 create test for db_setup.py
 create test for db.py
+create test for habit_class.py
+create test for history_class.py
+create test for main.py
+
 
 long term:
-add 2nd class tree containing history class to hold information necessary for analytics?
 when to close database? automatically on app close?
 remove user input from class tree, once cli is working, to preserve clean architextural separation?
 

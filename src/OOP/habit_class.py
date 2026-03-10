@@ -1,4 +1,5 @@
 ##Habit class tree
+from datetime import date
 
 ##lvl1: Habit superclass
 class Habit:
@@ -113,7 +114,7 @@ class Habit:
                 if confirm == "y":
                     print(f"'{self.name}' has been reset to incomplete.")
                     self.complete_status = 0
-                    # implement change to history data
+
                     # implement saving to history
                     break
                 elif confirm == "n":
@@ -147,19 +148,23 @@ class Habit:
 ##lvl2: TimeHabit subclass
 class TimeHabit(Habit):
     """habit subclass that introduces time as a concept and assigns an interval to each TimeHabit object created"""
-    def __init__(self, name, habit_id, desc, active, complete_status, created_on, interval):
+    def __init__(self, name, habit_id, desc, active, complete_status, created_on, interval, streak_status, streak_count):
         """Creates a new TimeHabit object"""
         Habit.__init__(self, habit_id, name, desc, active, complete_status, created_on)
         self.interval = interval
+        self.streak_status = streak_status
+        self.streak_count = streak_count
 
     @classmethod
     def from_db(cls, row):
         """takes the contents from a dictionary and then returns the values necessary for __init__ to create a new TimeHabit object"""
-        return cls(habit_id=row["habit_id"], name=row["name"], desc=row["desc"], active=row["active"], complete_status=row["complete_status"], created_on=row["created_on"], interval=row["interval"])
+        return cls(habit_id=row["habit_id"], name=row["name"], desc=row["desc"], active=row["active"], complete_status=row["complete_status"],
+                   created_on=row["created_on"], interval=row["interval"], streak_status=row["streak_status"], streak_count=row["streak_count"])
 
     def __repr__(self):
         """manages how attributes are returned"""
-        return f"Habit(habit_id={self.habit_id},name={self.name}, desc={self.desc}, active={self.active}, complete_status={self.complete_status}, created_on={self.created_on}, interval={self.interval})"
+        return (f"Habit(habit_id={self.habit_id},name={self.name}, desc={self.desc}, active={self.active}, complete_status={self.complete_status}, "
+                f"created_on={self.created_on}, interval={self.interval}, streak_status={self.streak_status}, streak_count={self.streak_count})")
 
     def change_interval(self):
         """used to let the user change interval. Either by choosing an existing one or by manually setting
@@ -226,17 +231,65 @@ class TimeHabit(Habit):
 
     ##experimental
     def get_update_data(self):
-        """saves the current habit data to the database"""
+        """return current habit data to the database"""
         update_data = {"habit_id": self.habit_id, "name": self.name,"desc": self.desc, "active": self.active,
                         "complete_status": self.complete_status, "interval": self.interval,
-                        "created_on": self.created_on}
+                        "created_on": self.created_on, "streak_status": self.streak_status, "streak_count": self.streak_count}
         return update_data
         #print(update_data)
 
+    def get_history_data(self):
+        """return current history data"""
+        today = date.today()
+        iso_today = today.isoformat()
+        new_history_data = {"habit_id": self.habit_id, "date": iso_today, "streak_status": self.streak_status,"streak_count": self.streak_count}
+        return new_history_data
 
+    ## needs changes
+    def change_complete_status(self):
+        """used to set a habit to complete or incomplete. Changes the complete_status attribute of an existing habit object,
+        between 1 (True/complete) and 0 (False/incomplete), then applies these changes to database entry"""
+        while True:
+            if self.complete_status == 1:
+                confirm = input(f"Would you like to reset '{self.name}' to incomplete? (y/n)")
+                if confirm == "y":
+                    print(f"'{self.name}' has been reset to incomplete.")
+                    self.complete_status = 0
+                    self.streak_count -= 1
+                    print(f"The number of consecutive completions for '{self.name}' is now at: '{self.streak_count}'.")
+                    if self.streak_count * self.interval < 28:
+                        self.streak_status = 0
+                        print("This habit is currently not on a streak.")
+                    # implement saving to history
+                    break
+                elif confirm == "n":
+                    print(f"Incompletion aborted. '{self.name}' remains complete.")
+                    break
+                else:
+                    print("Unexpected input. Please only enter 'y' or 'n'.")
 
+            elif self.complete_status == 0:
+                confirm = input(f"Would you like to complete '{self.name}' for the current interval? (y/n)")
+                if confirm == "y":
+                    self.complete_status = 1
+                    self.streak_count += 1
+                    print(f"'{self.name}' has been completed successfully!")
+                    print(f"The number of consecutive completions is now at: {self.streak_count}.")
+                    if self.streak_count * self.interval >= 28:
+                        self.streak_status = 1
+                        print("Congrats, this habit is currently on a streak!")
+                        print(f"You have completed it for {self.streak_count * self.interval / 7} weeks in a row!")
+                    break
+                elif confirm == "n":
+                    print(f"Completion aborted. '{self.name}' remains incomplete.")
+                    break
+                else:
+                    print("Unexpected input. Please only enter 'y' or 'n'.")
 
-
+            else:
+                print(f"Abnormality detected. '{self.name}' has automatically been set to incomplete.")
+                self.complete_status = 0
+                break
 
 
 

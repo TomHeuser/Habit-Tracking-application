@@ -104,6 +104,8 @@ def create_new_habit():
     ##auto assign active, complete and created_on
     active = 1
     complete_status = 0
+    streak_status = 0
+    streak_count = 0
     created_on = iso_today
     ## get name
     name = get_name()
@@ -111,18 +113,11 @@ def create_new_habit():
     desc = get_desc()
     ##get interval
     interval = get_interval()
-    new_habit_data = {"name": name,"desc": desc, "active": active,
-                        "complete_status": complete_status, "interval": interval,
-                        "created_on": created_on}
+    new_habit_data = {"name": name,"desc": desc, "active": active, "complete_status": complete_status,"interval": interval,
+                    "created_on": created_on, "streak_status": streak_status, "streak_count": streak_count}
     return new_habit_data
 
-    print("You created the following habit:")
-    print(f"Habit name: {name}")
-    print(f"Habit description: {desc}")
-    print(f"active: {active}")
-    print(f"interval: {interval}")
-    print(f"complete_status: {complete_status}")
-    print(f"Creation date: {created_on}")
+
 
 
 

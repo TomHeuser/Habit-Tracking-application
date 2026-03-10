@@ -1,5 +1,4 @@
 import sqlite3
-from os import name
 
 from OOP.habit_class import TimeHabit, Habit
 from OOP.history_class import HabitHistory
@@ -68,9 +67,9 @@ def load_single_basic_habit(habit_id):
 def update_single_row(update_data):
     """updates a single row from the habit table with given reference habit_id"""
     #print(cursor.rowcount)
-    cursor.execute("UPDATE habit SET name = ?, desc = ?, active = ?, complete_status = ?, interval = ? "
+    cursor.execute("UPDATE habit SET name = ?, desc = ?, active = ?, complete_status = ?, interval = ?, streak_status = ?, streak_count = ? "
                    "WHERE habit_id = ?", (update_data["name"], update_data["desc"], update_data["active"],
-                                          update_data["complete_status"], update_data["interval"], update_data["habit_id"]))
+                                          update_data["complete_status"], update_data["interval"], update_data["streak_status"], update_data["streak_count"], update_data["habit_id"]))
 
 
     #print(cursor.execute("SELECT * FROM habit WHERE habit_id = ?", (update_data["habit_id"],)).fetchone())
@@ -81,9 +80,10 @@ def update_single_row(update_data):
 
 def append_single_row(new_habit_data):
     """insert a new row at the end of habit table which auto increments new habit_id (represents "creating new habit")"""
-    cursor.execute("INSERT INTO habit (name, desc, active, complete_status, interval, created_on) VALUES (?,?,?,?,?,?)",
+    cursor.execute("INSERT INTO habit (name, desc, active, complete_status, interval, created_on, streak_status, streak_count) VALUES (?,?,?,?,?,?,?,?)",
                    (new_habit_data["name"], new_habit_data["desc"], new_habit_data["active"],
-                    new_habit_data["complete_status"],new_habit_data["interval"], new_habit_data["created_on"]))
+                    new_habit_data["complete_status"],new_habit_data["interval"], new_habit_data["created_on"],
+                    new_habit_data["streak_status"],new_habit_data["streak_count"]))
     connection.commit()
 
 ## fetching from habit table
@@ -112,9 +112,14 @@ def load_single_history_recent(habit_id):
     """fetches the most recent row from history for the given habit_id"""
     row = fetch_single_habit_history_recent(habit_id)
     return HabitHistory.from_db(row)
+
 ## updating/appending history table
 
-
+def append_history(new_history_data):
+    """insert a new row at the end of habit table which auto increments new habit_id (represents "creating new habit")"""
+    cursor.execute("INSERT INTO history (habit_id, date, streak_status, streak_count) VALUES (?,?,?,?)",
+                   (new_history_data["habit_id"], new_history_data["date"],new_history_data["streak_status"],new_history_data["streak_count"]))
+    connection.commit()
 
 
 ## when do we close database ? let it close automatically on application close?
