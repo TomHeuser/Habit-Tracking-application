@@ -2,6 +2,7 @@ import sqlite3
 from os import name
 
 from OOP.habit_class import TimeHabit, Habit
+from OOP.history_class import HabitHistory
 
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -16,7 +17,13 @@ cursor = connection.cursor()
 
 def fetch_all_habit_rows():
     """used to fetch all rows from the habits table"""
-    cursor.execute("SELECT * FROM habit")
+    cursor.execute("SELECT * FROM habit WHERE active = 1")
+    connection.commit()
+    return cursor.fetchall()
+
+def fetch_all_inactive():
+    """used to fetch all habits/rows from the habits table that are inactive"""
+    cursor.execute("SELECT * FROM habit WHERE active = 0")
     connection.commit()
     return cursor.fetchall()
 
@@ -31,6 +38,9 @@ def load_all_basic_habits():
     Not relevant yet"""
     rows = fetch_all_habit_rows()
     return [Habit.from_db(row) for row in rows]
+
+def load_all_inactive_habits():
+    """generates a TimeHabit instance for each inactive Habit in habit table."""
 
 ## loads one instance
 def load_single_time_habit(habit_id):
@@ -54,7 +64,7 @@ def load_single_basic_habit(habit_id):
         return None
     return Habit.from_db(row)
 
-##experimental
+## updating or appending habit table
 def update_single_row(update_data):
     """updates a single row from the habit table with given reference habit_id"""
     #print(cursor.rowcount)
@@ -75,6 +85,36 @@ def append_single_row(new_habit_data):
                    (new_habit_data["name"], new_habit_data["desc"], new_habit_data["active"],
                     new_habit_data["complete_status"],new_habit_data["interval"], new_habit_data["created_on"]))
     connection.commit()
+
+## fetching from habit table
+
+def fetch_single_habit_history_all(habit_id):
+    """fetches all rows from history for the given habit_id"""
+    cursor.execute("SELECT * FROM history WHERE habit_id = ?", (habit_id,))
+    connection.commit()
+    #print(cursor.fetchall())
+    return cursor.fetchall()
+
+def fetch_single_habit_history_recent(habit_id):
+    """fetches all rows from history for the given habit_id"""
+    cursor.execute("SELECT * FROM history WHERE habit_id = ? ORDER BY history_id DESC LIMIT 1", (habit_id,))
+    connection.commit()
+    #print(cursor.fetchall())
+    return cursor.fetchone()
+
+def load_single_history_all(habit_id):
+    """generates a HabitHistory instance for a single Habit. habit_id parameter must be passed."""
+    ## , behind id to help python recognize it as a tuple
+    rows = fetch_single_habit_history_all(habit_id)
+    return [HabitHistory.from_db(row) for row in rows]
+
+def load_single_history_recent(habit_id):
+    """fetches the most recent row from history for the given habit_id"""
+    row = fetch_single_habit_history_recent(habit_id)
+    return HabitHistory.from_db(row)
+## updating/appending history table
+
+
 
 
 ## when do we close database ? let it close automatically on application close?

@@ -47,10 +47,10 @@ def seed_predefined_habits():
     for habit in data:
         ##dictionary comprehension - habit.items() gives key-value pairs --> for each pair in key != "history" add it to new dictionary
         habit_data = {a: b for a, b in habit.items() if a != "history"}
-        print(habit_data)
+        #print(habit_data)
         ## only need to get history keys and puts it into a new list containing dictionaries for each entry
         history_data = habit.get("history", [])
-        print(history_data)
+        #print(history_data)
 
         ## insert habit_data into habit table
         cursor.execute(

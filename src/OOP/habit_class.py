@@ -23,7 +23,7 @@ class Habit:
 
     @classmethod
     def from_db(cls, row):
-        """takes the contents from a dictionary and then returns the values necessary for __init__ to create a new Habit object"""
+        """takes the contents from a table row and then returns the values necessary for __init__ to create a new Habit object"""
         return cls(habit_id=row["habit_id"], name=row["name"], desc=row["desc"], active=row["active"],
                    complete_status=row["complete_status"], created_on=row["created_on"])
 
