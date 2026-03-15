@@ -1,6 +1,11 @@
 short term:
-complete 4 week test data in json
-check if new completion/streaking logic in habit_class.py works
+implement adding history rows on habit completion
+implement updating habit rows for completing
+implement updating habit rows for "incompleting" habits
+implement updating history rows for "incompleting" habits
+limit the week calc result while completing to .xx
+implement logic for weekly habits
+make completion/streaking logic in habit_class.py more practical -> not function to only check if complete status changes streak status etc.
 further implement idea of soft deleting (load all instances into dict or else WHERE active == 1)
 expand load / safe ALL habits
 redirect class imports from db to main?
@@ -16,6 +21,7 @@ create test for main.py
 long term:
 when to close database? automatically on app close?
 remove user input from class tree, once cli is working, to preserve clean architextural separation?
+find a way to sort seeded test data by date before inserting into table
 
 
 "longest" term on finishing up phase 3:

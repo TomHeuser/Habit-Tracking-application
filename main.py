@@ -7,31 +7,17 @@ from database import db_setup
 
 
 ##during startup
-db_setup.flush_history_table()
-db_setup.flush_habit_table()
+#db_setup.flush_history_table()
+#db_setup.flush_habit_table()
 db_setup.database_startup()
 #db_setup.seed_predefined_habits()
 
 
-
-one_habit = db.load_single_time_habit(1)
-print(one_habit)
-
-one_habit.change_name()
-print(one_habit)
-
-one_habit.change_desc()
-print(one_habit)
-
-one_habit.change_active()
+one_habit = db.load_single_time_habit(2)
 print(one_habit)
 
 one_habit.change_complete_status()
 print(one_habit)
-
-one_habit.change_interval()
-print(one_habit)
-
 
 update_data = one_habit.get_update_data()
 print(f"update_data = {update_data}")
@@ -41,20 +27,22 @@ db.update_single_row(update_data)
 history_data = one_habit.get_history_data()
 db.append_history(history_data)
 
-one_habit = db.load_single_time_habit(1)
-print(f"habit with habit_id = 1: {one_habit}")
+
+one_habit = db.load_single_time_habit(2)
+print(f"habit with habit_id = 2: {one_habit}")
+
+one_habit.change_complete_status()
+print(one_habit)
+
+update_data = one_habit.get_update_data()
+print(f"update_data = {update_data}")
+
+db.update_single_row(update_data)
+
+history_data = one_habit.get_history_data()
+db.append_history(history_data)
 
 
-new_habit_data = main_util.create_new_habit()
-print(type(new_habit_data))
-print(new_habit_data)
-db.append_single_row(new_habit_data)
+one_habit = db.load_single_time_habit(2)
+print(f"habit with habit_id = 2: {one_habit}")
 
-habit_history_rows = db.fetch_single_habit_history_all(1)
-print(habit_history_rows)
-
-habit_history = db.load_single_history_all(1)
-print(habit_history)
-
-habit_history_recent = db.load_single_history_recent(1)
-print(habit_history_recent)
