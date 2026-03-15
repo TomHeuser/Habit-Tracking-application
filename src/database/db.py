@@ -15,7 +15,7 @@ cursor = connection.cursor()
 
 
 def fetch_all_habit_rows():
-    """used to fetch all rows from the habits table"""
+    """used to fetch all rows of active habits from the habits table"""
     cursor.execute("SELECT * FROM habit WHERE active = 1")
     connection.commit()
     return cursor.fetchall()
@@ -25,6 +25,13 @@ def fetch_all_inactive():
     cursor.execute("SELECT * FROM habit WHERE active = 0")
     connection.commit()
     return cursor.fetchall()
+
+def fetch_active_names():
+    """used to fetch id and names of all active habits from the habits table"""
+    cursor.execute("SELECT habit_id, name FROM habit WHERE active = 1")
+    connection.commit()
+    rows = cursor.fetchall()
+    return [{"habit_id" : row["habit_id"], "name" : row["name"]} for row in rows]
 
 ## generate all instances
 def load_all_time_habits():
@@ -115,11 +122,16 @@ def load_single_history_recent(habit_id):
 
 ## updating/appending history table
 
-def append_history(new_history_data):
-    """insert a new row at the end of habit table which auto increments new habit_id (represents "creating new habit")"""
+def append_history(history_data):
+    """insert a new row at the end of history table which auto increments new habit_id (represents "adding new event")"""
     cursor.execute("INSERT INTO history (habit_id, date, streak_status, streak_count) VALUES (?,?,?,?)",
-                   (new_history_data["habit_id"], new_history_data["date"],new_history_data["streak_status"],new_history_data["streak_count"]))
+                   (history_data["habit_id"], history_data["date"],history_data["streak_status"],history_data["streak_count"]))
     connection.commit()
 
+def update_history(history_data):
+    """updates a row of the history table where id and date are equal to input data (represents "changing event")"""
+    cursor.execute("UPDATE history SET streak_status = ?, streak_count = ? "
+        "WHERE date = ? AND habit_id = ?", (history_data["habit_id"],history_data["date"],history_data["streak_status"],history_data["streak_count"]))
+    connection.commit()
 
 ## when do we close database ? let it close automatically on application close?

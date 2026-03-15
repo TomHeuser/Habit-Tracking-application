@@ -1,7 +1,6 @@
 short term:
-implement adding history rows on habit completion
-implement updating habit rows for completing
-implement updating habit rows for "incompleting" habits
+fix update_history() in db.py
+refine change_complete() in main_util.py
 implement updating history rows for "incompleting" habits
 limit the week calc result while completing to .xx
 implement logic for weekly habits

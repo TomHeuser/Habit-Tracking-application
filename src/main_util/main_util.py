@@ -1,6 +1,12 @@
 from datetime import date
+from database import db as db
+from database import db_setup
+from OOP import habit_class as hc
+
+
 today = date.today()
 iso_today = today.isoformat()
+
 
 
 ## process of creating a new name
@@ -118,7 +124,20 @@ def create_new_habit():
     return new_habit_data
 
 
-
-
-
-
+def change_complete():
+    # cli input
+    # habit_id = cli_function_xy()
+    # one_habit = db.load_single_time_habit(habit_id)
+    one_habit = db.load_single_time_habit(1)
+    #print(one_habit)
+    one_habit.change_complete_status()
+    #print(one_habit)
+    update_data = one_habit.get_update_data()
+    db.update_single_row(update_data)
+    one_habit = db.load_single_time_habit(1)
+    history_data = one_habit.get_history_data()
+    if one_habit.complete_status == 1:
+        db.append_history(history_data)
+    else:
+        db.update_history(history_data)
+    print(one_habit)
