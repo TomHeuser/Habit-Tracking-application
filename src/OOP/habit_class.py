@@ -242,7 +242,7 @@ class TimeHabit(Habit):
         """return current history data"""
         today = date.today()
         iso_today = today.isoformat()
-        new_history_data = {"habit_id": self.habit_id, "date": iso_today, "streak_status": self.streak_status,"streak_count": self.streak_count}
+        new_history_data = {"habit_id": self.habit_id, "date": iso_today, "complete_status": self.complete_status, "streak_status": self.streak_status,"streak_count": self.streak_count}
         return new_history_data
 
     ## needs changes
@@ -278,7 +278,9 @@ class TimeHabit(Habit):
                     if self.streak_count * self.interval >= 28:
                         self.streak_status = 1
                         print("Congrats, this habit is currently on a streak!")
-                        print(f"You have completed it for {self.streak_count * self.interval / 7} weeks in a row!")
+                        consecutive_weeks = self.streak_count * self.interval / 7
+                        rounded_consecutive_weeks = round(consecutive_weeks, 1)
+                        print(f"You have completed it for {rounded_consecutive_weeks} weeks in a row!")
                     break
                 elif confirm == "n":
                     print(f"Completion aborted. '{self.name}' remains incomplete.")

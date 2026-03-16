@@ -1,15 +1,12 @@
 short term:
-fix update_history() in db.py
-refine change_complete() in main_util.py
-implement updating history rows for "incompleting" habits
-limit the week calc result while completing to .xx
+work on cli
+    how to return to main from submenu
+    general functionality
+    how to exit?
 implement logic for weekly habits
-make completion/streaking logic in habit_class.py more practical -> not function to only check if complete status changes streak status etc.
-further implement idea of soft deleting (load all instances into dict or else WHERE active == 1)
-expand load / safe ALL habits
-redirect class imports from db to main?
 
 medium term:
+refine change_complete() in main_util.py to work with cli
 create test for db_setup.py
 create test for db.py
 create test for habit_class.py

@@ -7,6 +7,12 @@ from OOP import habit_class as hc
 today = date.today()
 iso_today = today.isoformat()
 
+#things to run on startup
+def welcome_message():
+    print("Welcome to 'Unnecessary German Efficiency'! \n"
+              "Your application for over the top self improvement.\n"
+              "How may we help you become the most automated and indifferent version of yourself today?\n"
+          "")
 
 
 ## process of creating a new name
@@ -136,6 +142,7 @@ def change_complete():
     db.update_single_row(update_data)
     one_habit = db.load_single_time_habit(1)
     history_data = one_habit.get_history_data()
+    print(history_data)
     if one_habit.complete_status == 1:
         db.append_history(history_data)
     else:

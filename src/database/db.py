@@ -124,14 +124,14 @@ def load_single_history_recent(habit_id):
 
 def append_history(history_data):
     """insert a new row at the end of history table which auto increments new habit_id (represents "adding new event")"""
-    cursor.execute("INSERT INTO history (habit_id, date, streak_status, streak_count) VALUES (?,?,?,?)",
-                   (history_data["habit_id"], history_data["date"],history_data["streak_status"],history_data["streak_count"]))
+    cursor.execute("INSERT INTO history (habit_id, date, complete_status, streak_status, streak_count) VALUES (?,?,?,?,?)",
+                   (history_data["habit_id"], history_data["date"], history_data["complete_status"], history_data["streak_status"],history_data["streak_count"]))
     connection.commit()
 
 def update_history(history_data):
     """updates a row of the history table where id and date are equal to input data (represents "changing event")"""
-    cursor.execute("UPDATE history SET streak_status = ?, streak_count = ? "
-        "WHERE date = ? AND habit_id = ?", (history_data["habit_id"],history_data["date"],history_data["streak_status"],history_data["streak_count"]))
+    cursor.execute("UPDATE history SET complete_status = ?, streak_status = ?, streak_count = ? "
+        "WHERE habit_id = ? AND date = ?", (history_data["complete_status"], history_data["streak_status"],history_data["streak_count"], history_data["habit_id"],history_data["date"]))
     connection.commit()
 
 ## when do we close database ? let it close automatically on application close?

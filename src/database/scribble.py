@@ -4,6 +4,7 @@
 #from datetime import date
         #today = date.today()
         #iso_today = today.isoformat()
+# date has method called isocalendar() returning week number of given date -> use for week calculation later?
 
 
 
