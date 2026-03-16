@@ -1,6 +1,11 @@
 short term:
 work on cli
-    general functionality
+    implement actual functionality for analytics_menu
+        1,2,5 working -> 3,4 not implemented yet
+        access history? as additional option?
+        when working, move functional parts to analytics
+    implement actual functionality for habits_menu
+    implement actual functionality for manage_menu
 implement logic for weekly habits
 
 medium term:
@@ -21,5 +26,5 @@ find a way to sort seeded test data by date before inserting into table
 "longest" term on finishing up phase 3:
 don't forget read me, requirements
 delete scribble.py
-dockerfile? what's that?
+dockerfile ( instruction for how to build a container)
 add screenshots of unit-tests (otherwise prof will need to run screenshots)

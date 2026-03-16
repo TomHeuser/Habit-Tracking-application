@@ -33,6 +33,25 @@ def fetch_active_names():
     rows = cursor.fetchall()
     return [{"habit_id" : row["habit_id"], "name" : row["name"]} for row in rows]
 
+def fetch_names():
+    """used to fetch id and names of all habits form habit table"""
+    cursor.execute("SELECT habit_id, name FROM habit")
+    connection.commit()
+    rows = cursor.fetchall()
+    return [{"habit_id": row["habit_id"], "name": row["name"]} for row in rows]
+
+def fetch_single_habit_details(chosen_id):
+    """used to fetch details of a single habit from the habits table and return them as a list of dictionaries"""
+    cursor.execute("SELECT habit_id, name, desc, active, interval, complete_status, created_on, streak_status, "
+                   "streak_count FROM habit WHERE habit_id = ?", (chosen_id,))
+    connection.commit()
+    row = cursor.fetchone()
+    if row is None:
+        return None
+    return {"habit_id": row["habit_id"], "name": row["name"], "desc": row["desc"], "active": row["active"],
+            "interval": row["interval"], "complete_status": row["complete_status"], "created_on": row["created_on"],
+            "streak_status": row["streak_status"], "streak_count": row["streak_count"]}
+
 ## generate all instances
 def load_all_time_habits():
     """generates a TimeHabit instance for each Habit in habit table"""
