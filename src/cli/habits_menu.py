@@ -1,10 +1,28 @@
 from database import db
 
-def id_names():
-    names = db.fetch_active_names()
-    for habit in names:
-        # print(type(names))
-        # print(type(names[0]))
-        habit_id = habit["habit_id"]
-        habit_name = habit["name"]
-        print(f"{habit_id} {habit_name}")
+def habits_menu_choice():
+    while True:
+        print("Habit Menu:\n"
+              "\n")
+        try:
+            choice = int(input("What would you like to do?\n"
+                               "[1] complete habit\n"
+                               "[2] return to main menu\n"))
+            return choice
+        except ValueError:
+            print("Invalid option")
+
+
+def habits_menu():
+    while True:
+        choice = habits_menu_choice()
+        if choice == 1:
+            #function to choose which habit to complete
+            #needs to print all active habits
+            print("Which habit would you like to complete?")
+            #then create an instance for said habit
+            #etc.....should all that be called by cli? or main? check later
+        else:
+            print("Returning to main menu...")
+            return_value = "BACK"
+            return return_value

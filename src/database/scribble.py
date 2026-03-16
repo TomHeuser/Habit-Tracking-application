@@ -6,6 +6,14 @@
         #iso_today = today.isoformat()
 # date has method called isocalendar() returning week number of given date -> use for week calculation later?
 
+def id_names():
+    names = db.fetch_active_names()
+    for habit in names:
+        # print(type(names))
+        # print(type(names[0]))
+        habit_id = habit["habit_id"]
+        habit_name = habit["name"]
+        print(f"{habit_id} {habit_name}")
 
 
 one_habit = db.load_single_time_habit(1)

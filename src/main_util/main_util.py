@@ -14,7 +14,10 @@ def welcome_message():
               "How may we help you become the most automated and indifferent version of yourself today?\n"
           "")
 
+## general stuff
 
+def step():
+    input("\nPress any key to continue...")
 ## process of creating a new name
 def get_name():
     """used to generate the name of a new habit during habit creation"""

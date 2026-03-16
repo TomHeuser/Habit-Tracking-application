@@ -1,8 +1,6 @@
 short term:
 work on cli
-    how to return to main from submenu
     general functionality
-    how to exit?
 implement logic for weekly habits
 
 medium term:
