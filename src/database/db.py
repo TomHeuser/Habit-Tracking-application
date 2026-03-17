@@ -21,6 +21,15 @@ def get_name_for_id(habit_id):
         return None
     return row["name"]
 
+def get_max_id():
+    """used to fetch max id from habit table"""
+    cursor.execute("SELECT habit_id FROM habit ORDER BY habit_id DESC LIMIT 1")
+    connection.commit()
+    row = cursor.fetchone()
+    if row is None:
+        return 0
+    return row["habit_id"]
+
 def fetch_all_habit_rows():
     """used to fetch all rows of active habits from the habits table"""
     cursor.execute("SELECT * FROM habit WHERE active = 1")
@@ -38,7 +47,18 @@ def fetch_active_names():
     cursor.execute("SELECT habit_id, name FROM habit WHERE active = 1")
     connection.commit()
     rows = cursor.fetchall()
+    if rows is None:
+        return None
     return [{"habit_id" : row["habit_id"], "name" : row["name"]} for row in rows]
+
+def fetch_inactive_names():
+    """used to fetch id and names of all inactive habits from the habits table"""
+    cursor.execute("SELECT habit_id, name FROM habit WHERE active = 0")
+    connection.commit()
+    rows = cursor.fetchall()
+    if rows is None:
+        return None
+    return [{"habit_id": row["habit_id"], "name": row["name"]} for row in rows]
 
 def fetch_names():
     """used to fetch id and names of all habits form habit table"""
@@ -189,7 +209,7 @@ def check_existing_history_date(habit_id, iso_today):
     cursor.execute("SELECT * FROM history WHERE habit_id = ? AND date = ?", (habit_id, iso_today))
     row = cursor.fetchone()
     connection.commit()
-    print(row)
+    #print(row)
     if row is None:
         return False
     else:

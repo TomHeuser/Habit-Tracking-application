@@ -1,13 +1,16 @@
 short term:
 work on cli
     implement actual functionality for manage_menu
-    add docstings to clis and analytics
+        move functions to analytics / separation
+        the add necessary docstings to analytics
 implement logic for weekly habits
+remove user input from class tree, once cli is working, to preserve clean architextural separation?
 
 medium term:
-remove user input from class tree, once cli is working, to preserve clean architextural separation?
+rename analytics module to functional? and then create func_util file?
+fix if row or rows in none errors (occurs when query finds no rows)
 HOW TO HANDLE GAPS BETWEEN SEEDING DATES AND TESTING DATE?????
-        implement idea to have the function only assign current date, if no date is passed in, then pass in date during testing
+        implement idea: have the function only assign current date, if no date is passed in, then pass in date during testing
 create test for db_setup.py
 create test for db.py
 create test for habit_class.py
@@ -18,6 +21,9 @@ create test for main.py
 long term:
 when to close database? automatically on app close?
 find a way to sort seeded test data by date before inserting into table
+restore habit from certain point in time?
+        (use analytics menu function to print all entries, then let user enter entry id and then
+        let a SQL query fetch row and restore habit from there)
 
 
 "longest" term on finishing up phase 3:

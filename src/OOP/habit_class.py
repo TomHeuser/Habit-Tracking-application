@@ -67,7 +67,7 @@ class Habit:
 
     ## needs changes
     def change_active(self):
-        """used to set a habit to active or inactive. Changes the active attribute of an existing habit object,
+        """used to set a simple habit (no streak/interval) to active or inactive. Changes the active attribute of an existing habit object,
         between 0 (False, inactive) and 1 (True, active), then applies these changes to database entry"""
         while True:
             if self.active == 1:
@@ -75,8 +75,7 @@ class Habit:
                 if confirm == "y":
                     self.active = 0
                     print(f"'{self.name}' has been deleted.")
-                    # implement change to habit data
-                    # implement saving to habit
+                    self.complete_status = 0
                     break
                 elif confirm == "n":
                     print(f"'{self.name}' has NOT been deleted.")
@@ -89,8 +88,6 @@ class Habit:
                 if confirm == "y":
                     self.active= 1
                     print(f"'{self.name}' has been restored.")
-                    # implement change to habit data
-                    # implement saving to habit
                     break
                 elif confirm == "n":
                     print(f"The habit '{self.name}' was not restored.")
@@ -213,12 +210,15 @@ class TimeHabit(Habit):
         if old_interval != new_interval:
             while True:
                 confirm = input(f"Would you like to change the current interval of '{self.name}' from"
-                                f"'{old_interval}' days to '{new_interval}' days?  (y/n)")
+                                f"'{old_interval}' days to '{new_interval}' days?\n"
+                                f"IMPORTANT: This will also reset its streak!\n"
+                                f"(y/n)")
 
                 if confirm == "y":
                     self.interval = new_interval
                     print(f"Changed interval of '{self.name}' to '{self.interval}' days.")
-                    #save to db
+                    self.streak_count = 0
+                    self.streak_status = 0
                     break
                 elif confirm == "n":
                     print(f"Interval of '{self.name}' remains at '{self.interval}' days.")
@@ -228,6 +228,49 @@ class TimeHabit(Habit):
 
         else:
             print("New interval identical to old interval. Interval change aborted.")
+
+    def change_active(self):
+        """used to set a time habit to active or inactive. Changes the active attribute of an existing habit object,
+        between 0 (False, inactive) and 1 (True, active), then applies these changes to database entry"""
+        while True:
+            if self.active == 1:
+                confirm = input(f"Are you sure that you'd like to delete '{self.name}'? (y/n) [Not lost permanently. Can be restored]")
+                if confirm == "y":
+                    self.active = 0
+                    print(f"'{self.name}' has been deleted.")
+                    self.complete_status = 0
+                    self.streak_status = 0
+                    self.streak_count = 0
+                    break
+                elif confirm == "n":
+                    print(f"'{self.name}' has NOT been deleted.")
+                    break
+                else:
+                    print("Unexpected input. Please only enter 'y' or 'n'.")
+
+            elif self.active == 0:
+                confirm = input(f"Would you like restore '{self.name}'? (y/n)")
+                if confirm == "y":
+                    self.active= 1
+                    print(f"'{self.name}' has been restored.")
+                    break
+                elif confirm == "n":
+                    print(f"The habit '{self.name}' was not restored.")
+                    break
+                else:
+                    print("Unexpected input. Please only enter 'y' or 'n'.")
+
+            else:
+                print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
+                self.complete_status = 1
+                break
+
+    def reset(self):
+        """resets objects complete_status, streak_status and streak_count to zero"""
+        self.complete_status = 0
+        self.streak_status = 0
+        self.streak_count = 0
+
 
     ##experimental
     def get_update_data(self):

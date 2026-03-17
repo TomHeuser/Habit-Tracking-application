@@ -1,4 +1,8 @@
 from main_util.main_util import step, return_to_main
+from cli import edit_habit_menu as ehm
+from analytics import analytics as an
+from datetime import date
+from database import db
 
 def manage_menu_choice():
     """Called when user input is needed to choose and option from manage sub menu"""
@@ -8,13 +12,13 @@ def manage_menu_choice():
             choice = int(input("Choose option:\n"
               "[1] delete habit\n"
               "[2] restore habit\n"
-              "[3] change habit interval\n"
+              "[3] edit habit\n"
               "[4] reset habit (Will set streak and consecutive days to 0!)\n"
               "[5] return to main menu\n"))
             return choice
         except ValueError:
             print("Invalid option")
-            manage_menu_choice()
+
 
 def manage_menu():
     """called when user wants to open manage sub menu from main menu"""
@@ -22,15 +26,93 @@ def manage_menu():
         choice = manage_menu_choice()
         if choice == 1:
             print("Which habit would you like to delete? (Can be restored again later)")
-            # function to set attribute to inactive using class object and methods etc
+            active_habits = db.fetch_active_names()
+            if active_habits is not None:
+                for item in active_habits:
+                    print(f"[{item["habit_id"]} {item["name"]}]")
+            else:
+                print("No habits to delete")
+            try:
+                habit_id = int(input("To choose a habit please enter its associated number above."))
+                current_habit_obj = an.create_habit_obj(habit_id)
+                current_habit_obj.change_active()
+                update_data = current_habit_obj.get_update_data()
+                db.update_single_row(update_data)
+                history_data = current_habit_obj.get_history_data()
+                habit_id = current_habit_obj.habit_id
+                today = date.today()
+                iso_today = today.isoformat()
+                existing_history_date = db.check_existing_history_date(habit_id, iso_today)
+                if existing_history_date == False:
+                    db.append_history(history_data)
+                elif existing_history_date == True:
+                    db.update_history(history_data)
+                else:
+                    print("Error writing to history table.")
+            except ValueError or TypeError:
+                print("Invalid option")
+
         elif choice == 2:
             print("Which habit would you like to restore?")
-            # function to set attribute of inactive habit to active using class object and methods etc
+            inactive_habits = db.fetch_inactive_names()
+            if inactive_habits is not None:
+                for item in inactive_habits:
+                    print(f"[{item["habit_id"]} {item["name"]}]")
+            else:
+                print("You currently have not habits to delete.")
+            try:
+                habit_id = int(input("To choose a habit please enter its associated number above."))
+                current_habit_obj = an.create_habit_obj(habit_id)
+                current_habit_obj.change_active()
+                update_data = current_habit_obj.get_update_data()
+                db.update_single_row(update_data)
+                history_data = current_habit_obj.get_history_data()
+                habit_id = current_habit_obj.habit_id
+                today = date.today()
+                iso_today = today.isoformat()
+                existing_history_date = db.check_existing_history_date(habit_id, iso_today)
+                if existing_history_date == False:
+                    db.append_history(history_data)
+                elif existing_history_date == True:
+                    db.update_history(history_data)
+                else:
+                    print("Error writing to history table.")
+            except ValueError or TypeError:
+                print("Invalid option")
         elif choice == 3:
-            print("Which habit's interval would you like to change?")
-            # function to set attribute of inactive habit to active using class object and methods etc
+            ehm.edit_habit_menu()
         elif choice == 4:
             print("Which habit would you like to reset?")
-            # function to set streak related attributes of active habit to zero
+            active_habits = db.fetch_active_names()
+            if active_habits is not None:
+                for item in active_habits:
+                    print(f"[{item["habit_id"]} {item["name"]}]")
+            else:
+                print("You currently have not habits to reset.")
+            try:
+                habit_id = int(input("To choose a habit please enter its associated number above."))
+                max_habit_id = db.get_max_id()
+                if 0 < habit_id <= max_habit_id:
+                    current_habit_obj = an.create_habit_obj(habit_id)
+                    current_habit_obj.reset()
+                    update_data = current_habit_obj.get_update_data()
+                    db.update_single_row(update_data)
+                    history_data = current_habit_obj.get_history_data()
+                    habit_id = current_habit_obj.habit_id
+                    today = date.today()
+                    iso_today = today.isoformat()
+                    existing_history_date = db.check_existing_history_date(habit_id, iso_today)
+                    if existing_history_date == False:
+                        db.append_history(history_data)
+                    elif existing_history_date == True:
+                        db.update_history(history_data)
+                    else:
+                        print("Error writing to history table.")
+                else:
+                    print("Can not reset non existent habit.\n"
+                          "Returning to Manage Menu....")
+                    step()
+            except ValueError or TypeError:
+                print("Invalid option")
         elif choice == 5:
             return return_to_main()
