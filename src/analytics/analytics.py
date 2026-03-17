@@ -1,48 +1,50 @@
 from main_util.main_util import step
 from database import db as db
-
-def choose_interval():
-    """used during creation of new Habit. Lets the user choose between the desired
-    interval [1= daily, 2= weekly], (formatted in days, "daily" returns 1, "weekly" returns 7)"""
-    while True:
-        # userinput to choose between daily and weekly (eg:1 and 7)
-        interval_input = input("Please choose the habits' interval:\n[1]daily\n[2]weekly\n")
-        if interval_input == "1":
-            return 1
-        elif interval_input == "2":
-            return 7
-        else:
-            print("Incorrect input. Please enter 1 or 2.")
+from datetime import date
 
 
-def set_interval():
-    """used during creation of new habit. Lets the user choose the desired number of days (1-365)"""
-    while True:
-        try:
-            interval_input = int(input("Please enter the desired number of days [1 - 365] for the habits' interval:"))
-            if 1 <= interval_input <= 365:
-                return interval_input
-            else:
-                print("Incorrect input. Please enter a number between 1 and 365.")
-        except ValueError:
-            print("Incorrect input. Please enter a number between 1 and 365.")
+## functions for habit_menu.py
+def create_habit_obj(habit_id):
+    """used in habit_menu to create habit object for habits stored in database that hold habit_idd == to passed in habit_id"""
+    current_habit_obj = db.load_single_time_habit(habit_id)
+    return current_habit_obj
 
-
+def change_habit_obj_complete(habit_id):
+    """Used in habit menu to automatically handle object completion and table updating.
+    1. Creates an object for habit that shares passed in habit_id
+    2. Computes completion and streak status and count
+    3. Automatically updates row in habit table
+    4. Automatically decides whether to append or update row in habits table"""
+    current_habit_obj = create_habit_obj(habit_id)
+    current_habit_obj.change_complete_status()
+    update_data = current_habit_obj.get_update_data()
+    db.update_single_row(update_data)
+    history_data = current_habit_obj.get_history_data()
+    habit_id = current_habit_obj.habit_id
+    today = date.today()
+    iso_today = today.isoformat()
+    existing_history_date = db.check_existing_history_date(habit_id, iso_today)
+    if existing_history_date == False:
+        db.append_history(history_data)
+    elif existing_history_date == True:
+        db.update_history(history_data)
+    else:
+        print("Error writing to history table.")
 
 ## functions for analytics_menu.py
 
 def get_list_of_active_habits():
-    print("all active habits:")
-    # implement functionality
+    """Used in analytics_menu to get list of all active habits"""
     print("Your currently active habits are:")
     active_habits = db.fetch_active_names()
     for item in active_habits:
         print(item["habit_id"], item["name"])
     print("")
     # print(type(active_habits))
-    step()
+
 
 def get_list_of_all_habits():
+    """Used in analytics_menu to get list of all habits"""
     print("Current habits:")
     all_habits = db.fetch_names()
     for item in all_habits:
@@ -50,6 +52,7 @@ def get_list_of_all_habits():
     print("")
 
 def print_habit_details_of_selected_habit(chosen_id):
+    """Used in analytics_menu to print habit details for habit in habit table with habit_id ==  the passed in habit_id"""
     try:
         habit_details = db.fetch_single_habit_details(chosen_id)
         # print(type(habit_detail))
@@ -83,6 +86,8 @@ def print_habit_details_of_selected_habit(chosen_id):
         step()
 
 def get_highest_current_streak():
+    """Used in analytics_menu to print the highest current streak and its associated habit name
+    If multiple habits have equal values, all of them will be printed out in order of habit_id"""
     print("highest current streak:\n")
     highest_streak = db.fetch_highest_current_streak()
     for item in highest_streak:
@@ -91,6 +96,8 @@ def get_highest_current_streak():
     step()
 
 def get_highest_history_streak():
+    """Used in analytics_menu to print the highest streak in history and its associated habit name
+        If multiple habits have equal values, all of them will be printed out in order of habit_id"""
     print("Highest all time streak:\n")
     highest_history_streak = db.fetch_highest_history_streak()
     for item in highest_history_streak:
@@ -100,6 +107,7 @@ def get_highest_history_streak():
     step()
 
 def print_all_history_entries(chosen_id):
+    """Used in analytics_menu to print all history entries for the habit with habit_id == passed in habit_id"""
     habit_name = db.get_name_for_id(chosen_id)
     habit_history_data = db.fetch_all_history_for_habit(chosen_id)
     print(f"Here are all history entries for the habit '{habit_name}':")

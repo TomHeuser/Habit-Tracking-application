@@ -97,8 +97,6 @@ def load_all_basic_habits():
     rows = fetch_all_habit_rows()
     return [Habit.from_db(row) for row in rows]
 
-def load_all_inactive_habits():
-    """generates a TimeHabit instance for each inactive Habit in habit table."""
 
 ## loads one instance
 def load_single_time_habit(habit_id):
@@ -186,4 +184,14 @@ def update_history(history_data):
         "WHERE habit_id = ? AND date = ?", (history_data["complete_status"], history_data["streak_status"],history_data["streak_count"], history_data["habit_id"],history_data["date"]))
     connection.commit()
 
+def check_existing_history_date(habit_id, iso_today):
+    """check whether a row exists in history for current date and given habit_id. Returns True of False"""
+    cursor.execute("SELECT * FROM history WHERE habit_id = ? AND date = ?", (habit_id, iso_today))
+    row = cursor.fetchone()
+    connection.commit()
+    print(row)
+    if row is None:
+        return False
+    else:
+        return True
 ## when do we close database ? let it close automatically on application close?

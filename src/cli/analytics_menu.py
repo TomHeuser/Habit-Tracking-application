@@ -4,6 +4,7 @@ from main_util.main_util import step, return_to_main
 
 
 def analytics_choice():
+    """Called when user input is needed to choose and option from analytics sub menu"""
     while True:
         print("Analytics menu:\n")
         try:
@@ -19,10 +20,12 @@ def analytics_choice():
             print("Invalid option")
 
 def analytics_menu():
+    """called when user wants to open analytics sub menu from main menu"""
     while True:
         choice = analytics_choice()
         if choice == 1:
             an.get_list_of_active_habits()
+            step()
         elif choice == 2:
             an.get_list_of_all_habits()
             while True:

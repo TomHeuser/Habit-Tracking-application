@@ -1,6 +1,7 @@
 from main_util.main_util import step, return_to_main
 
 def manage_menu_choice():
+    """Called when user input is needed to choose and option from manage sub menu"""
     while True:
         print("Manage habits menu:")
         try:
@@ -16,6 +17,7 @@ def manage_menu_choice():
             manage_menu_choice()
 
 def manage_menu():
+    """called when user wants to open manage sub menu from main menu"""
     while True:
         choice = manage_menu_choice()
         if choice == 1:

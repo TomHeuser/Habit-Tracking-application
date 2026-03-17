@@ -1,12 +1,13 @@
 short term:
 work on cli
-    implement actual functionality for habits_menu
     implement actual functionality for manage_menu
+    add docstings to clis and analytics
 implement logic for weekly habits
 
 medium term:
 remove user input from class tree, once cli is working, to preserve clean architextural separation?
-    refine change_complete() in main_util.py to work with cli
+HOW TO HANDLE GAPS BETWEEN SEEDING DATES AND TESTING DATE?????
+        implement idea to have the function only assign current date, if no date is passed in, then pass in date during testing
 create test for db_setup.py
 create test for db.py
 create test for habit_class.py

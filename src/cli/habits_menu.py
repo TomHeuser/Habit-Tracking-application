@@ -1,7 +1,9 @@
 from database import db
+from analytics import analytics as an
 from main_util.main_util import step, return_to_main
 
 def habits_menu_choice():
+    """Called when user input is needed to choose and option from habit sub menu"""
     while True:
         print("Habit Menu:\n"
               "\n")
@@ -15,13 +17,14 @@ def habits_menu_choice():
 
 
 def habits_menu():
+    """called when user wants to open habits sub menu from main menu"""
     while True:
         choice = habits_menu_choice()
         if choice == 1:
-            #function to choose which habit to complete
-            #needs to print all active habits
-            print("Which habit would you like to complete?")
-            #then create an instance for said habit
-            #etc.....should all that be called by cli? or main? check later
+            print("Choose a habit to complete from the following list:")
+            an.get_list_of_active_habits()
+            habit_id = int(input("To choose a habit please enter the associated number above.\n"))
+            an.change_habit_obj_complete(habit_id)
+
         else:
             return return_to_main()
