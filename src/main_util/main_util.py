@@ -17,7 +17,16 @@ def welcome_message():
 ## general stuff
 
 def step():
+    """just a mal input that will be dropped instantly, creates a pause until use wants to continue
+    (often also called stop or pause)"""
     input("\nPress any key to continue...")
+
+def return_to_main():
+    """returns command to return to main, currently not necessary"""
+    print("Returning to main menu....")
+    return_value = "BACK"
+    return return_value
+
 ## process of creating a new name
 def get_name():
     """used to generate the name of a new habit during habit creation"""

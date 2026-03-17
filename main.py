@@ -10,13 +10,13 @@ from database import db_setup
 from main_util.main_util import welcome_message, step
 
 ##during startup
-#db_setup.flush_history_table()
-#db_setup.flush_habit_table()
+db_setup.flush_history_table()
+db_setup.flush_habit_table()
 #db_setup.seed_predefined_habits()
 db_setup.database_startup()
 
-welcome_message()
 
+welcome_message()
 
 def submenu_choice():
     while True:

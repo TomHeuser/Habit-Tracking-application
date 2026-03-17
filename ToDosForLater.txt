@@ -1,15 +1,12 @@
 short term:
 work on cli
-    implement actual functionality for analytics_menu
-        1,2,5 working -> 3,4 not implemented yet
-        access history? as additional option?
-        when working, move functional parts to analytics
     implement actual functionality for habits_menu
     implement actual functionality for manage_menu
 implement logic for weekly habits
 
 medium term:
-refine change_complete() in main_util.py to work with cli
+remove user input from class tree, once cli is working, to preserve clean architextural separation?
+    refine change_complete() in main_util.py to work with cli
 create test for db_setup.py
 create test for db.py
 create test for habit_class.py
@@ -19,7 +16,6 @@ create test for main.py
 
 long term:
 when to close database? automatically on app close?
-remove user input from class tree, once cli is working, to preserve clean architextural separation?
 find a way to sort seeded test data by date before inserting into table
 
 

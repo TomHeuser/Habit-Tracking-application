@@ -1,3 +1,5 @@
+from main_util.main_util import step, return_to_main
+
 def manage_menu_choice():
     while True:
         print("Manage habits menu:")
@@ -29,6 +31,4 @@ def manage_menu():
             print("Which habit would you like to reset?")
             # function to set streak related attributes of active habit to zero
         elif choice == 5:
-            print("Returning to main menu....")
-            return_value = "BACK"
-            return return_value
+            return return_to_main()

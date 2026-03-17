@@ -12,7 +12,14 @@ connection = sqlite3.connect(DB_path)
 connection.row_factory = sqlite3.Row
 cursor = connection.cursor()
 
-
+def get_name_for_id(habit_id):
+    """used to fetch name from habit for given habit_id"""
+    cursor.execute("SELECT name FROM habit WHERE habit_id = ?", (habit_id,))
+    connection.commit()
+    row = cursor.fetchone()
+    if row is None:
+        return None
+    return row["name"]
 
 def fetch_all_habit_rows():
     """used to fetch all rows of active habits from the habits table"""
@@ -51,6 +58,32 @@ def fetch_single_habit_details(chosen_id):
     return {"habit_id": row["habit_id"], "name": row["name"], "desc": row["desc"], "active": row["active"],
             "interval": row["interval"], "complete_status": row["complete_status"], "created_on": row["created_on"],
             "streak_status": row["streak_status"], "streak_count": row["streak_count"]}
+
+def fetch_highest_current_streak():
+    """used to fetch the highest current streak from habit table (technically identical in both tables)
+    returns list of dictionaries"""
+    cursor.execute("SELECT habit_id, name, streak_count FROM habit "
+                   "WHERE streak_count = (SELECT MAX(streak_count) FROM habit) ORDER BY habit_id")
+    connection.commit()
+    rows = cursor.fetchall()
+    return [{"habit_id": row["habit_id"], "name": row["name"], "streak_count": row["streak_count"]} for row in rows]
+
+def fetch_highest_history_streak():
+    """used to fetch the highest streak from history table, returns list of dictionaries"""
+    cursor.execute("SELECT habit_id, streak_count FROM history "
+                   "WHERE streak_count = (SELECT MAX(streak_count) FROM history) ORDER BY habit_id")
+    connection.commit()
+    rows = cursor.fetchall()
+    return [{"habit_id": row["habit_id"], "streak_count": row["streak_count"]} for row in rows]
+
+def fetch_all_history_for_habit(chosen_id):
+    """used to fetch all history entries for a given habit with the chosen id"""
+    cursor.execute("SELECT date, complete_status, streak_status, streak_count FROM history "
+                   "WHERE habit_id = ?", (chosen_id,))
+    connection.commit()
+    rows = cursor.fetchall()
+    return [{"date": row["date"], "complete_status": row["complete_status"], "streak_status": row["streak_status"],
+             "streak_count": row["streak_count"]} for row in rows]
 
 ## generate all instances
 def load_all_time_habits():
