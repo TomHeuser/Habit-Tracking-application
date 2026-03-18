@@ -38,18 +38,19 @@ def manage_menu():
                 print("Invalid option")
 
         elif choice == 2:
-            print("Which habit would you like to restore?")
             inactive_habits = db.fetch_inactive_names()
-            if inactive_habits is not None:
+            print(inactive_habits)
+            if inactive_habits != []:
+                print("Which habit would you like to restore?")
                 for item in inactive_habits:
                     print(f"[{item["habit_id"]} {item["name"]}]")
+                try:
+                    habit_id = int(input("To choose a habit please enter its associated number above."))
+                    an.delete_restore_habit(habit_id)
+                except ValueError or TypeError:
+                    print("Invalid option")
             else:
-                print("You currently have not habits to delete.")
-            try:
-                habit_id = int(input("To choose a habit please enter its associated number above."))
-                an.delete_restore_habit(habit_id)
-            except ValueError or TypeError:
-                print("Invalid option")
+                print("You currently have not habits to restore.")
         elif choice == 3:
             ehm.edit_habit_menu()
         elif choice == 4:

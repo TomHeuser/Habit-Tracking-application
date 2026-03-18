@@ -120,6 +120,8 @@ def print_all_history_entries(chosen_id):
         print(
             f"[{item["date"]}], {complete_status}, {streak_status}, "
             f"Number of consecutive completions: {item["streak_count"]}")
+    print("")
+
 
 ## functions for manage_menu
 

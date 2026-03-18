@@ -74,7 +74,7 @@ def interval_change_type_choice():
 def confirm_interval_change(name, old_interval, new_interval):
     """used to generate and return user input to confirm interval change"""
     confirm = input(f"Would you like to change the current interval of '{name}' from"
-          f"'{old_interval}' days to '{new_interval}' days?\n"
+          f" '{old_interval}' days to '{new_interval}' days?\n"
           f"IMPORTANT: This will also reset its streak!\n"
           f"(y/n)")
     return confirm

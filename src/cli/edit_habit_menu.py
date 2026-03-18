@@ -74,7 +74,7 @@ def edit_habit_menu():
                     if 0 < habit_id <= max_habit_id:
                         an.change_habit_interval(habit_id)
                     else:
-                        print("No habit to change interval found.")
+                        print("No habit such number found to change interval.")
                 except ValueError or TypeError:
                     print("Invalid option")
             else:

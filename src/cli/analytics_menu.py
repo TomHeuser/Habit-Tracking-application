@@ -49,7 +49,7 @@ def analytics_menu():
                 an.get_list_of_all_habits()
                 try:
                     chosen_id = input("Please enter one of the above numbers for its associated habit:\n")
-                    an.print_habit_details_of_selected_habit(chosen_id)
+                    an.print_all_history_entries(chosen_id)
                 except ValueError or TypeError:
                     print("Invalid input")
                 break

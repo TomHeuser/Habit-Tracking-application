@@ -247,7 +247,7 @@ class TimeHabit(Habit):
                     print("Unexpected input. Please only enter 'y' or 'n'.")
 
             elif self.active == 0:
-                confirm = cli.confirm_delete(name)
+                confirm = cli.confirm_restore(name)
                 if confirm == "y":
                     self.active= 1
                     print(f"'{self.name}' has been restored.")
@@ -293,7 +293,7 @@ class TimeHabit(Habit):
         while True:
             name = self.name
             if self.complete_status == 1:
-                confirm = cli.confirm_complete(name)
+                confirm = cli.confirm_incomplete(name)
                 if confirm == "y":
                     print(f"'{self.name}' has been reset to incomplete.")
                     self.complete_status = 0
