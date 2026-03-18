@@ -1,7 +1,6 @@
 short term:
-change numbers in manage menu to have create new habit in [1]
-refine manual habit reset
-        fix errors for all resets when no entry in database
+fix date passing with test data
+    eg. in history append function
 move functions from analytics to functions_util
 
 

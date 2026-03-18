@@ -9,11 +9,11 @@ def manage_menu_choice():
         print("Manage habits menu:")
         try:
             choice = int(input("Choose option:\n"
-              "[1] delete habit\n"
-              "[2] restore habit\n"
+              "[1] create new habit\n"
+              "[2] delete habit\n"
               "[3] edit habit\n"
               "[4] reset habit (Will set streak and consecutive days to 0!)\n"
-              "[5] create new habit\n"
+              "[5] restore habit\n"
               "[6] return to main menu\n"))
             return choice
         except ValueError:
@@ -24,7 +24,7 @@ def manage_menu():
     """called when user wants to open manage sub menu from main menu"""
     while True:
         choice = manage_menu_choice()
-        if choice == 1:
+        if choice == 2:
             print("Which habit would you like to delete? (Can be restored again later)")
             active_habits = db.fetch_active_names()
             if active_habits is not None:
@@ -38,7 +38,7 @@ def manage_menu():
             except ValueError or TypeError:
                 print("Invalid option")
 
-        elif choice == 2:
+        elif choice == 5:
             inactive_habits = db.fetch_inactive_names()
             print(inactive_habits)
             if inactive_habits != []:
@@ -73,7 +73,7 @@ def manage_menu():
                     step()
             except ValueError or TypeError:
                 print("Invalid option")
-        elif choice == 5:
+        elif choice == 1:
             an.create_habit(current_day)
         elif choice == 6:
             return return_to_main()
