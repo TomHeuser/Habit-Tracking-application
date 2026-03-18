@@ -1,4 +1,6 @@
 import sqlite3
+from datetime import date
+from analytics.functions_util import startup
 from cli import cli_util as cli
 from cli import manage_menu as mm
 from cli import analytics_menu as am
@@ -8,16 +10,7 @@ from main_util import main_util as util
 from OOP import habit_class
 from database import db
 from database import db_setup
-from main_util.main_util import welcome_message, step
-
-##during startup
-db_setup.flush_history_table()
-db_setup.flush_habit_table()
-#db_setup.seed_predefined_habits()
-db_setup.database_startup()
-
-
-welcome_message()
+from main_util.main_util import step
 
 
 def main_menu():
@@ -46,4 +39,16 @@ def main_menu():
             print("Invalid input, please only enter 1,2,3 or 4.")
 
 
+#testing dates
+current_day = date.fromisoformat("2026-03-29")
+current_week = 2026 * 52 + current_day.isocalendar().week
+
+##during startup
+db_setup.flush_history_table()
+db_setup.flush_habit_table()
+#db_setup.seed_predefined_habits()
+#db_setup.database_startup()
+startup(current_day, current_week)
+
+#lifecycle
 main_menu()

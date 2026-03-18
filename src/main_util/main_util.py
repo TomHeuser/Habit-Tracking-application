@@ -7,19 +7,13 @@ from OOP import habit_class as hc
 today = date.today()
 iso_today = today.isoformat()
 
-#things to run on startup
-def welcome_message():
-    print("Welcome to 'Unnecessary German Efficiency'! \n"
-              "Your application for over the top self improvement.\n"
-              "How may we help you become the most automated and indifferent version of yourself today?\n"
-          "")
 
 ## general stuff
 
 def step():
     """just a mal input that will be dropped instantly, creates a pause until use wants to continue
     (often also called stop or pause)"""
-    input("\nPress any key to continue...")
+    input("\nPress any key to continue...\n")
 
 def return_to_main():
     """returns command to return to main, currently not necessary"""

@@ -1,6 +1,8 @@
 short term:
-implement logic for weekly habits
-implement startup procedure
+implement  first start-up message vs later startup messages
+how to handle individual intervals?
+move functions from analytics to functions_util
+
 
 medium term:
 rename analytics module to functional? and then create func_util file?
@@ -19,6 +21,7 @@ restore habit from certain point in time?
 
 
 "longest" term on finishing up phase 3:
+maybe add option to create backup? write all rows from table to json file + seeding all data from json file -> maybe to much/unnecessary
 don't forget read me, requirements
 delete scribble.py
 dockerfile ( instruction for how to build a container)

@@ -214,4 +214,36 @@ def check_existing_history_date(habit_id, iso_today):
         return False
     else:
         return True
+
+## functions for startup handling
+def get_daily_id_list():
+    """used to fetch all id for current weekly habits, necessary for startup computation"""
+    cursor.execute("SELECT habit_id FROM habit WHERE active = 1 AND interval = 1")
+    rows = cursor.fetchall()
+    connection.commit()
+    return [row["habit_id"] for row in rows]
+
+def get_weekly_id_list():
+    """used to fetch all id for current weekly habits, necessary for startup computation"""
+    cursor.execute("SELECT habit_id FROM habit WHERE active = 1 AND interval = 7")
+    rows = cursor.fetchall()
+    connection.commit()
+    return [row["habit_id"] for row in rows]
+
+def get_last_entry(habit_id):
+    """used to fetch last entry for given habit_id where completed == 1 and return date"""
+    cursor.execute("SELECT date FROM history WHERE habit_id = ? AND complete_status = 1 ORDER BY date desc LIMIT 1", (habit_id,))
+    row = cursor.fetchone()
+    connection.commit()
+    return row["date"]
+
+def startup_habit_incomplete(habit_id):
+    """Sets a habits complete status to 0 in habit table during startup computation"""
+    cursor.execute("UPDATE habit SET complete_status = 0 WHERE habit_id = ?", (habit_id,))
+    connection.commit()
+
+def startup_habit_reset(habit_id):
+    """Sets a habits complete status, streak status and streak count to 0 in habit table during startup computation"""
+    cursor.execute("UPDATE habit SET complete_status = 0, streak_status = 0, streak_count = 0 WHERE habit_id = ?", (habit_id,))
+    connection.commit()
 ## when do we close database ? let it close automatically on application close?
