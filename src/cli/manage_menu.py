@@ -1,7 +1,6 @@
 from main_util.main_util import step, return_to_main
 from cli import edit_habit_menu as ehm
 from analytics import analytics as an
-from datetime import date
 from database import db
 
 def manage_menu_choice():
@@ -34,21 +33,7 @@ def manage_menu():
                 print("No habits to delete")
             try:
                 habit_id = int(input("To choose a habit please enter its associated number above."))
-                current_habit_obj = an.create_habit_obj(habit_id)
-                current_habit_obj.change_active()
-                update_data = current_habit_obj.get_update_data()
-                db.update_single_row(update_data)
-                history_data = current_habit_obj.get_history_data()
-                habit_id = current_habit_obj.habit_id
-                today = date.today()
-                iso_today = today.isoformat()
-                existing_history_date = db.check_existing_history_date(habit_id, iso_today)
-                if existing_history_date == False:
-                    db.append_history(history_data)
-                elif existing_history_date == True:
-                    db.update_history(history_data)
-                else:
-                    print("Error writing to history table.")
+                an.delete_restore_habit(habit_id)
             except ValueError or TypeError:
                 print("Invalid option")
 
@@ -62,21 +47,7 @@ def manage_menu():
                 print("You currently have not habits to delete.")
             try:
                 habit_id = int(input("To choose a habit please enter its associated number above."))
-                current_habit_obj = an.create_habit_obj(habit_id)
-                current_habit_obj.change_active()
-                update_data = current_habit_obj.get_update_data()
-                db.update_single_row(update_data)
-                history_data = current_habit_obj.get_history_data()
-                habit_id = current_habit_obj.habit_id
-                today = date.today()
-                iso_today = today.isoformat()
-                existing_history_date = db.check_existing_history_date(habit_id, iso_today)
-                if existing_history_date == False:
-                    db.append_history(history_data)
-                elif existing_history_date == True:
-                    db.update_history(history_data)
-                else:
-                    print("Error writing to history table.")
+                an.delete_restore_habit(habit_id)
             except ValueError or TypeError:
                 print("Invalid option")
         elif choice == 3:
@@ -93,21 +64,7 @@ def manage_menu():
                 habit_id = int(input("To choose a habit please enter its associated number above."))
                 max_habit_id = db.get_max_id()
                 if 0 < habit_id <= max_habit_id:
-                    current_habit_obj = an.create_habit_obj(habit_id)
-                    current_habit_obj.reset()
-                    update_data = current_habit_obj.get_update_data()
-                    db.update_single_row(update_data)
-                    history_data = current_habit_obj.get_history_data()
-                    habit_id = current_habit_obj.habit_id
-                    today = date.today()
-                    iso_today = today.isoformat()
-                    existing_history_date = db.check_existing_history_date(habit_id, iso_today)
-                    if existing_history_date == False:
-                        db.append_history(history_data)
-                    elif existing_history_date == True:
-                        db.update_history(history_data)
-                    else:
-                        print("Error writing to history table.")
+                    an.reset_habit(habit_id)
                 else:
                     print("Can not reset non existent habit.\n"
                           "Returning to Manage Menu....")

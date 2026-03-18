@@ -1,5 +1,4 @@
 from analytics import analytics as an
-from database import db as db
 from main_util.main_util import step, return_to_main
 
 
@@ -24,6 +23,7 @@ def analytics_menu():
     while True:
         choice = analytics_choice()
         if choice == 1:
+            print("Your currently active habits are:")
             an.get_list_of_active_habits()
             step()
         elif choice == 2:

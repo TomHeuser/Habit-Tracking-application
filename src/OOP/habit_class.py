@@ -1,5 +1,6 @@
 ##Habit class tree
 from datetime import date
+from cli import cli_util as cli
 
 ##lvl1: Habit superclass
 class Habit:
@@ -37,10 +38,10 @@ class Habit:
     ## needs changing
     def change_name(self):
         """used to change the name attribute of an existing habit object, then applies these changes to database entry"""
-        new_name = input(f"Please enter a new name for '{self.name}':")
         old_name = self.name
+        new_name = cli.new_name_input(old_name)
         while True:
-            confirm = input(f"Would you like to rename '{self.name}' to '{new_name}'? (y/n)")
+            confirm = cli.confirm_new_name(old_name, new_name)
             if confirm == "y":
                 self.name = new_name
                 # save to db
@@ -53,9 +54,10 @@ class Habit:
     #needs changing
     def change_desc(self):
         """used to change the desc attribute of an existing habit object, then applies these changes to database entry"""
-        new_desc = input(f"Please enter a new description for '{self.name}':")
+        name = self.name
+        new_desc = cli.new_desc_input(name)
         while True:
-            confirm = input(f"Would you like to change the description of '{self.name}' to '{new_desc}'? (y/n)")
+            confirm = cli.confirm_new_desc(name, new_desc)
             if confirm == "y":
                 self.desc = new_desc
                 #safe to db
@@ -70,8 +72,9 @@ class Habit:
         """used to set a simple habit (no streak/interval) to active or inactive. Changes the active attribute of an existing habit object,
         between 0 (False, inactive) and 1 (True, active), then applies these changes to database entry"""
         while True:
+            name = self.name
             if self.active == 1:
-                confirm = input(f"Are you sure that you'd like to delete '{self.name}'? (y/n) [Not lost permanently. Can be restored]")
+                confirm = cli.confirm_delete(name)
                 if confirm == "y":
                     self.active = 0
                     print(f"'{self.name}' has been deleted.")
@@ -84,7 +87,7 @@ class Habit:
                     print("Unexpected input. Please only enter 'y' or 'n'.")
 
             elif self.active == 0:
-                confirm = input(f"Would you like restore '{self.name}'? (y/n)")
+                confirm = cli.confirm_restore(name)
                 if confirm == "y":
                     self.active= 1
                     print(f"'{self.name}' has been restored.")
@@ -106,8 +109,9 @@ class Habit:
         """used to set a habit to complete or incomplete. Changes the complete_status attribute of an existing habit object,
         between 1 (True/complete) and 0 (False/incomplete), then applies these changes to database entry"""
         while True:
+            name = self.name
             if self.complete_status == 1:
-                confirm = input(f"Would you like to reset '{self.name}' to incomplete? (y/n)")
+                confirm = cli.confirm_incomplete(name)
                 if confirm == "y":
                     print(f"'{self.name}' has been reset to incomplete.")
                     self.complete_status = 0
@@ -121,13 +125,10 @@ class Habit:
                     print("Unexpected input. Please only enter 'y' or 'n'.")
 
             elif self.complete_status == 0:
-                confirm = input(f"Would you like to complete '{self.name}' for the current interval? (y/n)")
+                confirm = cli.confirm_complete(name)
                 if confirm == "y":
                     self.complete_status = 1
                     print(f"'{self.name}' has been completed successfully!")
-                    # implement change to history data
-                    # implement a way to delete existing entry for this date
-                    # implement saving to history
                     break
                 elif confirm == "n":
                     print(f"Completion aborted. '{self.name}' remains incomplete.")
@@ -172,7 +173,7 @@ class TimeHabit(Habit):
             interval [1= daily, 2= weekly], (formatted in days, "daily" returns 1, "weekly" returns 7)"""
             while True:
                 # userinput to choose between daily and weekly (eg:1 and 7)
-                interval_input = input("Please choose the habits' interval:\n[1]daily\n[2]weekly\n")
+                interval_input = cli.predefined_interval_choice()
                 if interval_input == "1":
                     return 1
                 elif interval_input == "2":
@@ -184,8 +185,7 @@ class TimeHabit(Habit):
             """used during change of interval. Lets the user choose the desired number of days (1-365)"""
             while True:
                 try:
-                    interval_input = int(
-                        input("Please enter the desired number of days [1 - 365] for the habits' interval:"))
+                    interval_input = cli.manual_interval_input()
                     if 1 <= interval_input <= 365:
                         return interval_input
                     else:
@@ -195,8 +195,7 @@ class TimeHabit(Habit):
 
         while True:
             old_interval = self.interval
-            change_type = input(f"Would you like to choose a predefined interval or create a individual interval?\n"
-                                f"[1] predefined or [2] individual")
+            change_type = cli.interval_change_type_choice()
             if change_type == "1":
                 new_interval = choose_interval()
                 break
@@ -209,10 +208,8 @@ class TimeHabit(Habit):
 
         if old_interval != new_interval:
             while True:
-                confirm = input(f"Would you like to change the current interval of '{self.name}' from"
-                                f"'{old_interval}' days to '{new_interval}' days?\n"
-                                f"IMPORTANT: This will also reset its streak!\n"
-                                f"(y/n)")
+                name = self.name
+                confirm = cli.confirm_interval_change(name, old_interval, new_interval)
 
                 if confirm == "y":
                     self.interval = new_interval
@@ -233,8 +230,9 @@ class TimeHabit(Habit):
         """used to set a time habit to active or inactive. Changes the active attribute of an existing habit object,
         between 0 (False, inactive) and 1 (True, active), then applies these changes to database entry"""
         while True:
+            name = self.name
             if self.active == 1:
-                confirm = input(f"Are you sure that you'd like to delete '{self.name}'? (y/n) [Not lost permanently. Can be restored]")
+                confirm = cli.confirm_delete(name)
                 if confirm == "y":
                     self.active = 0
                     print(f"'{self.name}' has been deleted.")
@@ -249,7 +247,7 @@ class TimeHabit(Habit):
                     print("Unexpected input. Please only enter 'y' or 'n'.")
 
             elif self.active == 0:
-                confirm = input(f"Would you like restore '{self.name}'? (y/n)")
+                confirm = cli.confirm_delete(name)
                 if confirm == "y":
                     self.active= 1
                     print(f"'{self.name}' has been restored.")
@@ -293,8 +291,9 @@ class TimeHabit(Habit):
         """used to set a habit to complete or incomplete. Changes the complete_status attribute of an existing habit object,
         between 1 (True/complete) and 0 (False/incomplete), then applies these changes to database entry"""
         while True:
+            name = self.name
             if self.complete_status == 1:
-                confirm = input(f"Would you like to reset '{self.name}' to incomplete? (y/n)")
+                confirm = cli.confirm_complete(name)
                 if confirm == "y":
                     print(f"'{self.name}' has been reset to incomplete.")
                     self.complete_status = 0
@@ -303,7 +302,6 @@ class TimeHabit(Habit):
                     if self.streak_count * self.interval < 28:
                         self.streak_status = 0
                         print("This habit is currently not on a streak.")
-                    # implement saving to history
                     break
                 elif confirm == "n":
                     print(f"Incompletion aborted. '{self.name}' remains complete.")
@@ -312,7 +310,7 @@ class TimeHabit(Habit):
                     print("Unexpected input. Please only enter 'y' or 'n'.")
 
             elif self.complete_status == 0:
-                confirm = input(f"Would you like to complete '{self.name}' for the current interval? (y/n)")
+                confirm = cli.confirm_complete(name)
                 if confirm == "y":
                     self.complete_status = 1
                     self.streak_count += 1

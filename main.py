@@ -1,8 +1,9 @@
 import sqlite3
-
+from cli import cli_util as cli
 from cli import manage_menu as mm
 from cli import analytics_menu as am
 from cli import habits_menu as hm
+from analytics import analytics as an
 from main_util import main_util as util
 from OOP import habit_class
 from database import db
@@ -18,23 +19,10 @@ db_setup.database_startup()
 
 welcome_message()
 
-def submenu_choice():
-    while True:
-        try:
-            choice = int(input("Please choose how to proceed:\n"
-                                "[1] habits menu\n"
-                                "[2] manage habits menu\n"
-                                "[3] analytics menu\n"
-                                "[4] close application\n"))
-            return choice
-
-        except ValueError:
-            print("Incorrect input, please only enter 1,2,3 or 4.")
-
 
 def main_menu():
     while True:
-        choice = submenu_choice()
+        choice = cli.submenu_choice()
         if choice == 1:
             print("Opening habits menu.....")
             hm.habits_menu()

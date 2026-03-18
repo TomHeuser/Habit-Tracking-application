@@ -1,4 +1,3 @@
-from datetime import date
 from analytics import analytics as an
 from database import db
 from main_util.main_util import step
@@ -38,21 +37,7 @@ def edit_habit_menu():
                     habit_id = int(input("To choose a habit please enter its associated number above."))
                     max_habit_id = db.get_max_id()
                     if 0 < habit_id <= max_habit_id:
-                        current_habit_obj = an.create_habit_obj(habit_id)
-                        current_habit_obj.change_name()
-                        update_data = current_habit_obj.get_update_data()
-                        db.update_single_row(update_data)
-                        history_data = current_habit_obj.get_history_data()
-                        habit_id = current_habit_obj.habit_id
-                        today = date.today()
-                        iso_today = today.isoformat()
-                        existing_history_date = db.check_existing_history_date(habit_id, iso_today)
-                        if existing_history_date == False:
-                            db.append_history(history_data)
-                        elif existing_history_date == True:
-                            db.update_history(history_data)
-                        else:
-                            print("Error writing to history table.")
+                        an.change_habit_name(habit_id)
                     else:
                         print("No habit to change name found.")
                 except ValueError or TypeError:
@@ -69,21 +54,7 @@ def edit_habit_menu():
                     habit_id = int(input("To choose a habit please enter its associated number above."))
                     max_habit_id = db.get_max_id()
                     if 0 < habit_id <= max_habit_id:
-                        current_habit_obj = an.create_habit_obj(habit_id)
-                        current_habit_obj.change_desc()
-                        update_data = current_habit_obj.get_update_data()
-                        db.update_single_row(update_data)
-                        history_data = current_habit_obj.get_history_data()
-                        habit_id = current_habit_obj.habit_id
-                        today = date.today()
-                        iso_today = today.isoformat()
-                        existing_history_date = db.check_existing_history_date(habit_id, iso_today)
-                        if existing_history_date == False:
-                            db.append_history(history_data)
-                        elif existing_history_date == True:
-                            db.update_history(history_data)
-                        else:
-                            print("Error writing to history table.")
+                        an.change_habit_description(habit_id)
                     else:
                         print("No habit to change description found.")
                 except ValueError or TypeError:
@@ -101,21 +72,7 @@ def edit_habit_menu():
                     habit_id = int(input("To choose a habit please enter its associated number above."))
                     max_habit_id = db.get_max_id()
                     if 0 < habit_id <= max_habit_id:
-                        current_habit_obj = an.create_habit_obj(habit_id)
-                        current_habit_obj.change_interval()
-                        update_data = current_habit_obj.get_update_data()
-                        db.update_single_row(update_data)
-                        history_data = current_habit_obj.get_history_data()
-                        habit_id = current_habit_obj.habit_id
-                        today = date.today()
-                        iso_today = today.isoformat()
-                        existing_history_date = db.check_existing_history_date(habit_id, iso_today)
-                        if existing_history_date == False:
-                            db.append_history(history_data)
-                        elif existing_history_date == True:
-                            db.update_history(history_data)
-                        else:
-                            print("Error writing to history table.")
+                        an.change_habit_interval(habit_id)
                     else:
                         print("No habit to change interval found.")
                 except ValueError or TypeError:

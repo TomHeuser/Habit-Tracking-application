@@ -2,7 +2,6 @@ from main_util.main_util import step
 from database import db as db
 from datetime import date
 
-
 ## functions for habit_menu.py
 def create_habit_obj(habit_id):
     """used in habit_menu to create habit object for habits stored in database that hold habit_idd == to passed in habit_id"""
@@ -31,17 +30,15 @@ def change_habit_obj_complete(habit_id):
     else:
         print("Error writing to history table.")
 
-## functions for analytics_menu.py
-
 def get_list_of_active_habits():
-    """Used in analytics_menu to get list of all active habits"""
-    print("Your currently active habits are:")
+    """Used in menus to get list of all active habits"""
     active_habits = db.fetch_active_names()
     for item in active_habits:
         print(item["habit_id"], item["name"])
     print("")
     # print(type(active_habits))
 
+## functions for analytics_menu.py
 
 def get_list_of_all_habits():
     """Used in analytics_menu to get list of all habits"""
@@ -123,3 +120,51 @@ def print_all_history_entries(chosen_id):
         print(
             f"[{item["date"]}], {complete_status}, {streak_status}, "
             f"Number of consecutive completions: {item["streak_count"]}")
+
+## functions for manage_menu
+
+def save_habit_changes_to_db(current_habit_obj):
+    """used to save changes to habit instance to habit and history table"""
+    update_data = current_habit_obj.get_update_data()
+    db.update_single_row(update_data)
+    history_data = current_habit_obj.get_history_data()
+    habit_id = current_habit_obj.habit_id
+    today = date.today()
+    iso_today = today.isoformat()
+    existing_history_date = db.check_existing_history_date(habit_id, iso_today)
+    if existing_history_date == False:
+        db.append_history(history_data)
+    elif existing_history_date == True:
+        db.update_history(history_data)
+    else:
+        print("Error writing to history table.")
+
+def reset_habit(habit_id):
+    """used in manage menu to reset habit and save to db"""
+    current_habit_obj = create_habit_obj(habit_id)
+    current_habit_obj.reset()
+    save_habit_changes_to_db(current_habit_obj)
+
+def delete_restore_habit(habit_id):
+    """used in manage menu to set habits active attribute to 0 and save to db"""
+    current_habit_obj = create_habit_obj(habit_id)
+    current_habit_obj.change_active()
+    save_habit_changes_to_db(current_habit_obj)
+
+def change_habit_name(habit_id):
+    """used in edit habit menu to change habit name"""
+    current_habit_obj = create_habit_obj(habit_id)
+    current_habit_obj.change_name()
+    save_habit_changes_to_db(current_habit_obj)
+
+def change_habit_description(habit_id):
+    """used in edit habit menu to change habit description"""
+    current_habit_obj = create_habit_obj(habit_id)
+    current_habit_obj.change_desc()
+    save_habit_changes_to_db(current_habit_obj)
+
+def change_habit_interval(habit_id):
+    """used in edit habit menu to change habit interval"""
+    current_habit_obj = create_habit_obj(habit_id)
+    current_habit_obj.change_interval()
+    save_habit_changes_to_db(current_habit_obj)

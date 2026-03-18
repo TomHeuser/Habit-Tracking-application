@@ -1,6 +1,5 @@
-from database import db
 from analytics import analytics as an
-from main_util.main_util import step, return_to_main
+from main_util.main_util import return_to_main
 
 def habits_menu_choice():
     """Called when user input is needed to choose and option from habit sub menu"""
@@ -22,6 +21,7 @@ def habits_menu():
         choice = habits_menu_choice()
         if choice == 1:
             print("Choose a habit to complete from the following list:")
+            print("Your currently active habits are:")
             an.get_list_of_active_habits()
             habit_id = int(input("To choose a habit please enter the associated number above.\n"))
             an.change_habit_obj_complete(habit_id)
