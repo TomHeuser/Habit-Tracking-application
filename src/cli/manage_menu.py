@@ -1,4 +1,4 @@
-from main_util.main_util import step, return_to_main
+from main_util.main_util import step, return_to_main, current_day
 from cli import edit_habit_menu as ehm
 from analytics import analytics as an
 from database import db
@@ -13,7 +13,8 @@ def manage_menu_choice():
               "[2] restore habit\n"
               "[3] edit habit\n"
               "[4] reset habit (Will set streak and consecutive days to 0!)\n"
-              "[5] return to main menu\n"))
+              "[5] create new habit\n"
+              "[6] return to main menu\n"))
             return choice
         except ValueError:
             print("Invalid option")
@@ -73,4 +74,6 @@ def manage_menu():
             except ValueError or TypeError:
                 print("Invalid option")
         elif choice == 5:
+            an.create_habit(current_day)
+        elif choice == 6:
             return return_to_main()

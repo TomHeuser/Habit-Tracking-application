@@ -12,6 +12,8 @@ from database import db
 from database import db_setup
 from main_util.main_util import step
 
+current_day = util.current_day
+current_week = util.current_week
 
 def main_menu():
     while True:
@@ -39,15 +41,11 @@ def main_menu():
             print("Invalid input, please only enter 1,2,3 or 4.")
 
 
-#testing dates
-current_day = date.fromisoformat("2026-03-29")
-current_week = 2026 * 52 + current_day.isocalendar().week
+#drop tables for testing
+#db_setup.flush_history_table()
+#db_setup.flush_habit_table()
 
-##during startup
-db_setup.flush_history_table()
-db_setup.flush_habit_table()
-#db_setup.seed_predefined_habits()
-#db_setup.database_startup()
+#startup
 startup(current_day, current_week)
 
 #lifecycle

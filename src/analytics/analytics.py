@@ -1,4 +1,4 @@
-from main_util.main_util import step
+from main_util.main_util import step, create_new_habit
 from database import db as db
 from datetime import date
 
@@ -170,3 +170,10 @@ def change_habit_interval(habit_id):
     current_habit_obj = create_habit_obj(habit_id)
     current_habit_obj.change_interval()
     save_habit_changes_to_db(current_habit_obj)
+
+def create_habit(current_date = 0):
+    """used in manage menu to create new habit"""
+    if current_date == 0:
+        current_date = date.today()
+    new_habit_data = create_new_habit(current_date)
+    db.append_single_row(new_habit_data)

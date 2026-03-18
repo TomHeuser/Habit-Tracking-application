@@ -4,12 +4,15 @@ from database import db_setup
 from OOP import habit_class as hc
 
 
+#testing dates
+current_day = date.fromisoformat("2026-03-29")
+current_week = 2026 * 52 + current_day.isocalendar().week
+
 today = date.today()
 iso_today = today.isoformat()
 
 
 ## general stuff
-
 def step():
     """just a mal input that will be dropped instantly, creates a pause until use wants to continue
     (often also called stop or pause)"""
@@ -117,14 +120,14 @@ def get_interval():
         else:
             print("Invalid input. Please enter either 1 or 2.")
 
-def create_new_habit():
+def create_new_habit(current_date):
     print("To create a new habit, we need some information first.")
     ##auto assign active, complete and created_on
     active = 1
     complete_status = 0
     streak_status = 0
     streak_count = 0
-    created_on = iso_today
+    created_on = current_date
     ## get name
     name = get_name()
     ## get description
@@ -134,23 +137,3 @@ def create_new_habit():
     new_habit_data = {"name": name,"desc": desc, "active": active, "complete_status": complete_status,"interval": interval,
                     "created_on": created_on, "streak_status": streak_status, "streak_count": streak_count}
     return new_habit_data
-
-
-def change_complete():
-    # cli input
-    # habit_id = cli_function_xy()
-    # one_habit = db.load_single_time_habit(habit_id)
-    one_habit = db.load_single_time_habit(1)
-    #print(one_habit)
-    one_habit.change_complete_status()
-    #print(one_habit)
-    update_data = one_habit.get_update_data()
-    db.update_single_row(update_data)
-    one_habit = db.load_single_time_habit(1)
-    history_data = one_habit.get_history_data()
-    print(history_data)
-    if one_habit.complete_status == 1:
-        db.append_history(history_data)
-    else:
-        db.update_history(history_data)
-    print(one_habit)

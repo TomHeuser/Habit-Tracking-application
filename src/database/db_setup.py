@@ -97,11 +97,15 @@ def database_startup():
               "Database loading....")
         print("Database setup completed.\n"
               "")
+        first_start = True
+        return first_start
     except:
         print("\n"
               "Database loading....")
         print("Existing Database successfully detected.\n"
               "")
+        first_start = False
+        return first_start
 
 
 

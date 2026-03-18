@@ -1,6 +1,7 @@
 short term:
-implement  first start-up message vs later startup messages
-how to handle individual intervals?
+change numbers in manage menu to have create new habit in [1]
+refine manual habit reset
+        fix errors for all resets when no entry in database
 move functions from analytics to functions_util
 
 

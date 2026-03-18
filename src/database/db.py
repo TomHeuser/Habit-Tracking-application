@@ -21,6 +21,21 @@ def get_name_for_id(habit_id):
         return None
     return row["name"]
 
+def get_interval(habit_id):
+    """used to fetch the interval for the habit, with the passed in Habit_id"""
+    cursor.execute("SELECT interval FROM habit WHERE habit_id = ?", (habit_id,))
+    row = cursor.fetchone()
+    connection.commit()
+    return row["interval"]
+
+def get_creation_date(habit_id):
+    """used to fetch the creation date for the habit, with the passed in Habit_id"""
+    cursor.execute("SELECT created_on FROM habit WHERE habit_id = ?", (habit_id,))
+    row = cursor.fetchone()
+    connection.commit()
+    return row["created_on"]
+
+
 def get_max_id():
     """used to fetch max id from habit table"""
     cursor.execute("SELECT habit_id FROM habit ORDER BY habit_id DESC LIMIT 1")
@@ -226,6 +241,13 @@ def get_daily_id_list():
 def get_weekly_id_list():
     """used to fetch all id for current weekly habits, necessary for startup computation"""
     cursor.execute("SELECT habit_id FROM habit WHERE active = 1 AND interval = 7")
+    rows = cursor.fetchall()
+    connection.commit()
+    return [row["habit_id"] for row in rows]
+
+def get_manual_id_list():
+    """used to fetch all id for current habits, that are neither daily, nor weekly. Necessary for startup computation"""
+    cursor.execute("SELECT habit_id FROM habit WHERE active = 1 AND interval != 7 AND interval != 1")
     rows = cursor.fetchall()
     connection.commit()
     return [row["habit_id"] for row in rows]
