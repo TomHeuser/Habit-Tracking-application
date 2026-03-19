@@ -1,5 +1,5 @@
 ##Habit class tree
-from datetime import date
+from main_util import handle_dates as hd
 from cli import cli_util as cli
 
 ##lvl1: Habit superclass
@@ -281,9 +281,8 @@ class TimeHabit(Habit):
 
     def get_history_data(self):
         """return current history data"""
-        today = date.today()
-        iso_today = today.isoformat()
-        new_history_data = {"habit_id": self.habit_id, "date": iso_today, "complete_status": self.complete_status, "streak_status": self.streak_status,"streak_count": self.streak_count}
+        current_day = hd.current_day
+        new_history_data = {"habit_id": self.habit_id, "date": current_day, "complete_status": self.complete_status, "streak_status": self.streak_status,"streak_count": self.streak_count}
         return new_history_data
 
     ## needs changes

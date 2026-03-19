@@ -66,6 +66,15 @@ def fetch_active_names():
         return None
     return [{"habit_id" : row["habit_id"], "name" : row["name"]} for row in rows]
 
+def fetch_active_ids():
+    """used to fetch ids of all active habits from the habits table"""
+    cursor.execute("SELECT habit_id FROM habit WHERE active = 1")
+    connection.commit()
+    rows = cursor.fetchall()
+    if rows is None:
+        return None
+    return [row["habit_id"] for row in rows]
+
 def fetch_inactive_names():
     """used to fetch id and names of all inactive habits from the habits table"""
     cursor.execute("SELECT habit_id, name FROM habit WHERE active = 0")

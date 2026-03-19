@@ -1,14 +1,7 @@
 short term:
-fix date passing with test data
-    eg. in history append function
-move functions from analytics to functions_util
 
 
 medium term:
-rename analytics module to functional? and then create func_util file?
-fix if row or rows in none errors (occurs when query finds no rows)
-HOW TO HANDLE GAPS BETWEEN SEEDING DATES AND TESTING DATE?????
-        implement idea: have the function only assign current date, if no date is passed in, then pass in date during testing
 create unit tests for everything
 
 

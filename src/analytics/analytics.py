@@ -1,6 +1,6 @@
-from main_util.main_util import step, create_new_habit
+from main_util.main_util import step
+from main_util import handle_dates as hd
 from database import db as db
-from datetime import date
 
 ## functions for habit_menu.py
 def create_habit_obj(habit_id):
@@ -20,9 +20,9 @@ def change_habit_obj_complete(habit_id):
     db.update_single_row(update_data)
     history_data = current_habit_obj.get_history_data()
     habit_id = current_habit_obj.habit_id
-    today = date.today()
-    iso_today = today.isoformat()
-    existing_history_date = db.check_existing_history_date(habit_id, iso_today)
+    current_day = hd.current_day
+    #print(current_day)
+    existing_history_date = db.check_existing_history_date(habit_id, current_day)
     if existing_history_date == False:
         db.append_history(history_data)
     elif existing_history_date == True:
@@ -74,8 +74,14 @@ def print_habit_details_of_selected_habit(chosen_id):
             print("This habit is currently on a streak.")
         else:
             print("This habit is not on a streak at the moment.")
-        print(f"Number of consecutive completions: {habit_details['streak_count']}\n"
+        print(f"Number of consecutive completions: {habit_details['streak_count']}"
               f"")
+        try:
+            last_completion = db.get_last_entry(chosen_id)
+            print(f"Last date of completion: {last_completion}\n")
+        except TypeError:
+            print("Last date of completion: Has not ever been completed yet.\n")
+
         step()
     except TypeError or ValueError:
         print("Invalid input")
@@ -103,6 +109,20 @@ def get_highest_history_streak():
     print("")
     step()
 
+def print_each_last_entry():
+    print("List of last completion for each currently active habit:")
+    active_habits_ids = db.fetch_active_ids()
+    #print(active_habits_ids)
+    #print(type(active_habits_ids))
+    for habit_id in active_habits_ids:
+        try:
+            last_entry = db.get_last_entry(habit_id)
+            name = db.get_name_for_id(habit_id)
+            print(f"{name}: {last_entry}")
+        except TypeError:
+            name = db.get_name_for_id(habit_id)
+            print(f"{name} has not ever been completed yet.")
+
 def print_all_history_entries(chosen_id):
     """Used in analytics_menu to print all history entries for the habit with habit_id == passed in habit_id"""
     habit_name = db.get_name_for_id(chosen_id)
@@ -120,7 +140,7 @@ def print_all_history_entries(chosen_id):
         print(
             f"[{item["date"]}], {complete_status}, {streak_status}, "
             f"Number of consecutive completions: {item["streak_count"]}")
-    print("")
+    step()
 
 
 ## functions for manage_menu
@@ -131,9 +151,8 @@ def save_habit_changes_to_db(current_habit_obj):
     db.update_single_row(update_data)
     history_data = current_habit_obj.get_history_data()
     habit_id = current_habit_obj.habit_id
-    today = date.today()
-    iso_today = today.isoformat()
-    existing_history_date = db.check_existing_history_date(habit_id, iso_today)
+    current_day = hd.current_day
+    existing_history_date = db.check_existing_history_date(habit_id, current_day)
     if existing_history_date == False:
         db.append_history(history_data)
     elif existing_history_date == True:
@@ -171,9 +190,3 @@ def change_habit_interval(habit_id):
     current_habit_obj.change_interval()
     save_habit_changes_to_db(current_habit_obj)
 
-def create_habit(current_date = 0):
-    """used in manage menu to create new habit"""
-    if current_date == 0:
-        current_date = date.today()
-    new_habit_data = create_new_habit(current_date)
-    db.append_single_row(new_habit_data)

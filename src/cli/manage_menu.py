@@ -1,6 +1,8 @@
-from main_util.main_util import step, return_to_main, current_day
+from main_util.main_util import step, return_to_main
+from main_util.handle_dates import current_day
 from cli import edit_habit_menu as ehm
 from analytics import analytics as an
+from analytics import functions_util as func
 from database import db
 
 def manage_menu_choice():
@@ -40,7 +42,7 @@ def manage_menu():
 
         elif choice == 5:
             inactive_habits = db.fetch_inactive_names()
-            print(inactive_habits)
+            #print(inactive_habits)
             if inactive_habits != []:
                 print("Which habit would you like to restore?")
                 for item in inactive_habits:
@@ -74,6 +76,6 @@ def manage_menu():
             except ValueError or TypeError:
                 print("Invalid option")
         elif choice == 1:
-            an.create_habit(current_day)
+            func.create_habit(current_day)
         elif choice == 6:
             return return_to_main()

@@ -1,5 +1,7 @@
 from database import db_setup as db_setup
 from datetime import date
+from main_util import handle_dates as hd
+from cli import cli_util as cli
 from database import db as db
 from main_util.main_util import step
 from analytics.analytics import get_list_of_all_habits
@@ -151,7 +153,7 @@ def handle_manual_reset(current_day = 0):
                       f"{name} has been set to 'incomplete'.\n"
                       f"Its streak and the number consecutive completions have been reset to 0.\n")
                 db.startup_habit_reset(habit_id)
-    except ValueError:
+    except TypeError:
         print("No habits with manually set intervals which would need to be reset were found.")
 
 def startup(current_date = 0, current_week = 0):
@@ -168,3 +170,110 @@ def startup(current_date = 0, current_week = 0):
         first_startup_message(current_date)
     step()
     startup_complete_message()
+
+##process of creating new habit
+## process of creating a new name
+def get_name():
+    """used to generate the name of a new habit during habit creation"""
+    while True:
+        new_habit_name = cli.get_new_name_input()
+        new_name_confirm = cli.get_new_name_confirm_input(new_habit_name)
+        if new_name_confirm == "y":
+            print(f"Ok, your new habits' name is '{new_habit_name}'")
+            return new_habit_name
+        elif new_name_confirm == "n":
+            print("Ok, lets pick another name then.")
+        else:
+            print("Invalid input. Please only enter y or n to confirm. Restarting naming process now:")
+
+def get_desc():
+    """used to generate the description of a new habit during habit creation"""
+    while True:
+        new_habit_desc = cli.get_new_desc_input()
+        new_desc_confirm = cli.get_new_desc_confirm_input(new_habit_desc)
+        if new_desc_confirm == "y":
+            print(f"Ok, your new habits' description is '{new_habit_desc}'.")
+            return new_habit_desc
+        elif new_desc_confirm == "n":
+            print("Ok, lets pick another description then.")
+        else:
+            print("Invalid input. Please only enter y or n to confirm. Restarting description process now:")
+
+def interval_confirm(new_interval):
+    while True:
+        interval_confirm = cli.get_interval_approach_confirm(new_interval)
+        if interval_confirm == "y":
+            return True
+
+        else:
+            return False
+
+def set_predefined_interval():
+    while True:
+        predefined_interval = cli.predefined_interval_choice()
+        if predefined_interval == "1":
+            new_interval = 1
+            return new_interval
+        elif predefined_interval == "2":
+            new_interval = 7
+            return new_interval
+        else:
+            print("Invalid input. Please enter either 1 or 2.")
+
+def set_manual_interval():
+    while True:
+        try:
+            manual_interval = cli.manual_interval_input()
+            if 1 <= manual_interval <= 365:
+                return manual_interval
+            else:
+                print("Invalid input. Please enter a number between 1 and 365.")
+
+        except ValueError:
+            print("Invalid input. Please enter a number between 1 and 365.")
+
+def get_interval():
+    while True:
+        interval_approach = cli.get_interval_approach_input()
+        if interval_approach == "1":
+            new_interval = set_predefined_interval()
+            confirm = interval_confirm(new_interval)
+            if confirm == True:
+                interval = new_interval
+                return interval
+            else:
+                print("Ok, lets start anew with then selection of your new interval.")
+        elif interval_approach == "2":
+            new_interval = set_manual_interval()
+            confirm = interval_confirm(new_interval)
+            if confirm == True:
+                interval = new_interval
+                return interval
+            else:
+                print("Ok, lets start anew with then selection of your new interval.")
+        else:
+            print("Invalid input. Please enter either 1 or 2.")
+
+def create_new_habit(current_date):
+    print("To create a new habit, we need some information first.")
+    ##auto assign active, complete and created_on
+    active = 1
+    complete_status = 0
+    streak_status = 0
+    streak_count = 0
+    created_on = current_date
+    ## get name
+    name = get_name()
+    ## get description
+    desc = get_desc()
+    ##get interval
+    interval = get_interval()
+    new_habit_data = {"name": name,"desc": desc, "active": active, "complete_status": complete_status,"interval": interval,
+                    "created_on": created_on, "streak_status": streak_status, "streak_count": streak_count}
+    return new_habit_data
+
+def create_habit(current_date = 0):
+    """used in manage menu to create new habit"""
+    current_day = hd.current_day
+    new_habit_data = create_new_habit(current_day)
+    db.append_single_row(new_habit_data)

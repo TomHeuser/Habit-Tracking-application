@@ -13,7 +13,8 @@ def analytics_choice():
               "[3] get highest current streak\n"
               "[4] get highest all time streak\n"
               "[5] get all log entries for given habit\n"
-              "[6] return to main menu\n"))
+              "[6] get list of last completion for each habit \n"
+              "[7] return to main menu\n"))
             return choice
         except ValueError:
             print("Invalid option")
@@ -54,6 +55,15 @@ def analytics_menu():
                     print("Invalid input")
                 break
         elif choice == 6:
+            try:
+                an.print_each_last_entry()
+                print("")
+                step()
+                print("")
+            except TypeError:
+                print("Cant currently print last entry list.")
+                print("")
+        elif choice == 7:
             return return_to_main()
         else:
             print("Invalid option")

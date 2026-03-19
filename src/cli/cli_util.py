@@ -16,6 +16,16 @@ def submenu_choice():
         except ValueError:
             print("Incorrect input, please only enter 1,2,3 or 4.")
 
+def exit_confirmation_choice():
+    """generates and returns user input confirm or abort exiting the application"""
+    while True:
+        try:
+            choice = (input("Are you sure that you  would like to exit the application?\n"
+                            "Please enter [y] for yes or [n] for no.\n"))
+            return choice
+        except TypeError:
+            print("Incorrect input, returning to main menu.")
+
 ## used in class tree
 # change name method
 def new_name_input(old_name):
@@ -78,3 +88,41 @@ def confirm_interval_change(name, old_interval, new_interval):
           f"IMPORTANT: This will also reset its streak!\n"
           f"(y/n)")
     return confirm
+
+def operation_mode():
+    operation_mode_choice = input(f"To enter test mode please enter 't'.\n"
+                              f"To enter normal operation mode please enter any other key.\n")
+    return operation_mode_choice
+
+## necessary inputs for habit creation
+
+def get_new_name_input():
+    new_habit_name = input("Please enter the name of the habit: ")
+    return new_habit_name
+
+def get_new_name_confirm_input(new_habit_name):
+    new_name_confirm = input(f"Do you want to name your new habit to be: '{new_habit_name}'? \n"
+                             f"[y] for yes or [n] for no'")
+    return new_name_confirm
+
+def get_new_desc_input():
+    new_habit_desc = input(f"Please enter a description for the new habit: ")
+    return new_habit_desc
+
+def get_new_desc_confirm_input(new_habit_desc):
+    new_desc_confirm = input(f"Do you want the description of your new habit to be:\n"
+                                     f"'{new_habit_desc}'? \n"
+                                     f"[y] for yes or [n] for no'")
+    return new_desc_confirm
+
+def get_interval_approach_input():
+
+    interval_approach = input(f"Do you want to choose a predefined interval or would you like to set the interval manually?\n"
+                                  f"[1] for predefined\n"
+                                  f"[2] to set in manually")
+    return interval_approach
+
+def get_interval_approach_confirm(new_interval):
+    interval_confirm = input(f"Do you want the new interval to be {new_interval} days?\n"
+                             f"[y] for yes or [n] for no")
+    return interval_confirm
