@@ -1,6 +1,5 @@
 short term:
-why is testmode run when i run other files?
-install pytest cov
+fix tests for handle_dates
 
 medium term:
 create unit tests for everything
