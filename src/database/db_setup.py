@@ -14,7 +14,7 @@ def setup_habit_table():
     """used to create an empty habits table"""
 
     habit_table_create = """CREATE TABLE habit(habit_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, desc TEXT, active INTEGER,
-    interval INTEGER, complete_status INTEGER, created_on TEXT)"""
+    interval INTEGER, complete_status INTEGER, created_on TEXT, streak_status INTEGER, streak_count INTEGER)"""
     cursor.execute(habit_table_create)
     connection.commit()
 
@@ -23,7 +23,7 @@ def setup_history_table():
 
 
     history_table_create = """CREATE TABLE history(history_id INTEGER PRIMARY KEY AUTOINCREMENT, habit_id INTEGER NOT NULL, 
-    date TEXT, streak_status INTEGER, streak_count INTEGER, FOREIGN KEY (habit_id) REFERENCES habit(habit_id))"""
+    date TEXT, complete_status INTEGER, streak_status INTEGER, streak_count INTEGER, FOREIGN KEY (habit_id) REFERENCES habit(habit_id))"""
     cursor.execute(history_table_create)
     connection.commit()
 
@@ -54,14 +54,16 @@ def seed_predefined_habits():
 
         ## insert habit_data into habit table
         cursor.execute(
-            "INSERT INTO habit (name, desc, active, interval, complete_status, created_on) VALUES (?,?,?,?,?,?)",
+            "INSERT INTO habit (name, desc, active, interval, complete_status, created_on, streak_status, streak_count) VALUES (?,?,?,?,?,?,?,?)",
             (
                 habit_data["name"],
                 habit_data["desc"],
                 habit_data["active"],
                 habit_data["interval"],
                 habit_data["complete_status"],
-                habit_data["created_on"]
+                habit_data["created_on"],
+                habit_data["streak_status"],
+                habit_data["streak_count"]
             )
         )
 
@@ -72,10 +74,11 @@ def seed_predefined_habits():
         for entry in history_data:
             # print("History Row:", entry)
             cursor.execute(
-                "INSERT INTO history (habit_id, date, streak_status, streak_count) VALUES (?,?,?,?)",
+                "INSERT INTO history (habit_id, date, complete_status, streak_status, streak_count) VALUES (?,?,?,?,?)",
                 (
                     habit_id,
                     entry["date"],
+                    entry["complete_status"],
                     entry["streak_status"],
                     entry["streak_count"]
                 )
@@ -90,11 +93,19 @@ def database_startup():
         setup_habit_table()
         setup_history_table()
         seed_predefined_habits()
-        print("Database loading....")
-        print("Database setup completed.")
+        print("\n"
+              "Database loading....")
+        print("Database setup completed.\n"
+              "")
+        first_start = True
+        return first_start
     except:
-        print("Database loading....")
-        print("Existing Database successfully detected.")
+        print("\n"
+              "Database loading....")
+        print("Existing Database successfully detected.\n"
+              "")
+        first_start = False
+        return first_start
 
 
 

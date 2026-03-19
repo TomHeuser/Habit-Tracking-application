@@ -1,23 +1,22 @@
 short term:
-sort and correctly allocate the ways to "save" new habit to database etc
-implement idea of soft deleting (load all instances into dict or else WHERE active == 1)
-expand load / safe ALL habits
-redirect class imports from db to main?
+why is testmode run when i run other files?
+install pytest cov
 
 medium term:
-implement main_util.py
-create test for classes.py
-create test for db_setup.py
-create test for db.py
+create unit tests for everything
+
 
 long term:
-add 2nd class tree containing history class to hold information necessary for analytics?
 when to close database? automatically on app close?
-remove user input from class tree, once cli is working, to preserve clean architextural separation?
+find a way to sort seeded test data by date before inserting into table
+restore habit from certain point in time?
+        (use analytics menu function to print all entries, then let user enter entry id and then
+        let a SQL query fetch row and restore habit from there)
 
 
 "longest" term on finishing up phase 3:
+maybe add option to create backup? write all rows from table to json file + seeding all data from json file -> maybe to much/unnecessary
 don't forget read me, requirements
 delete scribble.py
-dockerfile? what's that?
+dockerfile ( instruction for how to build a container)
 add screenshots of unit-tests (otherwise prof will need to run screenshots)
