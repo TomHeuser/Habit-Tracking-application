@@ -1,0 +1,6 @@
+pytest
+
+assert
+
+pytest --cov
+coverage html

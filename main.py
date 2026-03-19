@@ -43,6 +43,15 @@ def main_menu():
 db_setup.flush_history_table()
 db_setup.flush_habit_table()
 
+#set operation mode and date
+op_mode = cli.operation_mode()
+if op_mode == "t":
+    hd.set_test_date()
+    hd.set_test_week()
+else:
+    hd.set_current_date()
+    hd.set_current_week()
+
 #startup
 startup(hd.current_day, hd.current_week)
 

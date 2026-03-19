@@ -1,5 +1,6 @@
 short term:
-
+why is testmode run when i run other files?
+install pytest cov
 
 medium term:
 create unit tests for everything
