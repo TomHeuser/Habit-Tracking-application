@@ -1,5 +1,7 @@
 short term:
-fix tests for handle_dates
+somehow pytest can suddenly no longer see history table? fix
+find out what .coverage in main folder is ? -> from pytest --cov?
+
 
 medium term:
 create unit tests for everything

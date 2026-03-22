@@ -26,6 +26,8 @@ def get_interval(habit_id):
     cursor.execute("SELECT interval FROM habit WHERE habit_id = ?", (habit_id,))
     row = cursor.fetchone()
     connection.commit()
+    if row is None:
+        return None
     return row["interval"]
 
 def get_creation_date(habit_id):
@@ -33,6 +35,8 @@ def get_creation_date(habit_id):
     cursor.execute("SELECT created_on FROM habit WHERE habit_id = ?", (habit_id,))
     row = cursor.fetchone()
     connection.commit()
+    if row is None:
+        return None
     return row["created_on"]
 
 
@@ -135,11 +139,11 @@ def load_all_time_habits():
     rows = fetch_all_habit_rows()
     return [TimeHabit.from_db(row) for row in rows]
 
-def load_all_basic_habits():
-    """generates a basic Habit instance for each Habit in habit table, while ignoring their interval values.
-    Not relevant yet"""
-    rows = fetch_all_habit_rows()
-    return [Habit.from_db(row) for row in rows]
+#def load_all_basic_habits():
+    #"""generates a basic Habit instance for each Habit in habit table, while ignoring their interval values.
+    #Not relevant yet"""
+    #rows = fetch_all_habit_rows()
+    #return [Habit.from_db(row) for row in rows]
 
 
 ## loads one instance
@@ -153,16 +157,16 @@ def load_single_time_habit(habit_id):
         return None
     return TimeHabit.from_db(row)
 
-def load_single_basic_habit(habit_id):
-    """generates a simple Habit instance for a single Habit in habit table (ignores interval values).
-    habit_id parameter must be passed. Not relevant yet"""
-    ## , behind id to help python recognize it as a tuple
-    cursor.execute("SELECT * FROM habit WHERE habit_id = ?", (habit_id,))
-    row = cursor.fetchone()
-    connection.commit()
-    if row is None:
-        return None
-    return Habit.from_db(row)
+#def load_single_basic_habit(habit_id):
+   #"""generates a simple Habit instance for a single Habit in habit table (ignores interval values).
+   # habit_id parameter must be passed. Not relevant yet"""
+   # ## , behind id to help python recognize it as a tuple
+   # cursor.execute("SELECT * FROM habit WHERE habit_id = ?", (habit_id,))
+    #row = cursor.fetchone()
+    #connection.commit()
+    #if row is None:
+        #return None
+    #return Habit.from_db(row)
 
 ## updating or appending habit table
 def update_single_row(update_data):
