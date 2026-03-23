@@ -11,6 +11,30 @@ def test_get_name_for_id_none() -> None:
     returned_value = db.get_name_for_id(100)
     assert returned_value is None
 
+def test_get_desc_for_id() -> None:
+    returned_value = db.get_desc_for_id(1)
+    assert returned_value == "Drink two liters of water each day"
+
+def test_get_desc_for_id_none() -> None:
+    returned_value = db.get_desc_for_id(100)
+    assert returned_value is None
+
+def test_get_active_for_id() -> None:
+    returned_value = db.get_active_for_id(1)
+    assert returned_value == 1
+
+def test_get_active_for_id_none() -> None:
+    returned_value = db.get_active_for_id(100)
+    assert returned_value is None
+
+def test_get_complete_status_for_id() -> None:
+    returned_value = db.get_complete_status_for_id(1)
+    assert returned_value == 0
+
+def test_get_complete_status_for_id_none() -> None:
+    returned_value = db.get_complete_status_for_id(100)
+    assert returned_value is None
+
 def test_get_interval_daily() -> None:
     returned_value = db.get_interval(1)
     assert returned_value == 1

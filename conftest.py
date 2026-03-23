@@ -3,6 +3,8 @@ import sqlite3
 import pytest
 import os
 import json
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
+from main_util.handle_dates import set_test_date
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_path = os.path.join(BASE_DIR, "src", "database",'database.db')
@@ -11,10 +13,14 @@ connection = sqlite3.connect(DB_path)
 connection.row_factory = sqlite3.Row
 cursor = connection.cursor()
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
+
 
 @pytest.fixture(autouse=True)
 def reset_db():
+
+    current_day = None
+    set_test_date()
+
     yield
     cursor.execute("DROP TABLE IF EXISTS habit")
     cursor.execute("DROP TABLE IF EXISTS history")

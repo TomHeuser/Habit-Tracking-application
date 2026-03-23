@@ -15,7 +15,7 @@ class Habit:
 
     ##experimental
     def get_update_data(self):
-        """saves the current habit data to the database"""
+        """returns the habits attribute values"""
         update_data = {"habit_id": {self.habit_id}, "name": {self.name},"desc": {self.desc}, "active": {self.active},
                         "complete_status": {self.complete_status},
                         "created_on": {self.created_on}}
@@ -29,33 +29,31 @@ class Habit:
                    complete_status=row["complete_status"], created_on=row["created_on"])
 
     def __repr__(self):
-        """manages how attributes are returned"""
+        """manages how attributes are returned (as strings)"""
         return f"Habit(habit_id={self.habit_id},name={self.name}, desc={self.desc}, active={self.active}, complete_status={self.complete_status}, created_on={self.created_on})"
 
     ## methods to change existing habits
 
     def change_name(self, new_name):
-        """used to change the name attribute of an existing habit object, then applies these changes to database entry"""
+        """used to change the name attribute of an existing habit object"""
         self.name = new_name
 
     def change_desc(self, new_desc):
-        """used to change the desc attribute of an existing habit object, then applies these changes to database entry"""
+        """used to change the desc attribute of an existing habit object"""
         self.desc = new_desc
 
     def change_active(self):
         """used to set a simple habit (no streak/interval) to active or inactive. Changes the active attribute of an existing habit object,
-        between 0 (False, inactive) and 1 (True, active), then applies these changes to database entry"""
+        between 0 (False, inactive) and 1 (True, active)"""
         if self.active == 1:
             self.active = 0
             self.complete_status = 0
         else:
             self.active = 1
 
-
-    ## needs changes
     def change_complete_status(self):
         """used to set a habit to complete or incomplete. Changes the complete_status attribute of an existing habit object,
-        between 1 (True/complete) and 0 (False/incomplete), then applies these changes to database entry"""
+        between 1 (True/complete) and 0 (False/incomplete)"""
         if self.complete_status == 1:
             self.complete_status = 0
         else:
@@ -65,8 +63,9 @@ class Habit:
 
 ##lvl2: TimeHabit subclass
 class TimeHabit(Habit):
-    """habit subclass that introduces time as a concept and assigns an interval to each TimeHabit object created"""
-    def __init__(self, name, habit_id, desc, active, complete_status, created_on, interval, streak_status, streak_count):
+    """habit subclass that introduces time as a concept and assigns an interval, a streak_count and a streak_status to each TimeHabit object created"""
+
+    def __init__(self, habit_id, name, desc, active, interval, complete_status, created_on, streak_status, streak_count):
         """Creates a new TimeHabit object"""
         Habit.__init__(self, habit_id, name, desc, active, complete_status, created_on)
         self.interval = interval
@@ -84,20 +83,17 @@ class TimeHabit(Habit):
         return (f"Habit(habit_id={self.habit_id},name={self.name}, desc={self.desc}, active={self.active}, complete_status={self.complete_status}, "
                 f"created_on={self.created_on}, interval={self.interval}, streak_status={self.streak_status}, streak_count={self.streak_count})")
 
-
-
     def change_interval(self, new_interval):
-        """used to let the user change interval. Either by choosing an existing one or by manually setting
-        the number of days. Will reset complete, streak, streak count."""
+        """Changes the interval attribute of an existing habit object, also resets streak_count and streak_status to zero."""
         self.interval = new_interval
         print(f"Changed interval of '{self.name}' to '{self.interval}' days.")
         self.streak_count = 0
         self.streak_status = 0
 
-
     def change_active(self):
         """used to set a time habit to active or inactive. Changes the active attribute of an existing habit object,
-        between 0 (False, inactive) and 1 (True, active), then applies these changes to database entry"""
+        between 0 (False, inactive) and 1 (True, active)
+        If set to inactive/0: active, complete_status, streak_count and streak_status are set to zero"""
 
         if self.active == 1:
             self.active = 0
@@ -108,8 +104,7 @@ class TimeHabit(Habit):
             self.active = 1
         else:
             print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
-            self.complete_status = 1
-
+            self.active = 1
 
     def reset(self):
         """resets objects complete_status, streak_status and streak_count to zero"""
@@ -117,10 +112,9 @@ class TimeHabit(Habit):
         self.streak_status = 0
         self.streak_count = 0
 
-
-    ##experimental
     def get_update_data(self):
-        """return current habit data to the database"""
+        """returns current TimeHabit attribute values necessary to write or update a habit table row in database
+        (does not write/update, only returns the necessary values)"""
         update_data = {"habit_id": self.habit_id, "name": self.name,"desc": self.desc, "active": self.active,
                         "complete_status": self.complete_status, "interval": self.interval,
                         "created_on": self.created_on, "streak_status": self.streak_status, "streak_count": self.streak_count}
@@ -128,15 +122,14 @@ class TimeHabit(Habit):
         #print(update_data)
 
     def get_history_data(self):
-        """return current history data"""
+        """returns current attribute values necessary to write a new History entry"""
         current_day = hd.current_day
         new_history_data = {"habit_id": self.habit_id, "date": current_day, "complete_status": self.complete_status, "streak_status": self.streak_status,"streak_count": self.streak_count}
         return new_history_data
 
-    ## needs changes
     def change_complete_status(self):
         """used to set a habit to complete or incomplete. Changes the complete_status attribute of an existing habit object,
-        between 1 (True/complete) and 0 (False/incomplete), then applies these changes to database entry"""
+        between 1 (True/complete) and 0 (False/incomplete), and automatically changes attributes depending on completion (streak_count/status)"""
 
         if self.complete_status == 1:
             self.complete_status = 0

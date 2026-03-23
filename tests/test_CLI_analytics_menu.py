@@ -1,0 +1,1 @@
+from cli import analytics_menu

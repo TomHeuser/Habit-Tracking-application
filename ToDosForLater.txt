@@ -1,12 +1,12 @@
 short term:
-update habit_class docstrings
-db.py test get_desc_for_id, get_active_for_id, get_complete_status
-write tests for habit class
+finish tests for db_setup
+    test_seed_predefined_habits and test_database_startup
+write tests for clis
+write tests for analytics
 
 
 
 medium term:
-create unit tests for everything
 get nearly 100% coverage
 
 
