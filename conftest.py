@@ -77,6 +77,5 @@ def reset_db():
                 )
             )
     connection.commit()
-    connection.execute("SELECT * FROM history")
-    print(cursor.fetchall())
-    print("Cleanup ran")
+
+

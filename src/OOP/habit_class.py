@@ -8,7 +8,6 @@ class Habit:
         """Creates a new Habit object"""
         self.name = name
         self.habit_id = habit_id
-        # user input to add description (str)
         self.desc = desc
         self.complete_status = complete_status
         self.active = active
@@ -35,111 +34,32 @@ class Habit:
 
     ## methods to change existing habits
 
-    ## needs changing
-    def change_name(self):
+    def change_name(self, new_name):
         """used to change the name attribute of an existing habit object, then applies these changes to database entry"""
-        old_name = self.name
-        new_name = cli.new_name_input(old_name)
-        while True:
-            confirm = cli.confirm_new_name(old_name, new_name)
-            if confirm == "y":
-                self.name = new_name
-                # save to db
-                print(f"'{old_name}' has been renamed to '{self.name}'")
-                break
-            else:
-                print(f"Name change aborted. Name reset to '{self.name}'.")
-                break
+        self.name = new_name
 
-    #needs changing
-    def change_desc(self):
+    def change_desc(self, new_desc):
         """used to change the desc attribute of an existing habit object, then applies these changes to database entry"""
-        name = self.name
-        new_desc = cli.new_desc_input(name)
-        while True:
-            confirm = cli.confirm_new_desc(name, new_desc)
-            if confirm == "y":
-                self.desc = new_desc
-                #safe to db
-                print(f"The description of '{self.name}' has been changed to '{self.desc}'")
-                break
-            else:
-                print(f"Description change aborted. Description of '{self.name}' has been reset to '{self.desc}'.")
-                break
+        self.desc = new_desc
 
-    ## needs changes
     def change_active(self):
         """used to set a simple habit (no streak/interval) to active or inactive. Changes the active attribute of an existing habit object,
         between 0 (False, inactive) and 1 (True, active), then applies these changes to database entry"""
-        while True:
-            name = self.name
-            if self.active == 1:
-                confirm = cli.confirm_delete(name)
-                if confirm == "y":
-                    self.active = 0
-                    print(f"'{self.name}' has been deleted.")
-                    self.complete_status = 0
-                    break
-                elif confirm == "n":
-                    print(f"'{self.name}' has NOT been deleted.")
-                    break
-                else:
-                    print("Unexpected input. Please only enter 'y' or 'n'.")
-
-            elif self.active == 0:
-                confirm = cli.confirm_restore(name)
-                if confirm == "y":
-                    self.active= 1
-                    print(f"'{self.name}' has been restored.")
-                    break
-                elif confirm == "n":
-                    print(f"The habit '{self.name}' was not restored.")
-                    break
-                else:
-                    print("Unexpected input. Please only enter 'y' or 'n'.")
-
-            else:
-                print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
-                self.complete_status = 1
-                break
+        if self.active == 1:
+            self.active = 0
+            self.complete_status = 0
+        else:
+            self.active = 1
 
 
     ## needs changes
     def change_complete_status(self):
         """used to set a habit to complete or incomplete. Changes the complete_status attribute of an existing habit object,
         between 1 (True/complete) and 0 (False/incomplete), then applies these changes to database entry"""
-        while True:
-            name = self.name
-            if self.complete_status == 1:
-                confirm = cli.confirm_incomplete(name)
-                if confirm == "y":
-                    print(f"'{self.name}' has been reset to incomplete.")
-                    self.complete_status = 0
-
-                    # implement saving to history
-                    break
-                elif confirm == "n":
-                    print(f"Incompletion aborted. '{self.name}' remains complete.")
-                    break
-                else:
-                    print("Unexpected input. Please only enter 'y' or 'n'.")
-
-            elif self.complete_status == 0:
-                confirm = cli.confirm_complete(name)
-                if confirm == "y":
-                    self.complete_status = 1
-                    print(f"'{self.name}' has been completed successfully!")
-                    break
-                elif confirm == "n":
-                    print(f"Completion aborted. '{self.name}' remains incomplete.")
-                    break
-                else:
-                    print("Unexpected input. Please only enter 'y' or 'n'.")
-
-            else:
-                print(f"Abnormality detected. '{self.name}' has automatically been set to incomplete.")
-                self.complete_status = 0
-                break
+        if self.complete_status == 1:
+            self.complete_status = 0
+        else:
+            self.complete_status = 1
 
 
 
@@ -164,104 +84,32 @@ class TimeHabit(Habit):
         return (f"Habit(habit_id={self.habit_id},name={self.name}, desc={self.desc}, active={self.active}, complete_status={self.complete_status}, "
                 f"created_on={self.created_on}, interval={self.interval}, streak_status={self.streak_status}, streak_count={self.streak_count})")
 
-    def change_interval(self):
+
+
+    def change_interval(self, new_interval):
         """used to let the user change interval. Either by choosing an existing one or by manually setting
         the number of days. Will reset complete, streak, streak count."""
+        self.interval = new_interval
+        print(f"Changed interval of '{self.name}' to '{self.interval}' days.")
+        self.streak_count = 0
+        self.streak_status = 0
 
-        def choose_interval():
-            """used during change of interval. Lets the user choose between the desired
-            interval [1= daily, 2= weekly], (formatted in days, "daily" returns 1, "weekly" returns 7)"""
-            while True:
-                # userinput to choose between daily and weekly (eg:1 and 7)
-                interval_input = cli.predefined_interval_choice()
-                if interval_input == "1":
-                    return 1
-                elif interval_input == "2":
-                    return 7
-                else:
-                    print("Incorrect input. Please enter 1 or 2.")
-
-        def set_interval():
-            """used during change of interval. Lets the user choose the desired number of days (1-365)"""
-            while True:
-                try:
-                    interval_input = cli.manual_interval_input()
-                    if 1 <= interval_input <= 365:
-                        return interval_input
-                    else:
-                        print("Incorrect input. Please enter a number between 1 and 365.")
-                except ValueError:
-                    print("Incorrect input. Please enter a number between 1 and 365.")
-
-        while True:
-            old_interval = self.interval
-            change_type = cli.interval_change_type_choice()
-            if change_type == "1":
-                new_interval = choose_interval()
-                break
-
-            elif change_type == "2":
-                new_interval = set_interval()
-                break
-            else:
-                print("Incorrect input. Please enter 1 or 2.")
-
-        if old_interval != new_interval:
-            while True:
-                name = self.name
-                confirm = cli.confirm_interval_change(name, old_interval, new_interval)
-
-                if confirm == "y":
-                    self.interval = new_interval
-                    print(f"Changed interval of '{self.name}' to '{self.interval}' days.")
-                    self.streak_count = 0
-                    self.streak_status = 0
-                    break
-                elif confirm == "n":
-                    print(f"Interval of '{self.name}' remains at '{self.interval}' days.")
-                    break
-                else:
-                    print("Unexpected input. Please only enter 'y' or 'n'.")
-
-        else:
-            print("New interval identical to old interval. Interval change aborted.")
 
     def change_active(self):
         """used to set a time habit to active or inactive. Changes the active attribute of an existing habit object,
         between 0 (False, inactive) and 1 (True, active), then applies these changes to database entry"""
-        while True:
-            name = self.name
-            if self.active == 1:
-                confirm = cli.confirm_delete(name)
-                if confirm == "y":
-                    self.active = 0
-                    print(f"'{self.name}' has been deleted.")
-                    self.complete_status = 0
-                    self.streak_status = 0
-                    self.streak_count = 0
-                    break
-                elif confirm == "n":
-                    print(f"'{self.name}' has NOT been deleted.")
-                    break
-                else:
-                    print("Unexpected input. Please only enter 'y' or 'n'.")
 
-            elif self.active == 0:
-                confirm = cli.confirm_restore(name)
-                if confirm == "y":
-                    self.active= 1
-                    print(f"'{self.name}' has been restored.")
-                    break
-                elif confirm == "n":
-                    print(f"The habit '{self.name}' was not restored.")
-                    break
-                else:
-                    print("Unexpected input. Please only enter 'y' or 'n'.")
+        if self.active == 1:
+            self.active = 0
+            self.complete_status = 0
+            self.streak_status = 0
+            self.streak_count = 0
+        elif self.active == 0:
+            self.active = 1
+        else:
+            print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
+            self.complete_status = 1
 
-            else:
-                print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
-                self.complete_status = 1
-                break
 
     def reset(self):
         """resets objects complete_status, streak_status and streak_count to zero"""
@@ -289,50 +137,24 @@ class TimeHabit(Habit):
     def change_complete_status(self):
         """used to set a habit to complete or incomplete. Changes the complete_status attribute of an existing habit object,
         between 1 (True/complete) and 0 (False/incomplete), then applies these changes to database entry"""
-        while True:
-            name = self.name
-            if self.complete_status == 1:
-                confirm = cli.confirm_incomplete(name)
-                if confirm == "y":
-                    print(f"'{self.name}' has been reset to incomplete.")
-                    self.complete_status = 0
-                    self.streak_count -= 1
-                    print(f"The number of consecutive completions for '{self.name}' is now at: '{self.streak_count}'.")
-                    if self.streak_count * self.interval < 28:
-                        self.streak_status = 0
-                        print("This habit is currently not on a streak.")
-                    break
-                elif confirm == "n":
-                    print(f"Incompletion aborted. '{self.name}' remains complete.")
-                    break
-                else:
-                    print("Unexpected input. Please only enter 'y' or 'n'.")
 
-            elif self.complete_status == 0:
-                confirm = cli.confirm_complete(name)
-                if confirm == "y":
-                    self.complete_status = 1
-                    self.streak_count += 1
-                    print(f"'{self.name}' has been completed successfully!")
-                    print(f"The number of consecutive completions is now at: {self.streak_count}.")
-                    if self.streak_count * self.interval >= 28:
-                        self.streak_status = 1
-                        print("Congrats, this habit is currently on a streak!")
-                        consecutive_weeks = self.streak_count * self.interval / 7
-                        rounded_consecutive_weeks = round(consecutive_weeks, 1)
-                        print(f"You have completed it for {rounded_consecutive_weeks} weeks in a row!")
-                    break
-                elif confirm == "n":
-                    print(f"Completion aborted. '{self.name}' remains incomplete.")
-                    break
-                else:
-                    print("Unexpected input. Please only enter 'y' or 'n'.")
-
-            else:
-                print(f"Abnormality detected. '{self.name}' has automatically been set to incomplete.")
-                self.complete_status = 0
-                break
-
-
-
-## room for general testing - NOT THE ACTUAL TESTING - just for myself
+        if self.complete_status == 1:
+            self.complete_status = 0
+            self.streak_count -= 1
+            print(f"The number of consecutive completions for '{self.name}' is now at: '{self.streak_count}'.")
+            if self.streak_count * self.interval < 28:
+                self.streak_status = 0
+                print("This habit is currently not on a streak.")
+        elif self.complete_status == 0:
+            self.complete_status = 1
+            self.streak_count += 1
+            print(f"The number of consecutive completions is now at: {self.streak_count}.")
+            if self.streak_count * self.interval >= 28:
+                self.streak_status = 1
+                print("Congrats, this habit is currently on a streak!")
+                consecutive_weeks = self.streak_count * self.interval / 7
+                rounded_consecutive_weeks = round(consecutive_weeks, 1)
+                print(f"You have completed it for {rounded_consecutive_weeks} weeks in a row!")
+        else:
+            print(f"Abnormality detected. '{self.name}' has automatically been set to incomplete.")
+            self.complete_status = 0

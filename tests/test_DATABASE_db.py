@@ -70,7 +70,7 @@ def test_fetch_single_habit_details() -> None:
 
 def test_fetch_single_habit_details_none() -> None:
     retuned_value = db.fetch_single_habit_details(100)
-    assert retuned_value == None
+    assert retuned_value is None
 
 ## test what happens if there are multiple equals
 ## also what happens if all streaks are 0?
@@ -213,16 +213,16 @@ def test_append_history() -> None:
     assert retuned_value.streak_status == 1
     assert retuned_value.streak_count == 29
 
-def test_check_existing_history_date_True() -> None:
+def test_check_existing_history_date_true() -> None:
     habit_id = 1
     iso_today = "2026-03-28"
-    returned_value = db.check_existing_history_date(iso_today, habit_id)
+    returned_value = db.check_existing_history_date(habit_id, iso_today)
     assert returned_value == True
 
-def test_check_existing_history_date_False() -> None:
+def test_check_existing_history_date_false() -> None:
     habit_id = 1
     second_iso_today = "2026-04-29"
-    returned_value = db.check_existing_history_date(second_iso_today, habit_id)
+    returned_value = db.check_existing_history_date(habit_id, second_iso_today)
     assert returned_value == False
 
 def test_get_daily_id_list() -> None:
@@ -236,3 +236,25 @@ def test_get_weekly_id_list() -> None:
 def get_manual_id_list() -> None:
     retuned_value = db.get_manual_id_list()
     assert retuned_value == []
+
+def test_get_last_entry() -> None:
+    returned_value = db.get_last_entry(1)
+    assert returned_value == "2026-03-28"
+    returned_value = db.get_last_entry(2)
+    assert returned_value == "2026-03-28"
+    returned_value = db.get_last_entry(3)
+    assert returned_value == "2026-03-28"
+    returned_value = db.get_last_entry(5)
+    assert returned_value == "2026-03-04"
+
+def test_startup_habit_incomplete() -> None:
+    db.startup_habit_incomplete(1)
+    returned_value = db.fetch_single_habit_details(1)
+    assert returned_value["complete_status"] == 0
+
+def test_startup_habit_reset() -> None:
+    db.startup_habit_reset(1)
+    returned_value = db.fetch_single_habit_details(1)
+    assert returned_value["complete_status"] == 0
+    assert returned_value["streak_status"] == 0
+    assert returned_value["streak_count"] == 0

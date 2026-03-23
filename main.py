@@ -23,8 +23,8 @@ def main_menu():
             print("Opening analytics menu.....\n")
             am.analytics_menu()
         elif choice == 4:
-            confrim = cli.exit_confirmation_choice()
-            if confrim == "y":
+            confirm = cli.exit_confirmation_choice()
+            if confirm == "y":
                 print("Thanks for using 'Unnecessary German Efficiency'\n"
                       "Your application for over the top self improvement.\n"
                       "It's our job to make you become the most automated and replaceable....ah no wait...\n"

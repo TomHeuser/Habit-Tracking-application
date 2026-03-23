@@ -4,3 +4,4 @@ assert
 
 pytest --cov
 coverage html
+pytest --cov --cov-report=html

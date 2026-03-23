@@ -172,21 +172,21 @@ def delete_restore_habit(habit_id):
     current_habit_obj.change_active()
     save_habit_changes_to_db(current_habit_obj)
 
-def change_habit_name(habit_id):
+def change_habit_name(habit_id, new_name):
     """used in edit habit menu to change habit name"""
     current_habit_obj = create_habit_obj(habit_id)
-    current_habit_obj.change_name()
+    current_habit_obj.change_name(new_name)
     save_habit_changes_to_db(current_habit_obj)
 
-def change_habit_description(habit_id):
+def change_habit_description(habit_id, new_desc):
     """used in edit habit menu to change habit description"""
     current_habit_obj = create_habit_obj(habit_id)
-    current_habit_obj.change_desc()
+    current_habit_obj.change_desc(new_desc)
     save_habit_changes_to_db(current_habit_obj)
 
-def change_habit_interval(habit_id):
+def change_habit_interval(habit_id, new_interval):
     """used in edit habit menu to change habit interval"""
     current_habit_obj = create_habit_obj(habit_id)
-    current_habit_obj.change_interval()
+    current_habit_obj.change_interval(new_interval)
     save_habit_changes_to_db(current_habit_obj)
 

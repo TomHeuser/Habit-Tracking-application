@@ -1,6 +1,7 @@
 from main_util.main_util import step, return_to_main
 from main_util.handle_dates import current_day
 from cli import edit_habit_menu as ehm
+from cli import cli_util as cli
 from analytics import analytics as an
 from analytics import functions_util as func
 from database import db
@@ -36,9 +37,33 @@ def manage_menu():
                 print("No habits to delete")
             try:
                 habit_id = int(input("To choose a habit please enter its associated number above."))
-                an.delete_restore_habit(habit_id)
+                while True:
+                    name = db.get_name_for_id(habit_id)
+                    active = db.get_active_for_id(habit_id)
+                    if active == 1:
+                        confirm = cli.confirm_delete(name)
+                        if confirm == "y":
+                            print(f"'{name}' has been deleted.")
+                            an.delete_restore_habit(habit_id)
+                            break
+                        elif confirm == "n":
+                            print(f"'{name}' has NOT been deleted.")
+                            break
+                        else:
+                            print("Unexpected input. Please only enter 'y' or 'n'.")
+
+                    elif active == 0:
+                        print(f"'{name}' has already been deleted before. To restore {name}, please choose the 'restore habit' option above.")
+                        break
+
+                    else:
+                        print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
+                        an.delete_restore_habit(habit_id)
+                        break
+
             except ValueError or TypeError:
                 print("Invalid option")
+
 
         elif choice == 5:
             inactive_habits = db.fetch_inactive_names()
@@ -49,7 +74,29 @@ def manage_menu():
                     print(f"[{item["habit_id"]} {item["name"]}]")
                 try:
                     habit_id = int(input("To choose a habit please enter its associated number above."))
-                    an.delete_restore_habit(habit_id)
+                    while True:
+                        name = db.get_name_for_id(habit_id)
+                        active = db.get_active_for_id(habit_id)
+                        if active == 1:
+                            print(f"{name} is already active and therefore cant be 'restored'.")
+
+                        elif active == 0:
+                            confirm = cli.confirm_restore(name)
+                            if confirm == "y":
+                                an.delete_restore_habit(habit_id)
+                                print(f"'{name}' has been restored.")
+                                break
+                            elif confirm == "n":
+                                print(f"The habit '{name}' was not restored.")
+                                break
+                            else:
+                                print("Unexpected input. Please only enter 'y' or 'n'.")
+
+                        else:
+                            print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
+                            an.delete_restore_habit(habit_id)
+                            break
+
                 except ValueError or TypeError:
                     print("Invalid option")
             else:

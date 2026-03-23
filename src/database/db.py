@@ -21,6 +21,32 @@ def get_name_for_id(habit_id):
         return None
     return row["name"]
 
+def get_desc_for_id(habit_id):
+    """used to fetch description from habit for given habit_id"""
+    cursor.execute("SELECT desc FROM habit WHERE habit_id = ?", (habit_id,))
+    connection.commit()
+    row = cursor.fetchone()
+    if row is None:
+        return None
+    return row["desc"]
+
+def get_active_for_id(habit_id):
+    """used to fetch active (0 or 1) from habit for given habit_id"""
+    cursor.execute("SELECT active FROM habit WHERE habit_id = ?", (habit_id,))
+    connection.commit()
+    row = cursor.fetchone()
+    if row is None:
+        return None
+    return row["active"]
+
+def get_complete_status_for_id(habit_id):
+    cursor.execute("SELECT complete_status FROM habit WHERE habit_id = ?", (habit_id,))
+    connection.commit()
+    row = cursor.fetchone()
+    if row is None:
+        return None
+    return row["complete_status"]
+
 def get_interval(habit_id):
     """used to fetch the interval for the habit, with the passed in Habit_id"""
     cursor.execute("SELECT interval FROM habit WHERE habit_id = ?", (habit_id,))
@@ -237,6 +263,9 @@ def check_existing_history_date(habit_id, iso_today):
     cursor.execute("SELECT * FROM history WHERE habit_id = ? AND date = ?", (habit_id, iso_today))
     row = cursor.fetchone()
     connection.commit()
+    #print(type(iso_today))
+    #print(f"looking for id: {habit_id}, date: {iso_today}")
+    #print(cursor.execute("SELECT * FROM history").fetchall())
     #print(row)
     if row is None:
         return False
