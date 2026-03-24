@@ -1,5 +1,3 @@
-from ctypes import HRESULT
-
 from cli import cli_util as cli
 from unittest.mock import patch
 

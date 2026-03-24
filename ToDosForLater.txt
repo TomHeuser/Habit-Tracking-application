@@ -1,7 +1,6 @@
 short term:
-finish tests for db_setup
-    test_seed_predefined_habits and test_database_startup
 write tests for clis
+    fix input mocks for def test_analytics_menu_calls_list_of_active_habits() -> None:
 write tests for analytics
 
 
