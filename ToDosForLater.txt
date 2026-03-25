@@ -1,6 +1,4 @@
 short term:
-write tests for clis
-    fix input mocks for def test_analytics_menu_calls_list_of_active_habits() -> None:
 write tests for analytics
 
 

@@ -49,7 +49,7 @@ def analytics_menu():
                 print("To choose and get all entries for a habit from the following list:")
                 an.get_list_of_all_habits()
                 try:
-                    chosen_id = input("Please enter one of the above numbers for its associated habit:\n")
+                    chosen_id = int(input("Please enter one of the above numbers for its associated habit:\n"))
                     an.print_all_history_entries(chosen_id)
                 except ValueError or TypeError:
                     print("Invalid input")
@@ -60,9 +60,8 @@ def analytics_menu():
                 print("")
                 step()
                 print("")
-            except TypeError:
-                print("Cant currently print last entry list.")
-                print("")
+            except:
+                print("Cant find entries for habits.")
         elif choice == 7:
             return return_to_main()
         else:

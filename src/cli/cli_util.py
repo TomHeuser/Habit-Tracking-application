@@ -55,6 +55,12 @@ def confirm_restore(name):
     """generates and returns user input to confirm active change to 1 (active) in habit method"""
     confirm = input(f"Would you like restore '{name}'? (y/n)")
     return confirm
+
+def confirm_reset(name):
+    """generates and returns user input to confirm habit reset (complete- and streak_status as well as streak_count = 0)"""
+    confirm = input(f"Would you like reset '{name}'? (y/n)")
+    return confirm
+
 #change complete method
 def confirm_incomplete(name):
     """generates and returns user input to confirm change of complete to 0 (incomplete) in habit method"""
@@ -78,9 +84,13 @@ def manual_interval_input():
         return 0
 def interval_change_type_choice():
     """used to generate and return user input to choose interval change type (predefined or manual)"""
-    change_type = input(f"Would you like to choose a predefined interval or create a individual interval?\n"
-                        f"[1] predefined or [2] individual")
-    return change_type
+    try:
+        change_type = int(input(f"Would you like to choose a predefined interval or create a individual interval?\n"
+                            f"[1] predefined or [2] individual"))
+        return change_type
+    except ValueError:
+        print("Please enter 1 or 2")
+
 def confirm_interval_change(name, old_interval, new_interval):
     """used to generate and return user input to confirm interval change"""
     confirm = input(f"Would you like to change the current interval of '{name}' from"

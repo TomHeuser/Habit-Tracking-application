@@ -37,29 +37,35 @@ def manage_menu():
                 print("No habits to delete")
             try:
                 habit_id = int(input("To choose a habit please enter its associated number above."))
-                while True:
-                    name = db.get_name_for_id(habit_id)
-                    active = db.get_active_for_id(habit_id)
-                    if active == 1:
-                        confirm = cli.confirm_delete(name)
-                        if confirm == "y":
-                            print(f"'{name}' has been deleted.")
+                max_habit_id = db.get_max_id()
+                if 0 < habit_id <= max_habit_id:
+                    while True:
+                        name = db.get_name_for_id(habit_id)
+                        active = db.get_active_for_id(habit_id)
+                        if active == 1:
+                            while True:
+                                confirm = cli.confirm_delete(name)
+                                if confirm == "y":
+                                    print(f"'{name}' has been deleted.")
+                                    an.delete_restore_habit(habit_id)
+                                    break
+                                elif confirm == "n":
+                                    print(f"'{name}' has NOT been deleted.")
+                                    break
+                                else:
+                                    print("Unexpected input. Please only enter 'y' or 'n'.")
+                            break
+
+                        elif active == 0:
+                            print(f"'{name}' has already been deleted before. To restore {name}, please choose the 'restore habit' option above.")
+                            break
+
+                        else:
+                            print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
                             an.delete_restore_habit(habit_id)
                             break
-                        elif confirm == "n":
-                            print(f"'{name}' has NOT been deleted.")
-                            break
-                        else:
-                            print("Unexpected input. Please only enter 'y' or 'n'.")
-
-                    elif active == 0:
-                        print(f"'{name}' has already been deleted before. To restore {name}, please choose the 'restore habit' option above.")
-                        break
-
-                    else:
-                        print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
-                        an.delete_restore_habit(habit_id)
-                        break
+                else:
+                    print("Invalid Input. Please choose an existing number from the list of habits above.")
 
             except ValueError or TypeError:
                 print("Invalid option")
@@ -72,31 +78,39 @@ def manage_menu():
                 print("Which habit would you like to restore?")
                 for item in inactive_habits:
                     print(f"[{item["habit_id"]} {item["name"]}]")
+                max_habit_id = db.get_max_id()
                 try:
                     habit_id = int(input("To choose a habit please enter its associated number above."))
-                    while True:
-                        name = db.get_name_for_id(habit_id)
-                        active = db.get_active_for_id(habit_id)
-                        if active == 1:
-                            print(f"{name} is already active and therefore cant be 'restored'.")
+                    if 0 < habit_id <= max_habit_id:
+                        try:
+                            while True:
+                                name = db.get_name_for_id(habit_id)
+                                active = db.get_active_for_id(habit_id)
+                                if active == 1:
+                                    print(f"{name} is already active and therefore cant be 'restored'.")
+                                    break
 
-                        elif active == 0:
-                            confirm = cli.confirm_restore(name)
-                            if confirm == "y":
-                                an.delete_restore_habit(habit_id)
-                                print(f"'{name}' has been restored.")
-                                break
-                            elif confirm == "n":
-                                print(f"The habit '{name}' was not restored.")
-                                break
-                            else:
-                                print("Unexpected input. Please only enter 'y' or 'n'.")
+                                elif active == 0:
+                                    confirm = cli.confirm_restore(name)
+                                    if confirm == "y":
+                                        an.delete_restore_habit(habit_id)
+                                        print(f"'{name}' has been restored.")
+                                        break
+                                    elif confirm == "n":
+                                        print(f"The habit '{name}' was not restored.")
+                                        break
+                                    else:
+                                        print("Unexpected input. Please only enter 'y' or 'n'.")
 
-                        else:
-                            print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
-                            an.delete_restore_habit(habit_id)
-                            break
+                                else:
+                                    print("Habit status abnormality detected. Habit was automatically restored to 'active'.")
+                                    an.delete_restore_habit(habit_id)
+                                    break
 
+                        except ValueError or TypeError:
+                            print("Invalid option")
+                    else:
+                        print("Invalid Input. Please choose an existing number from the list of habits above.")
                 except ValueError or TypeError:
                     print("Invalid option")
             else:
@@ -115,7 +129,12 @@ def manage_menu():
                 habit_id = int(input("To choose a habit please enter its associated number above."))
                 max_habit_id = db.get_max_id()
                 if 0 < habit_id <= max_habit_id:
-                    an.reset_habit(habit_id)
+                    name = db.get_name_for_id(habit_id)
+                    confirm = cli.confirm_reset(name)
+                    if confirm == "y":
+                        an.reset_habit(habit_id)
+                    else:
+                        print("Reset aborted.")
                 else:
                     print("Can not reset non existent habit.\n"
                           "Returning to Manage Menu....")

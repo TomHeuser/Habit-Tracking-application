@@ -104,7 +104,7 @@ def edit_habit_menu():
                         while True:
                             old_interval = db.get_interval(habit_id)
                             change_type = cli.interval_change_type_choice()
-                            if change_type == "1":
+                            if change_type == 1:
                                 while True:
                                     interval_predefined_choice = cli.predefined_interval_choice()
                                     if interval_predefined_choice == "1":
@@ -115,7 +115,7 @@ def edit_habit_menu():
                                         break
                                     else:
                                         print("Incorrect input. Please enter 1 or 2.")
-                            if change_type == "2":
+                            if change_type == 2:
                                 while True:
                                     interval_manual_choice = cli.manual_interval_input()
                                     try:
@@ -140,6 +140,8 @@ def edit_habit_menu():
                                     else:
                                         print("Unexpected input. Please only enter 'y' or 'n'.")
 
+                            elif new_interval is None:
+                                print("Error setting new interval.")
                             else:
                                 print("New interval identical to old interval. Interval change aborted.")
                             break
