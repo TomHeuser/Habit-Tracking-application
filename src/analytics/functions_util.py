@@ -73,6 +73,8 @@ def handle_weekly_reset(current_week = 0):
                 db.startup_habit_reset(habit_id)
     except TypeError:
         print("No weekly habits which would need to be reset were found.")
+    except:
+        print("No weekly habits which would need to be reset were found.")
 
 def handle_daily_reset(current_day = 0):
     """run on startup to check daily active habits and set unachieved or reset if necessary."""
