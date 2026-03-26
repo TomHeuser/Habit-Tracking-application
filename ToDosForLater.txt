@@ -1,6 +1,6 @@
 short term:
-write tests for analytics
 
+write tests for analytics
 
 
 medium term:
