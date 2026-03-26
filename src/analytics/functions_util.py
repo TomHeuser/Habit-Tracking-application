@@ -214,7 +214,6 @@ def interval_confirm(new_interval):
         interval_confirm = cli.get_interval_approach_confirm(new_interval)
         if interval_confirm == "y":
             return True
-
         else:
             return False
 
@@ -252,7 +251,7 @@ def get_interval():
                 interval = new_interval
                 return interval
             else:
-                print("Ok, lets start anew with then selection of your new interval.")
+                print("Ok, lets start anew with the selection of your new interval.")
         elif interval_approach == "2":
             new_interval = set_manual_interval()
             confirm = interval_confirm(new_interval)
