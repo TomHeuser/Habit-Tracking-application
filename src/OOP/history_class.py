@@ -1,5 +1,4 @@
 ## history class tree
-from datetime import date
 
 ##lvl1: History superclass
 class HabitHistory:

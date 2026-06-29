@@ -1,6 +1,5 @@
 ##Habit class tree
 from main_util import handle_dates as hd
-from cli import cli_util as cli
 
 ##lvl1: Habit superclass
 class Habit:

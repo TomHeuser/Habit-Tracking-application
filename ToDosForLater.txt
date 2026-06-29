@@ -1,23 +1,20 @@
 short term:
 
-write tests for analytics
+docstrings!!!!
+2 A4 abstract -> final concept, reflection, results, eg.:
+    short presentation of objectives
+    from concept to result: which results have i achieved, does the result correspond to goal of the work? "making off"
+    mention technical approach
+    which conclusion can i draw?
+    ALSO resubmit phase 1 and 2
+zip folder ? wie abgeben?
 
 
 medium term:
-get nearly 100% coverage
 
-
-long term:
-when to close database? automatically on app close?
-find a way to sort seeded test data by date before inserting into table
-restore habit from certain point in time?
-        (use analytics menu function to print all entries, then let user enter entry id and then
-        let a SQL query fetch row and restore habit from there)
-
-
-"longest" term on finishing up phase 3:
-maybe add option to create backup? write all rows from table to json file + seeding all data from json file -> maybe to much/unnecessary
-don't forget read me, requirements
+read me
+requirements
 delete scribble.py
-dockerfile ( instruction for how to build a container)
-add screenshots of unit-tests (otherwise prof will need to run screenshots)
+dockerfile (instruction for how to build a container)
+add screenshots of unit-tests (otherwise prof will need to run app)
+create exe

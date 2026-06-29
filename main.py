@@ -4,8 +4,9 @@ from cli import manage_menu as mm
 from cli import analytics_menu as am
 from cli import habits_menu as hm
 from main_util import handle_dates as hd
-from database import db_setup
 from main_util.main_util import step
+from database import db_setup
+
 
 
 def main_menu():
@@ -39,13 +40,11 @@ def main_menu():
             print("Invalid input, please only enter 1,2,3 or 4.")
 
 
-#drop tables for testing
-db_setup.flush_history_table()
-db_setup.flush_habit_table()
-
 #set operation mode and date
 op_mode = cli.operation_mode()
 if op_mode == "t":
+    db_setup.flush_history_table()
+    db_setup.flush_habit_table()
     hd.set_test_date()
     hd.set_test_week()
 else:

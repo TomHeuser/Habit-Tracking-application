@@ -29,9 +29,11 @@ def first_startup_message(current_date = 0):
           "\n"
           "To complete a habit, access the 'habit menu',\n"
           "To delete, create or change habits, you can access the 'manage habits menu',\n"
-          "and to analyze you existing habits and behaviour, please access the 'analytics menu'\n"
+          "and to analyze your existing habits and behaviour, please access the 'analytics menu'.\n"
           "\n"
-          "Creating your very own standardised personal predefined habits....")
+          "Creating your very own standardised personal predefined habits....\n"
+          "\n"
+          "Loading list of current habits successful.")
     step()
     get_list_of_all_habits()
     print(f"It is the {current_date} today.\n")
@@ -108,7 +110,7 @@ def handle_daily_reset(current_day = 0):
                       f"Its streak and the number consecutive completions have been reset to 0.\n")
                 db.startup_habit_reset(habit_id)
     except TypeError:
-        print("No weekly habits which would need to be reset were found.")
+        print("No daily habits which would need to be reset were found.")
 
 def handle_manual_reset(current_day = 0):
     """run on startup to check manually set active habits and set unachieved or reset if necessary."""

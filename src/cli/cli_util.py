@@ -100,10 +100,14 @@ def confirm_interval_change(name, old_interval, new_interval):
     return confirm
 
 def operation_mode():
-    operation_mode_choice = input(f"To enter test mode please enter 't'.\n"
-                              f"To enter normal operation mode please enter any other key.\n")
-    #print(operation_mode_choice)
-    return operation_mode_choice
+    operation = input(f"Press any key to start....")
+    if operation == 't':
+        operation_mode_choice = input(f"To confirm test mode, please enter 't'. IMPORTANT: This will reset your data! For development purposes only!\n"
+                                  f"To enter normal operation mode please enter any other key.\n")
+        #print(operation_mode_choice)
+        return operation_mode_choice
+    else:
+        return 0
 
 ## necessary inputs for habit creation
 
