@@ -3,6 +3,7 @@ import sqlite3
 import pytest
 import os
 import json
+import warnings
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 from main_util.handle_dates import set_test_date
 
@@ -13,7 +14,8 @@ connection = sqlite3.connect(DB_path)
 connection.row_factory = sqlite3.Row
 cursor = connection.cursor()
 
-
+def pytest_configure(config):
+    config.addinivalue_line("filterwarnings", "ignore::DeprecationWarning")
 
 @pytest.fixture(autouse=True)
 def reset_db():
@@ -83,5 +85,3 @@ def reset_db():
                 )
             )
     connection.commit()
-
-
