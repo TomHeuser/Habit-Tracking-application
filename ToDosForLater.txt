@@ -13,7 +13,6 @@ medium term:
 
 read me
 requirements
-delete scribble.py
 dockerfile (instruction for how to build a container)
 add screenshots of unit-tests (otherwise prof will need to run app)
 create exe
