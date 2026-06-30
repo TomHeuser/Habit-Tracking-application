@@ -12,7 +12,5 @@ zip folder ? wie abgeben?
 medium term:
 
 read me -installation?
-requirements
-dockerfile (instruction for how to build a container)
 add screenshots of unit-tests (otherwise prof will need to run app)
-create exe
+create exe ?
