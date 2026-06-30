@@ -6,11 +6,19 @@ short term:
     mention technical approach
     which conclusion can i draw?
     ALSO resubmit phase 1 and 2
-zip folder ? wie abgeben?
 
 
 medium term:
 
-read me -installation?
+
 add screenshots of unit-tests (otherwise prof will need to run app)
 create exe ?
+when done and copied, directly before zipping: delete db.db and try to run code just to see if we actually need to include database inside the zip folder
+zip: copy entire project folder and then delete everything except:
+                                            - contest.py
+                                            - test folder
+                                            - source folder
+                                            - requirements.txt
+                                            - README.md
+                                            - main.py
+                                            - license
