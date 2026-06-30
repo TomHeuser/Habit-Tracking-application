@@ -10,6 +10,7 @@ from database import db_setup
 
 
 def main_menu():
+    """function that serves as the lifecycle of the program once the startup procedure is finished"""
     while True:
         choice = cli.submenu_choice()
         if choice == 1:

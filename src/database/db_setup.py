@@ -20,8 +20,6 @@ def setup_habit_table():
 
 def setup_history_table():
     """Used to create an empty history table"""
-
-
     history_table_create = """CREATE TABLE history(history_id INTEGER PRIMARY KEY AUTOINCREMENT, habit_id INTEGER NOT NULL, 
     date TEXT, complete_status INTEGER, streak_status INTEGER, streak_count INTEGER, FOREIGN KEY (habit_id) REFERENCES habit(habit_id))"""
     cursor.execute(history_table_create)

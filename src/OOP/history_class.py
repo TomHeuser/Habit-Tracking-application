@@ -2,6 +2,7 @@
 
 ##lvl1: History superclass
 class HabitHistory:
+    """Habit history class that is used to create habit history objects that hold habit_id, date, complete_status, streak_status and streak_count"""
     def __init__(self, habit_id, complete_status, streak_status, streak_count, date):
         self.habit_id = habit_id
         self.date = date

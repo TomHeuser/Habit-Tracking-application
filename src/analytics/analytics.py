@@ -146,7 +146,7 @@ def print_all_history_entries(chosen_id):
 ## functions for manage_menu
 
 def save_habit_changes_to_db(current_habit_obj):
-    """used to save changes to habit instance to habit and history table"""
+    """used to save changes from a habit instance to its corresponding habit and history table"""
     update_data = current_habit_obj.get_update_data()
     db.update_single_row(update_data)
     history_data = current_habit_obj.get_history_data()
@@ -161,7 +161,7 @@ def save_habit_changes_to_db(current_habit_obj):
         print("Error writing to history table.")
 
 def reset_habit(habit_id):
-    """used in manage menu to reset habit and save to db"""
+    """used in manage menu to reset habit instance and save the data to the database"""
     current_habit_obj = create_habit_obj(habit_id)
     current_habit_obj.reset()
     save_habit_changes_to_db(current_habit_obj)

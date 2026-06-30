@@ -13,7 +13,7 @@ connection.row_factory = sqlite3.Row
 cursor = connection.cursor()
 
 def get_name_for_id(habit_id):
-    """used to fetch name from habit for given habit_id"""
+    """used to fetch name from habit table for a given habit_id"""
     cursor.execute("SELECT name FROM habit WHERE habit_id = ?", (habit_id,))
     connection.commit()
     row = cursor.fetchone()
@@ -22,7 +22,7 @@ def get_name_for_id(habit_id):
     return row["name"]
 
 def get_desc_for_id(habit_id):
-    """used to fetch description from habit for given habit_id"""
+    """used to fetch description from habit table for a given habit_id"""
     cursor.execute("SELECT desc FROM habit WHERE habit_id = ?", (habit_id,))
     connection.commit()
     row = cursor.fetchone()
@@ -31,7 +31,7 @@ def get_desc_for_id(habit_id):
     return row["desc"]
 
 def get_active_for_id(habit_id):
-    """used to fetch active (0 or 1) from habit for given habit_id"""
+    """used to fetch active (0 or 1) from habit table for a given habit_id"""
     cursor.execute("SELECT active FROM habit WHERE habit_id = ?", (habit_id,))
     connection.commit()
     row = cursor.fetchone()
@@ -40,6 +40,7 @@ def get_active_for_id(habit_id):
     return row["active"]
 
 def get_complete_status_for_id(habit_id):
+    """used to fetch complete (0 or 1) from habit table for a given habit_id"""
     cursor.execute("SELECT complete_status FROM habit WHERE habit_id = ?", (habit_id,))
     connection.commit()
     row = cursor.fetchone()

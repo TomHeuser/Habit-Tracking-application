@@ -100,7 +100,10 @@ def confirm_interval_change(name, old_interval, new_interval):
     return confirm
 
 def operation_mode():
-    operation = input(f"Press any key to start....")
+    """called on startup to give an option to enter testing mode or normal operation mode.
+    Since testing mode is not designed for the user this option is 'hidden' behind a 'press enter to start' message,
+    such that only those who know the option exists may enter testing mode."""
+    operation = input(f"Press enter to start....")
     if operation == 't':
         operation_mode_choice = input(f"To confirm test mode, please enter 't'. IMPORTANT: This will reset your data! For development purposes only!\n"
                                   f"To enter normal operation mode please enter any other key.\n")
@@ -112,32 +115,37 @@ def operation_mode():
 ## necessary inputs for habit creation
 
 def get_new_name_input():
+    """prompt that is used when user input for name generation is necessary"""
     new_habit_name = input("Please enter the name of the habit: ")
     return new_habit_name
 
 def get_new_name_confirm_input(new_habit_name):
+    """called to get extra confirmation for name input"""
     new_name_confirm = input(f"Do you want to name your new habit to be: '{new_habit_name}'? \n"
                              f"[y] for yes or [n] for no'")
     return new_name_confirm
 
 def get_new_desc_input():
+    """prompt that is used when user input for description generation is necessary"""
     new_habit_desc = input(f"Please enter a description for the new habit: ")
     return new_habit_desc
 
 def get_new_desc_confirm_input(new_habit_desc):
+    """called to get extra confirmation for description input on habit creation or alteration"""
     new_desc_confirm = input(f"Do you want the description of your new habit to be:\n"
                                      f"'{new_habit_desc}'? \n"
                                      f"[y] for yes or [n] for no'")
     return new_desc_confirm
 
 def get_interval_approach_input():
-
+    """called when the user needs to select whether they want to choose from predefined intervals or whether they want to select their own manual interval."""
     interval_approach = input(f"Do you want to choose a predefined interval or would you like to set the interval manually?\n"
                                   f"[1] for predefined\n"
                                   f"[2] to set in manually")
     return interval_approach
 
 def get_interval_approach_confirm(new_interval):
+    """called to get extra confirmation for interval choice on habit creation or alteration"""
     interval_confirm = input(f"Do you want the new interval to be {new_interval} days?\n"
                              f"[y] for yes or [n] for no")
     return interval_confirm

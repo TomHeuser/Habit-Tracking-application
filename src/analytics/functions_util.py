@@ -10,17 +10,19 @@ from math import floor
 
 #things to run on startup
 def welcome_message():
+    """prints welcome message on startup"""
     print("Welcome to 'Unnecessary German Efficiency'! \n"
           "Your application for over the top self improvement.\n")
 
 def date_message(current_date = 0):
+    """used to fetch the currently used data and print the according information on startup"""
     if current_date == 0:
         current_date = date.today()
     print(f"It is the {current_date} today.\n"
           f"Since your last startup, the following things have happened:\n")
 
 def first_startup_message(current_date = 0):
-    """Called during startup if first startup is detected"""
+    """Called during startup (if no existing database was detected it prints a "tutorial" for the user.)"""
     if current_date == 0:
         current_date = date.today()
     print("This application will help you track and improve your habits, to become your better self!\n"
@@ -169,6 +171,9 @@ def handle_manual_reset(current_day = 0):
         print("No habits with manually set intervals which would need to be reset were found.")
 
 def startup(current_date = 0, current_week = 0):
+    """Called during startup.
+    Detects whether a database exists and, based on this information,
+    handles which information is printed for the user and whether habits need to be reset"""
     first_startup = db_setup.database_startup()
     if first_startup == False:
         welcome_message()
@@ -212,6 +217,7 @@ def get_desc():
             print("Invalid input. Please only enter y or n to confirm. Restarting description process now:")
 
 def interval_confirm(new_interval):
+    """used to let the user read the new interval and confirm or decline interval change"""
     while True:
         interval_confirm = cli.get_interval_approach_confirm(new_interval)
         if interval_confirm == "y":
@@ -220,6 +226,7 @@ def interval_confirm(new_interval):
             return False
 
 def set_predefined_interval():
+    """used to let the user choose a new predefined interval (either 1 (1 day) or 2 (1 week))"""
     while True:
         predefined_interval = cli.predefined_interval_choice()
         if predefined_interval == "1":
@@ -232,6 +239,7 @@ def set_predefined_interval():
             print("Invalid input. Please enter either 1 or 2.")
 
 def set_manual_interval():
+    """allows the user to set a manual interval between 1 and 365 days"""
     while True:
         try:
             manual_interval = cli.manual_interval_input()
@@ -244,6 +252,7 @@ def set_manual_interval():
             print("Invalid input. Please enter a number between 1 and 365.")
 
 def get_interval():
+    """called when a new interval needs to be selected by the user and returns the newly selected interval"""
     while True:
         interval_approach = cli.get_interval_approach_input()
         if interval_approach == "1":
@@ -266,6 +275,7 @@ def get_interval():
             print("Invalid input. Please enter either 1 or 2.")
 
 def create_new_habit(current_date):
+    """allows user to create a new habit instance, assign the necessary data and then returns the newly generated data"""
     print("To create a new habit, we need some information first.")
     ##auto assign active, complete and created_on
     active = 1

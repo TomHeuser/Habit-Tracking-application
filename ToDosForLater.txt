@@ -1,6 +1,5 @@
 short term:
 
-docstrings!!!!
 2 A4 abstract -> final concept, reflection, results, eg.:
     short presentation of objectives
     from concept to result: which results have i achieved, does the result correspond to goal of the work? "making off"

@@ -7,7 +7,7 @@ from analytics import functions_util as func
 from database import db
 
 def manage_menu_choice():
-    """Called when user input is needed to choose and option from manage sub menu"""
+    """Called when user input is needed to choose an option from manage sub menu"""
     while True:
         print("Manage habits menu:")
         try:
