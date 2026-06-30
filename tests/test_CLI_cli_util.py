@@ -148,15 +148,15 @@ def test_confirm_interval_change() -> None:
         assert result == "n"
 
 def test_operation_mode() -> None:
-    with patch("builtins.input", return_value="t"):
+    with patch("builtins.input", side_effect=['t','t']):
         result = cli.operation_mode()
         assert result == "t"
     with patch("builtins.input", return_value=1):
         result = cli.operation_mode()
-        assert result == 1
+        assert result == 0
     with patch("builtins.input", return_value=[1,2,3]):
         result = cli.operation_mode()
-        assert result == [1,2,3]
+        assert result == 0
 
 def test_get_new_name_input() -> None:
     with patch("builtins.input", return_value="new name"):
