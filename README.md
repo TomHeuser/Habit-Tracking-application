@@ -7,7 +7,22 @@ This is a classic and rather basic habit tracking application, that helps you tr
 
 ## Requirements:
 - Python 3.12.5
-- everything else is listed inside the requirements.txt file
+- additional requirements (see requirements.txt):
+  - altgraph==0.17.5
+  - colorama==0.4.6
+  - coverage==7.13.5
+  - iniconfig==2.3.0
+  - packaging==26.0
+  - pefile==2024.8.26
+  - pipreq==0.4
+  - pluggy==1.6.0
+  - Pygments==2.19.2
+  - pyinstaller==6.21.0
+  - pyinstaller-hooks-contrib==2026.6
+  - pytest==9.0.2
+  - pytest-cov==7.0.0
+  - pywin32-ctypes==0.2.3
+  - setuptools==82.0.1
 
 ## Features:
 - add, change, delete or choose from predefined habits
