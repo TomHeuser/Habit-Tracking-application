@@ -7,7 +7,7 @@ This is a classic and rather basic habit tracking application, that helps you tr
 
 ## Requirements:
 - Python 3.12.5
-- additional requirements (see requirements.txt):
+- additional requirements (also see requirements.txt):
   - altgraph==0.17.5
   - colorama==0.4.6
   - coverage==7.13.5
